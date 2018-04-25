@@ -2,7 +2,7 @@ package team.model;
 
 import java.util.Date;
 
-/*그룹(이거 왜 있어야하지?) */
+/*이거 권한 인가? */
 public class Group {
 	private int groupNumber;			//그룹번호?
 	private String groupName;			//팀이름이랑 다른가?? 팀이름 문자열 20byte // 그룹이름 문자열 10byte?

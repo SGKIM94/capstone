@@ -3,33 +3,33 @@ package article.notice.service;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import article.common.service.ArticleNotFoundException;
-import article.common.service.ArticleContentNotFoundException;
-import article.dao.ArticleContentDao;
-import article.dao.ArticleDao;
-import article.model.Article;
-import article.model.ArticleContent;
+import article.common.ArticleNotFoundException;
+import article.common.ArticleContentNotFoundException;
+import article.notice.dao.NoticeContentDao;
+import article.notice.dao.NoticeDao;
+import article.notice.model.Notice;
+import article.notice.model.NoticeContent;
 import jdbc.connection.ConnectionProvider;
 
 public class ReadArticleService {
 
-	private ArticleDao articleDao = new ArticleDao();
-	private ArticleContentDao contentDao = new ArticleContentDao();
+	private NoticeDao noticeDao = new NoticeDao();
+	private NoticeContentDao contentDao = new NoticeContentDao();
 	
-	public ArticleData getArticle(int articleNum, boolean increaseReadCount) {
+	public NoticeData getNotice(int postNo, boolean increaseReadCount) {
 		try (Connection conn = ConnectionProvider.getConnection()){
-			Article article = articleDao.selectById(conn, articleNum);
-			if (article == null) {
+			Notice notice = noticeDao.selectById(conn, postNo);
+			if (notice == null) {
 				throw new ArticleNotFoundException();
 			}
-			ArticleContent content = contentDao.selectById(conn, articleNum);
+			NoticeContent content = contentDao.selectById(conn, postNo);
 			if (content == null) {
 				throw new ArticleContentNotFoundException();
 			}
 			if (increaseReadCount) {
-				articleDao.increaseReadCount(conn, articleNum);
+				noticeDao.increaseReadCount(conn, postNo);
 			}
-			return new ArticleData(article, content);
+			return new NoticeData(notice, content);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}

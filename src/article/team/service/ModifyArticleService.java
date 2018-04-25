@@ -13,15 +13,16 @@ import jdbc.connection.ConnectionProvider;
 public class ModifyArticleService {
 
 	private TeamArticleDao articleDao = new TeamArticleDao();
+	private TeamContentDao contentDao = new TeamContentDao();
 	
 	public void modify(ModifyRequest modReq) {
 		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getConnection();
 			conn.setAutoCommit(false);
-			/*파일 고유 이름으로 불러오기*/
+			/*파일 고유 이름으로 불러오기 -> 파일 번호 */
 			TeamArticle article = articleDao.selectById(conn, 
-					modReq.getStored());
+					modReq.getFileNo());
 			if (article == null) {
 				throw new ArticleNotFoundException();
 			}
@@ -30,8 +31,11 @@ public class ModifyArticleService {
 				throw new PermissionDeniedException();
 			}
 			articleDao.update(conn, 
+					modReq.getFileNo(), modReq.getTitle());
+			contentDao.update(conn, 
 					modReq.getFileNo(), modReq.getOrigin(),modReq.getStored(), modReq.getFileSize(), modReq.getFileExt());
 			conn.commit();
+			
 		} catch (SQLException e) {
 			JdbcUtil.rollback(conn);
 			throw new RuntimeException(e);

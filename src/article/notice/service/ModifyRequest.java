@@ -1,40 +1,67 @@
-package article.service;
+package article.notice.service;
 
 import java.util.Map;
 
+import article.notice.model.Writer;
+
 public class ModifyRequest {
 
-	private String userId;
-	private int articleNumber;
+	private Writer writer;
+	private int postNo;
 	private String title;
 	private String content;
+	private String origin;
+	private String stored;
+	private long fileSize;
+	private String fileExt;
+	
+    public ModifyRequest(int postNo, Writer writer, String title, String content,
+         String origin, String stored, long fileSize, String fileExt) {
+	  this.postNo = postNo;
+	  this.writer = writer;
+	  this.title = title;
+      this.content = content;
+      this.origin = origin;
+      this.stored = stored;
+      this.fileSize = fileSize;
+      this.fileExt = fileExt;
+    }
 
-	public ModifyRequest(String userId, int articleNumber, String title, String content) {
-		this.userId = userId;
-		this.articleNumber = articleNumber;
-		this.title = title;
-		this.content = content;
-	}
+   public String getContent() {
+      return content;
+   }
+   
+   public Writer getWriter() {
+      return writer;
+   }
 
-	public String getUserId() {
-		return userId;
-	}
+   public Integer getPostNo() {
+      return postNo;
+   }
 
-	public int getArticleNumber() {
-		return articleNumber;
-	}
+   public String getOrigin() {
+      return origin;
+   }
 
-	public String getTitle() {
-		return title;
-	}
+   public String getStored() {
+      return stored;
+   }
 
-	public String getContent() {
-		return content;
-	}
+   public long getFileSize() {
+      return fileSize;
+   }
 
-	public void validate(Map<String, Boolean> errors) {
-		if (title == null || title.trim().isEmpty()) {
-			errors.put("title", Boolean.TRUE);
-		}
-	}
+   public String getFileExt() {
+      return fileExt;
+   }
+
+   public String getTitle() {
+      return title;
+   }
+
+   public void validate(Map<String, Boolean> errors) {
+      if (title == null || title.trim().isEmpty()) {
+         errors.put("title", Boolean.TRUE);
+      }
+   }
 }

@@ -1,19 +1,19 @@
-package article.service;
+package article.notice.service;
 
 import java.util.List;
 
-import article.model.Article;
+import article.notice.model.Notice;
 
 public class ArticlePage {
 
 	private int total;
 	private int currentPage;
-	private List<Article> content;
+	private List<Notice> content;
 	private int totalPages;
 	private int startPage;
 	private int endPage;
 
-	public ArticlePage(int total, int currentPage, int size, List<Article> content) {
+	public ArticlePage(int total, int currentPage, int size, List<Notice> content) {
 		this.total = total;
 		this.currentPage = currentPage;
 		this.content = content;
@@ -55,7 +55,7 @@ public class ArticlePage {
 		return totalPages;
 	}
 
-	public List<Article> getContent() {
+	public List<Notice> getContent() {
 		return content;
 	}
 

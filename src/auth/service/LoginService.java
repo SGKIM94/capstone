@@ -15,9 +15,9 @@ public class LoginService {
 	private ProfessorDao professorDao = new ProfessorDao();
 	private StudentDao studentDao = new StudentDao();
 	
-	public User login(String id, String password, int group) {
+	public User ProfessorLogin(String id, String password, int grade) {
 		try (Connection conn = ConnectionProvider.getConnection()) {
-			if(group == Group.pronumber){
+			if(grade == Group.pronumber){
 				Professor professor = professorDao.selectById(conn, id);
 				if (professor == null) {
 					throw new LoginFailException();
@@ -28,21 +28,29 @@ public class LoginService {
 				return new User(professor.getProId(), professor.getProname(), 
 						professor.getGroupNo());
 			}
-			else if(group == Group.stunumber){
-				Student student = studentDao.selectById(conn, id);
-				if (student == null) {
-					throw new LoginFailException();
-				}
-				if (!student.matchPassword(password)) {
-					throw new LoginFailException();
-				}
-				return new User(student.getStuId(), student.getStuname(), student.getGroupNo());
-			}
-			else{	//그룹 선택 안하면 로그인 못하게 해야함.
+			//그룹 선택 안하면 로그인 못하게 해야함.
 				return null;
+			}catch (SQLException e) {
+				throw new RuntimeException(e);
+		}
+	}
+	
+	public StudentUser StudentLogin(String id, String password, int grade) {
+		try (Connection conn = ConnectionProvider.getConnection()) {
+			if(grade == Group.stunumber) {
+				Student student = studentDao.selectById(conn, id);
+				if(student == null) {
+					throw new LoginFailException();
+				}
+				if(!student.matchPassword(password)) {
+					throw new LoginFailException();
+				}
+				return new StudentUser(student.getStuId(), student.getStuname(), 
+						student.getTeamNo(), student.getGroupNo());		
 			}
-			
-		} catch (SQLException e) {
+				return null;
+		
+		} catch(SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}

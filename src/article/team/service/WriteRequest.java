@@ -6,30 +6,52 @@ import article.team.model.*;
 
 public class WriteRequest {
 
+	private String fileNo;
+	private String title;
 	private String origin;				//파일 이름
 	private String stored;				//파일 고유 이름(시스템)
 	private TeamArticleWriter writer;	//작성자(팀번호, 학번)
 	private long fileSize;				//파일 크기
 	private String fileExt;				//파일 확장자
+	private String filetype;
 
-	public WriteRequest(String origin, String stored, TeamArticleWriter writer,  long size, String ext) {
+	public WriteRequest(String fileNo, String title, String origin, String stored, 
+			TeamArticleWriter writer,  long size, String ext, String filetype) {
+		this.fileNo = fileNo;
+		this.title = title;
 		this.origin = origin;
 		this.stored = stored;
 		this.writer = writer;
 		this.fileSize = size;
 		this.fileExt = ext;
+		this.filetype = filetype;
 	}
 
-	public TeamArticleWriter getWriter() {
-		return writer;
-	}
 	
+	public void validate(Map<String, Boolean> errors) {
+		if (origin == null || origin.trim().isEmpty()) {
+			errors.put("origin", Boolean.TRUE);
+		}
+	}
+
+	public String getFileNo() {
+		return fileNo;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
 	public String getOrigin() {
 		return origin;
 	}
 
 	public String getStored() {
 		return stored;
+	}
+
+	public TeamArticleWriter getWriter() {
+		return writer;
 	}
 
 	public long getFileSize() {
@@ -40,9 +62,7 @@ public class WriteRequest {
 		return fileExt;
 	}
 	
-	public void validate(Map<String, Boolean> errors) {
-		if (origin == null || origin.trim().isEmpty()) {
-			errors.put("origin", Boolean.TRUE);
-		}
+	public String getFiletype() {
+		return filetype;
 	}
 }

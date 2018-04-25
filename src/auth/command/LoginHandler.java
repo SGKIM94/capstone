@@ -1,6 +1,7 @@
 package auth.command;
 
 import java.util.HashMap;
+
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,14 +9,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import auth.service.LoginFailException;
 import auth.service.LoginService;
-import auth.service.User;
+import auth.service.*;
 import mvc.command.CommandHandler;
+import team.teamnum;
 
 public class LoginHandler implements CommandHandler {
 
-	private static final String FORM_VIEW = "/WEB-INF/view/loginForm.jsp";
+	private static final String FORM_VIEW = "/index.jsp";
 	private LoginService loginService = new LoginService();
-
+	private teamnum Group = new teamnum();
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) 
 	throws Exception {
@@ -52,15 +54,27 @@ public class LoginHandler implements CommandHandler {
 		}
 
 		try {
-			User user = loginService.login(id, password, parseint(group));
-			req.getSession().setAttribute("authUser", user);
-			res.sendRedirect(req.getContextPath() + "/index.jsp");
-			return null;
+			if(Integer.parseInt(group) == Group.pronumber) {
+				User user = loginService.ProfessorLogin(id, password, parseint(group));
+				req.getSession().setAttribute("authProUser", user);
+				res.sendRedirect(req.getContextPath() + "/index.jsp");
+				return null;
+			}
+			else if(Integer.parseInt(group) == Group.stunumber){
+				StudentUser studentuser = loginService.StudentLogin(id, password, parseint(group));
+				req.getSession().setAttribute("authStdUser", studentuser);
+				res.sendRedirect(req.getContextPath() + "/index.jsp");
+				return null;
+			}
+			else {
+				return null;
+			}
 		} catch (LoginFailException e) {
 			errors.put("idOrPwNotMatch", Boolean.TRUE);
 			return FORM_VIEW;
 		}
 	}
+
 
 	//필요없을 수도 있음
 	private String trim(String str) {

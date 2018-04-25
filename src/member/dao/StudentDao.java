@@ -66,4 +66,24 @@ public class StudentDao {
          pstmt.executeUpdate();
       }
    }
+   
+   public void update_tNo(Connection conn, String teamNo, String id) throws SQLException {
+	   try (PreparedStatement pstmt = conn.prepareStatement(
+			   "update student set teamNo = ? where stuId = ?")){
+		   pstmt.setString(1, teamNo);
+		   pstmt.setString(2,  id);
+		   pstmt.executeUpdate();
+	   }
+   }
+   
+   public void update_team(Connection conn, Student member) throws SQLException {
+	   try (PreparedStatement pstmt = conn.prepareStatement(
+			   "update student set teamNo = ? where stuId = ?")){
+		   pstmt.setString(1, member.getTeamNo());
+		   pstmt.setString(2, member.getStuId());
+		   pstmt.executeUpdate();
+	   }	   	
+   }
 }
+   
+   

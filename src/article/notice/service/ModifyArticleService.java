@@ -2,18 +2,18 @@ package article.notice.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import article.common.service.ArticleNotFoundException;
-import article.common.service.PermissionDeniedException;
-import article.dao.ArticleContentDao;
-import article.dao.ArticleDao;
-import article.model.Article;
+import article.common.ArticleNotFoundException;
+import article.common.PermissionDeniedException;
+import article.notice.dao.NoticeContentDao;
+import article.notice.dao.NoticeDao;
+import article.notice.model.Notice;
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 
 public class ModifyArticleService {
 
-	private ArticleDao articleDao = new ArticleDao();
-	private ArticleContentDao contentDao = new ArticleContentDao();
+	private NoticeDao noticeDao = new NoticeDao();
+	private NoticeContentDao contentDao = new NoticeContentDao();
 
 	public void modify(ModifyRequest modReq) {
 		Connection conn = null;
@@ -21,18 +21,19 @@ public class ModifyArticleService {
 			conn = ConnectionProvider.getConnection();
 			conn.setAutoCommit(false);
 			
-			Article article = articleDao.selectById(conn, 
-					modReq.getArticleNumber());
-			if (article == null) {
+			Notice notice = noticeDao.selectById(conn, 
+					modReq.getPostNo());
+			if (notice == null) {
 				throw new ArticleNotFoundException();
 			}
-			if (!canModify(modReq.getUserId(), article)) {
+			if (!canModify(modReq.getWriter().getId(), notice)) {
 				throw new PermissionDeniedException();
 			}
-			articleDao.update(conn, 
-					modReq.getArticleNumber(), modReq.getTitle());
+			noticeDao.update(conn, 
+					modReq.getPostNo(), modReq.getTitle());
 			contentDao.update(conn, 
-					modReq.getArticleNumber(), modReq.getContent());
+					modReq.getPostNo(), modReq.getContent(), modReq.getOrigin(),
+					modReq.getStored(), modReq.getFileSize(), modReq.getFileExt());
 			conn.commit();
 		} catch (SQLException e) {
 			JdbcUtil.rollback(conn);
@@ -45,7 +46,7 @@ public class ModifyArticleService {
 		}
 	}
 
-	private boolean canModify(String modfyingUserId, Article article) {
+	private boolean canModify(String modfyingUserId, Notice article) {
 		String temp = article.getWriter().getId();
 		return temp.equals(modfyingUserId);
 	}

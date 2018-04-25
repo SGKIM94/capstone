@@ -7,20 +7,25 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import article.team.service.ArticleNotFoundException;
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
+import article.common.ArticleNotFoundException;
+import article.common.PermissionDeniedException;
+import article.team.model.TeamArticleWriter;
 import article.team.service.ModifyArticleService;
 import article.team.service.ModifyRequest;
-import article.team.service.TeamArticleData;
+import article.team.service.TeamWriteData;
 import article.team.service.ReadArticleService;
-import article.team.service.PermissionDeniedException;
 import auth.service.User;
 import mvc.command.CommandHandler;
 
 public class ModifyArticleHandler implements CommandHandler {
-	private static final String FORM_VIEW = "/WEB-INF/view/modifyForm.jsp";	//작성과 같은 뷰이면 될듯(팀게시판 메인 페이지)
+	private static final String FORM_VIEW = "/WEB-INF/view/modifyTeamboard.jsp";	//작성과 같은 뷰이면 될듯(팀게시판 메인 페이지)
 	
 	private ModifyArticleService modifyService = new ModifyArticleService();
-
+	private ReadArticleService readService = new ReadArticleService();
+	
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res)
 			throws Exception {
@@ -38,15 +43,15 @@ public class ModifyArticleHandler implements CommandHandler {
 			throws IOException {
 		try {
 			String fileNo = req.getParameter("fileNo");
-			TeamArticleData articleData = readService.getArticle(fileNo, false);
+			TeamWriteData articleData = readService.getArticle(fileNo, false);
 			User authUser = (User) req.getSession().getAttribute("authUser");
 			if (!canModify(authUser, articleData)) {
 				res.sendError(HttpServletResponse.SC_FORBIDDEN);
 				return null;
 			}
-			ModifyRequest modReq = new ModifyRequest(authUser.getId(), fileNo,
-					articleData.getArticle().getTitle(), articleData.getFileName(),
-					articleData.getContent());
+			
+			ModifyRequest modReq = new ModifyRequest(fileNo, articleData.getArticle().getTitle(), articleData.getOrigin(), articleData.getStored(),
+					articleData.getArticle().getWriter(), articleData.getFileSize(), articleData.getFileType());
 
 			req.setAttribute("modReq", modReq);
 			return FORM_VIEW;
@@ -56,7 +61,7 @@ public class ModifyArticleHandler implements CommandHandler {
 		}
 	}
 
-	private boolean canModify(User authUser, TeamArticleData articleData) {
+	private boolean canModify(User authUser, TeamWriteData articleData) {
 		String writerId = articleData.getArticle().getWriter().getWriterId();
 		//정수 -> 문자열 변환함
 		String temp = authUser.getId();
@@ -66,12 +71,27 @@ public class ModifyArticleHandler implements CommandHandler {
 	private String processSubmit(HttpServletRequest req, HttpServletResponse res)
 			throws Exception {
 		User authUser = (User) req.getSession().getAttribute("authUser");
-		String fileNo = req.getParameter("fileNo");
+		
+		MultipartRequest multi = null;
+		int sizeLimit = 10 * 1024 * 1024 ; // 10메가입니다.
 
-		ModifyRequest modReq = new ModifyRequest(authUser.getId(), fileNo,
-				req.getParameter("title"),
-				req.getParameter("fileName"),
-				req.getParameter("content"));
+		String savePath = req.getSession().getServletContext().getRealPath("/upload");    // 파일이 업로드될 실제 tomcat 폴더의 WebContent 기준
+
+		try{
+		multi=new MultipartRequest(req, savePath, sizeLimit, "euc-kr", new DefaultFileRenamePolicy()); 
+		}catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+		String fileNo = multi.getParameter("fileNo");
+	
+		ModifyRequest modReq = new ModifyRequest(fileNo,
+				multi.getParameter("title"),
+				multi.getOriginalFileName("file"),
+				multi.getFilesystemName("file"),
+				new TeamArticleWriter("021569", authUser.getId()),
+				multi.getFile("file").length(),
+				multi.getContentType("file"));
 		req.setAttribute("modReq", modReq);
 
 		Map<String, Boolean> errors = new HashMap<>();
@@ -82,7 +102,7 @@ public class ModifyArticleHandler implements CommandHandler {
 		}
 		try {
 			modifyService.modify(modReq);
-			return "/WEB-INF/view/modifySuccess.jsp";
+			return "/WEB-INF/view/modifyTeamboardSuccess.jsp";
 		} catch (ArticleNotFoundException e) {
 			res.sendError(HttpServletResponse.SC_NOT_FOUND);
 			return null;

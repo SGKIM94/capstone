@@ -59,7 +59,7 @@ public class ChangePasswordHandler implements CommandHandler {
 		}
 		
 		try {
-			int group = user.getGroup();
+			int group = user.getAccess();
 			if(group == groupnum.pronumber){
 				changePwdSvc.changePassword_Pro(user.getId(), curPwd, newPwd);
 				return "/WEB-INF/view/changePwdSuccess.jsp";

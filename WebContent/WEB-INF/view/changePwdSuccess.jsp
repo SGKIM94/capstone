@@ -11,6 +11,6 @@
 </header>
 
 <p>암호를 변경했습니다.</p>
-
+<a href="${ctxPath}/Capstone/index.jsp">[처음 화면]</a>
 </body>
 </html>

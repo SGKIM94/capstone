@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import article.common.ArticleNotFoundException;
 import article.team.model.*;
 import jdbc.JdbcUtil;
 
@@ -21,35 +22,28 @@ public class TeamArticleDao {
 		ResultSet rs = null;
 		try {
 			pstmt = conn.prepareStatement("insert into teamboard"
-					+ "(fileNo,  original_Filename, stored_Filename, teamNo, writeId,"
-					+ "fileSize, fileExt, regDate, modDate, downCnt) "
-					+ "values (?,?,?,?,?,0)");
+					+ "(fileNo, teamNo, writeId, title, regDate, modDate, downCnt) "
+					+ "values (?,?,?,?,?,?,0)");
 			pstmt.setString(1, article.getFileNo());
-			pstmt.setString(2, article.getOrigin());
-			pstmt.setString(3, article.getStored());
-			pstmt.setString(4, article.getWriter().getTeamNo());
-			pstmt.setString(5, article.getWriter().getWriterId());
-			pstmt.setLong(6, article.getFileSize());
-			pstmt.setString(7, article.getFileExt());
-			pstmt.setTimestamp(8, toTimestamp(article.getRegDate()));
-			pstmt.setTimestamp(9, toTimestamp(article.getModifiedDate()));
-			int insertedCount = pstmt.executeUpdate();
+			pstmt.setString(2, article.getWriter().getTeamNo());
+			pstmt.setString(3, article.getWriter().getWriterId());
+			pstmt.setString(4, article.getTitle());
+			pstmt.setTimestamp(5, toTimestamp(article.getRegDate()));
+			pstmt.setTimestamp(6, toTimestamp(article.getModifiedDate()));
+			int insertedCount = pstmt.executeUpdate();		//리턴값은 성골했을 때 : 성공한 행의 개수, 실패시 : 0
 			
 			if(insertedCount>0) {
-				stmt = conn.createStatement();
-				rs = stmt.executeQuery("select last_insert_fileNum() from teamboard");
-				if (rs.next()) {
-					String newNo = rs.getString(1);
-					return new TeamArticle(newNo,
-							article.getOrigin(),
-							article.getStored(),
+				//stmt = conn.createStatement();
+				//rs = stmt.executeQuery("SELECT MAX(fileNo) FROM teamboard;");
+				//if (rs.next()) {
+					//String newNo = rs.getString(1);
+					return new TeamArticle(article.getFileNo(),
+							article.getTitle(),
 							article.getWriter(),
-							article.getFileSize(),
-							article.getFileExt(),
 							article.getRegDate(),
 							article.getModifiedDate(),
 							0);
-				}
+				//}
 			}
 			return null;
 		} finally {
@@ -83,9 +77,8 @@ public class TeamArticleDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			//이거 order by 안됨. -> 수정해야함.
 			pstmt = conn.prepareStatement("select * from teamboard " +
-					"order by article_no desc limit ?, ?");
+					"order by regDate desc limit ?, ?");
 			pstmt.setInt(1, startRow);
 			pstmt.setInt(2, size);
 			rs = pstmt.executeQuery();
@@ -102,15 +95,12 @@ public class TeamArticleDao {
 	/*이부분 문제 있을 수 있음*/
 	private TeamArticle convertArticle(ResultSet rs) throws SQLException {
 		return new TeamArticle(rs.getString("fileNo"),
-				rs.getString("origin_Filename"),
-				rs.getString("stored_Filename"),
+				rs.getString("title"),
 				new TeamArticleWriter(
 						rs.getString("teamNo"),
-						rs.getString("writerId")),
-				rs.getLong("fileSize"),
-				rs.getString("fileExt"),
-				toDate(rs.getTimestamp("regdate")),
-				toDate(rs.getTimestamp("moddate")),
+						rs.getString("writeId")),
+				toDate(rs.getTimestamp("regDate")),
+				toDate(rs.getTimestamp("modDate")),
 				rs.getInt("downCnt"));
 	}
 
@@ -127,7 +117,7 @@ public class TeamArticleDao {
 			pstmt.setString(1, fileNo);
 			rs = pstmt.executeQuery();
 			TeamArticle article = null;
-			if (rs.next()) {
+			if (rs.next()) {		//이거 if 문 뭐지? 굳이 필요한가
 				article = convertArticle(rs);
 			}
 			return article;
@@ -137,7 +127,7 @@ public class TeamArticleDao {
 		}
 	}
 	
-	public void increaseReadCount(Connection conn, String fileNo) throws SQLException {
+	public void increaseDownCount(Connection conn, String fileNo) throws SQLException {
 		try (PreparedStatement pstmt = 
 				conn.prepareStatement(
 						"update teamboard set downCnt = downCnt + 1 "+
@@ -147,19 +137,39 @@ public class TeamArticleDao {
 		}
 	}
 	
-	public int update(Connection conn, String fileNo, String origin, String stored, 
-			Long size, String ext) throws SQLException {
+	public int update(Connection conn, String fileNo, String title) throws SQLException {
 		try (PreparedStatement pstmt = 
 				conn.prepareStatement(
-						"update teamboard set origin_Filename = ?, stored_Filename = ?, "
-						+ "fileSize = ?, fileExt = ?, moddate = now() "+
+						"update teamboard set title = ?, modDate = now() "+
 						"where fileNo = ?")) {
-			pstmt.setString(1, origin);
-			pstmt.setString(2, stored);
-			pstmt.setLong(3, size);
-			pstmt.setString(4, ext);
-			pstmt.setString(5, fileNo);
+			pstmt.setString(1, title);
+			pstmt.setString(2, fileNo);
 			return pstmt.executeUpdate();
+		}
+	}
+	
+	public TeamArticle deleteByFileNo(Connection conn, String fileNo) throws SQLException {
+		PreparedStatement pstmt = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			TeamArticle teamarticle = selectById(conn, fileNo);
+			if(teamarticle == null) {
+				throw new ArticleNotFoundException();
+			}
+			
+			pstmt = conn.prepareStatement("delete from teamboard where fileNo = ? ");
+			pstmt.setString(1, fileNo);
+			int insertedCount = pstmt.executeUpdate();		//리턴값은 성골했을 때 : 성공한 행의 개수, 실패시 : 0
+			
+			if(insertedCount>0) {
+					return teamarticle;
+			}
+			return null;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(stmt);
+			JdbcUtil.close(pstmt);
 		}
 	}
 }

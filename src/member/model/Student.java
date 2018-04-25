@@ -45,7 +45,10 @@ public class Student {
    public void changePassword(String newPwd) {
       this.password = newPwd;
    }
-   
+   /* 팀 변경*/
+   public void changeTeam(String newTeam) {
+	   this.teamNo = newTeam;
+   }
    /* 멤버변수 -> get메소드 */
    public String getStuId() {
       return stuId;

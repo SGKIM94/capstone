@@ -1,28 +1,29 @@
 package article.notice.model;
 
 import java.util.Date;
+import article.notice.model.Writer;
 
 public class Notice {
 
-	private Integer no;
+	private int postNo;
 	private Writer writer;
 	private String title;
 	private Date regDate;
-	private Date modifiedDate;
-	private int readCount;
+	private Date modDate;
+	private int readCnt;
 
-	public Notice(Integer no, Writer writer, String title, 
-			Date regDate, Date modifiedDate, int readCount) {
-		this.no = no;
+	public Notice(int postNo, Writer writer, String title, 
+			Date regDate, Date modDate, int readCnt) {
+		this.postNo = postNo;
 		this.writer = writer;
 		this.title = title;
 		this.regDate = regDate;
-		this.modifiedDate = modifiedDate;
-		this.readCount = readCount;
+		this.modDate = modDate;
+		this.readCnt = readCnt;
 	}
 
-	public Integer getNumber() {
-		return no;
+	public int getPostNo() {
+		return postNo;
 	}
 
 	public Writer getWriter() {
@@ -37,12 +38,12 @@ public class Notice {
 		return regDate;
 	}
 
-	public Date getModifiedDate() {
-		return modifiedDate;
+	public Date getModDate() {
+		return modDate;
 	}
 
-	public int getReadCount() {
-		return readCount;
+	public int getReadCnt() {
+		return readCnt;
 	}
 
 }
