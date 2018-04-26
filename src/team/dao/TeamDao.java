@@ -90,9 +90,9 @@ public class TeamDao {
    }
    public void delete_teamNo(Connection conn, Student student) throws SQLException {
 	   try (PreparedStatement pstmt = conn.prepareStatement(
-			   "update stdent set teamNo where stuId = ?")){
-		   )
-	   })
+			   "update stdent set teamNo = null where stuId = ?")){
+		   pstmt.setString(1, student.getStuId());		   
+	   }
    }
 
 }
