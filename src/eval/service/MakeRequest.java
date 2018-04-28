@@ -1,35 +1,55 @@
 package eval.service;
 
 import java.util.ArrayList;
-import java.util.Date;
-
-import member.model.Professor;
+import java.util.Map;
 
 public class MakeRequest {
-	private String evalNo;
-	private Professor dean;					//학과장님
-	private int proNum;						//평가 참여 교수 숫자
-	private int tNo;						//졸업작품 참여 팀 숫자
-	private ArrayList<String> pflist; 		//평가 참여 교수 리스트
-	//private ArrayList<Eteam> eteamlist;		//평가 참여 팀 리스트 - 참여 1팀당 팀 넘버, 교수님 개인 평가지 arraylist, 최종 평가지 번호
-	private ArrayList<String> tlist;
-	private Date regDate;
-	private Date endDate;
-	private int evalState;
 	
-	public MakeRequest(String e, Professor d, int pn, int tn, ArrayList<String> pl,
-			ArrayList<String> tl, Date reg, Date end, int es) {
+	private String evalNo;
+	private String dean;					//학과장님
+	private int proNum;						//평가 참여 교수 숫자
+	private ArrayList<String> pflist; 		//평가 참여 교수 리스트
+	
+	public MakeRequest() {
+		evalNo = null;
+		dean = null;
+		proNum = 0;
+		pflist = null;
+	}
+	
+	public MakeRequest(String e, String d, int pn, ArrayList<String> pl) {
 		evalNo = e;
 		dean = d;
 		proNum = pn;
-		tNo = tn;
 		pflist = pl;
-		tlist = tl;
-		regDate = reg;
-		endDate = end;
-		evalState = es;
 	}
 
+	public void validate(Map<String, Boolean> errors) {
+		String pro = "proNo";
+		String temp = null;
+		
+		checkEmpty(errors, dean, "dean");
+		checkEmpty(errors, proNum, "proNum");
+		if (!errors.containsKey("proNum")) {
+			for(int i = 0; i < proNum ; i++) {
+				temp = pro + ((Integer)i).toString();
+				checkEmpty(errors, pflist.get(i), temp);
+			}
+		}
+	}
+	
+	private void checkEmpty(Map<String, Boolean> errors, 
+			String value, String fieldName) {
+		if (value == null || value.isEmpty())
+			errors.put(fieldName, Boolean.TRUE);
+	}
+	/* id, group의 입력값이 0인지 아닌지 확인 */
+	private void checkEmpty(Map<String, Boolean> errors, 
+			Integer id, String fieldName) {
+		if (id == 0)
+			errors.put(fieldName, Boolean.TRUE);
+	}
+	
 	public String getEvalNo() {
 		return evalNo;
 	}
@@ -38,11 +58,11 @@ public class MakeRequest {
 		this.evalNo = evalNo;
 	}
 
-	public Professor getDean() {
+	public String getDean() {
 		return dean;
 	}
 
-	public void setDean(Professor dean) {
+	public void setDean(String dean) {
 		this.dean = dean;
 	}
 
@@ -54,13 +74,6 @@ public class MakeRequest {
 		this.proNum = proNum;
 	}
 
-	public int gettNo() {
-		return tNo;
-	}
-
-	public void settNo(int tNo) {
-		this.tNo = tNo;
-	}
 
 	public ArrayList<String> getPflist() {
 		return pflist;
@@ -69,36 +82,12 @@ public class MakeRequest {
 	public void setPflist(ArrayList<String> pflist) {
 		this.pflist = pflist;
 	}
-
-	public ArrayList<String> getTlist() {
-		return tlist;
+	
+	public void setPf(int n, String p) {
+		this.pflist.add(n, p);
 	}
 
-	public void setTlist(ArrayList<String> tlist) {
-		this.tlist = tlist;
-	}
-
-	public Date getRegDate() {
-		return regDate;
-	}
-
-	public void setRegDate(Date regDate) {
-		this.regDate = regDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-
-	public int getEvalState() {
-		return evalState;
-	}
-
-	public void setEvalState(int evalState) {
-		this.evalState = evalState;
+	public String getPf(int n) {
+		return this.pflist.get(n);
 	}
 }

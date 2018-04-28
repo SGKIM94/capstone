@@ -38,10 +38,9 @@ public class MakeEvalplanService {
 	}
 	private Evalplan toEvalplan(MakeRequest req) {
 		Date now = new Date();
-		return new Evalplan(toGetEvalNo(req), req.getDean(), req.getProNum(),req.gettNo(), 
-			req.getPflist(), req.getTlist(), req.getRegDate(), now, 0);
+		return new Evalplan(toGetEvalNo(), req.getDean(), req.getProNum(), req.getPflist(), now, now);
 	}
-	private String toGetEvalNo(MakeRequest req) {
+	private String toGetEvalNo() {
 		Calendar c = Calendar.getInstance();
 		String evalNo = Integer.toString(c.get(Calendar.YEAR))+"-01";
 		return evalNo;

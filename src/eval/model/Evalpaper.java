@@ -13,8 +13,8 @@ public class Evalpaper {
 	
 	private String evalNo;
 	private Questions qs;
-	private Professor pro;
-	private Team team;
+	private String pro;
+	private String team;
 	private String paperNo;
 	private Date evalDate;
 	private int total;
@@ -23,24 +23,47 @@ public class Evalpaper {
 	public Evalpaper() {
 		evalNo = null;
 		qs = new Questions();
-		pro = new Professor();
-		team = new Team();
+		pro = null;
+		team = null;
 		paperNo = null;
 		evalDate = null;
 		total = DEFAULT_TOTAL;
 		resultState = DEFAULT_STATE;
 	}
 	
-	public Evalpaper(String e, Questions q, Professor p, Team t, String pn, Date d, int tt, int r) {
+	public Evalpaper(String e, Questions q, String p, String t, Date d, int tt, int r) {
 		evalNo = e;
 		qs = q;
 		pro = p;
 		team = t;
-		paperNo = pn;
+		paperNo = makePaperNo(e, t, p);
 		evalDate = d;
 		total = tt;
 		resultState = r;
 	}
+	
+	public Evalpaper(String e, Questions q, String p, String t, String pfno, Date d, int tt, int r) {
+		evalNo = e;
+		qs = q;
+		pro = p;
+		team = t;
+		paperNo = pfno;
+		evalDate = d;
+		total = tt;
+		resultState = r;
+	}
+	
+	public Evalpaper(Questions q, String pno, Date d, int tt, int r) {
+		evalNo = null;
+		qs = q;
+		pro = null;
+		team = null;
+		paperNo = pno;
+		evalDate = d;
+		total = tt;
+		resultState = r;
+	}
+	
 	/* 개별 교수님 평가서 번호 */
 	public String makePaperNo(String eNo, String tNo, String pId) {
 		return eNo+"-"+tNo+"-"+pId;
@@ -62,19 +85,19 @@ public class Evalpaper {
 		this.qs = qs;
 	}
 
-	public Professor getPro() {
+	public String getPro() {
 		return pro;
 	}
 
-	public void setPro(Professor pro) {
+	public void setPro(String pro) {
 		this.pro = pro;
 	}
 
-	public Team getTeam() {
+	public String getTeam() {
 		return team;
 	}
 
-	public void setTeam(Team team) {
+	public void setTeam(String team) {
 		this.team = team;
 	}
 
@@ -93,7 +116,7 @@ public class Evalpaper {
 	public void setTotal(int total) {
 		this.total = total;
 	}
-
+	
 	public int getResultState() {
 		return resultState;
 	}

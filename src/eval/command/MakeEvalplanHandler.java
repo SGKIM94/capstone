@@ -8,10 +8,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import eval.dao.EvalplanDao;
+import eval.model.Evalplan;
 import eval.service.MakeEvalplanService;
 import eval.service.MakeRequest;
 import jdbc.connection.ConnectionProvider;
-import member.dao.StudentDao;
+import member.dao.ProfessorDao;
+import member.model.Professor;
+import member.service.DuplicateIdException;
 import auth.service.LoginFailException;
 import auth.service.User;
 import mvc.command.CommandHandler;
@@ -42,32 +46,51 @@ public class MakeEvalplanHandler implements CommandHandler {
 
 		User user = (User)req.getSession(false).getAttribute("authUser");
 		MakeRequest makeReq = createMakeRequest(user, req);
-		writeReq.validate(errors);
+		makeReq.validate(errors);
 		
 		if (!errors.isEmpty()) {
 			return FORM_VIEW;
 		}
 		
-		String newFileNo = writeService.write(writeReq);
-		req.setAttribute("newArticleNo", newFileNo);
-		
-		ListArticleHandler listarticlehandler = new ListArticleHandler();
-		
-		String listjsp = listarticlehandler.process(req, res);
-		
-		return listjsp;
+		try {
+			makeService.Make(makeReq);
+			return "/index.jsp";
+		} catch (DuplicateIdException e) {
+			errors.put("duplicateId", Boolean.TRUE);
+			return FORM_VIEW;
+		}
 		//return "/WEB-INF/view/listTeam.jsp";
 	}
 	private MakeRequest createMakeRequest(User user, HttpServletRequest req) {
-		StudentDao studentDao = new StudentDao();
-		Student student;
+		ProfessorDao professorDao = new ProfessorDao();
+		Professor professor = new Professor();
 		try (Connection conn = ConnectionProvider.getConnection()) {
-			student = studentDao.selectById(conn, user.getId());
-			if (student == null) {
+			professor = professorDao.selectById(conn, user.getId());
+			if (professor == null) {
 				throw new LoginFailException();
 			}
 			
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
+		
+		MakeRequest makeReq = new MakeRequest();
+		
+		int proNo = (int)(req.getAttribute("proNo"));
+		String pro = "proNo";
+		String temp = null;
+		
+		makeReq.setDean(professor.getProId());
+		makeReq.setProNum((int)(req.getAttribute("proNo")));
+		for(int i = 0; i < proNo ; i++) {
+			temp = pro + ((Integer)i).toString();
+			makeReq.setPf(i, temp);
+		}
+		/*
+		makeReq.setRegDate(regDate);
+		makeReq.setEndDate(endDate);
+		*
+		*/
+		return makeReq;
+	}
 }

@@ -22,7 +22,6 @@ public class EvalplanDao {
 		   public Evalplan selectByEvalNo(Connection conn, String evalNo) throws SQLException {
 		      PreparedStatement pstmt = null;
 		      ResultSet rs = null;
-		      ProfessorDao professordao = new ProfessorDao();
 		      
 		      try {
 		         pstmt = conn.prepareStatement(
@@ -34,7 +33,7 @@ public class EvalplanDao {
 		         if (rs.next()) {
 		        	 evalplan = new Evalplan(
 		        			 pNo,
-		                  professordao.selectById(conn, rs.getString("dean")),
+		        		  rs.getString("dean"),
 		                  selectPfCount(conn, pNo),
 		                  selectTeamCount(conn, pNo),
 		                  selectByEvalNoFromEprof(conn, rs.getString("evalNo")),
@@ -141,7 +140,7 @@ public class EvalplanDao {
 			   try {
 		    	  pstmt = conn.prepareStatement("insert into eplan(planNo,dean,regDate,endDate,state) values(?,?,?,null,?)");
 		         pstmt.setString(1,  eval.getEvalNo());
-		         pstmt.setString(2,  eval.getDean().getProId());
+		         pstmt.setString(2,  eval.getDean());
 		         pstmt.setTimestamp(3, new Timestamp(eval.getRegDate().getTime()));
 		         pstmt.setTimestamp(4,  new Timestamp(eval.getEndDate().getTime()));
 		         pstmt.setInt(5,  eval.getEvalState());

@@ -4,6 +4,7 @@ package eval.model;
 import java.util.ArrayList;
 import java.util.Date;
 
+import member.dao.ProfessorDao;
 import member.model.Professor;
 
 
@@ -21,7 +22,7 @@ public class Evalplan {
 	
 	
 	private String evalNo;
-	private Professor dean;					//학과장님
+	private String dean;					//학과장님
 	private int proNum;						//평가 참여 교수 숫자
 	private int tNo;						//졸업작품 참여 팀 숫자
 	private ArrayList<String> pflist; 		//평가 참여 교수 리스트
@@ -33,7 +34,7 @@ public class Evalplan {
 	
 	public Evalplan() {
 		evalNo = null;
-		dean = new Professor();
+		dean = null;
 		proNum = DEFAULT_PRO_NO;
 		tNo = DEFAULT_TEAM_NO;
 		pflist = new ArrayList<String>();
@@ -43,7 +44,7 @@ public class Evalplan {
 		evalState = EVAL_START_YET;
 	}
 
-	public Evalplan(String e, Professor d, int pn, int tn, ArrayList<String> pl,
+	public Evalplan(String e, String d, int pn, int tn, ArrayList<String> pl,
 			ArrayList<String> tl, Date reg, Date end, int es) {
 		evalNo = e;
 		dean = d;
@@ -55,6 +56,20 @@ public class Evalplan {
 		endDate = end;
 		evalState = es;
 	}
+	
+	/* 평가 시작버튼 누르면 생성 */
+	public Evalplan(String e, String s, int pn, ArrayList<String> pl, Date reg, Date end) {		
+		evalNo = e;
+		dean = s;
+		proNum = pn;
+		tNo = 0;
+		pflist = pl;
+		tlist = null;
+		regDate = reg;
+		endDate = end;
+		evalState = EVAL_IS_ON_GOING;
+	}
+	
 	/*
 	public int getIndexEteamNo(String t) {
 		int index = 0;
@@ -91,11 +106,11 @@ public class Evalplan {
 		this.evalNo = evalNo;
 	}
 
-	public Professor getDean() {
+	public String getDean() {
 		return dean;
 	}
 
-	public void setDean(Professor dean) {
+	public void setDean(String dean) {
 		this.dean = dean;
 	}
 
