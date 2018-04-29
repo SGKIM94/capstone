@@ -12,38 +12,34 @@ import jdbc.connection.ConnectionProvider;
 import mvc.command.CommandHandler;
 import auth.service.*;
 import auth.service.Member;
-import member.command.*;
-import member.service.*;
-import member.dao.*;
-import member.model.*;
 import team.dao.*;
 import team.model.*;
 
 public class MakeTeamHandler implements CommandHandler {
 
 	private static final String FORM_VIEW = "/index.jsp";
+	
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) 
 	throws Exception {
 		if (req.getMethod().equalsIgnoreCase("GET")) {
-			return processForm(req, res);
-		} else if (req.getMethod().equalsIgnoreCase("POST")) {
 			return processSubmit(req, res);
+		} else if (req.getMethod().equalsIgnoreCase("POST")) {
+			return processForm(req, res);
 		} else {
 			res.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 			return null;
 		}
 	}
-
 	private String processForm(HttpServletRequest req, HttpServletResponse res) {
 		return FORM_VIEW;
 	}
 
 	private String processSubmit(HttpServletRequest req, HttpServletResponse res) 
 	throws Exception {
+		
 		StudentUser user = (StudentUser)req.getSession(false).getAttribute("authStdUser");		
 		Member member = createMember(user, req);
-		
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);
 		
@@ -61,7 +57,7 @@ public class MakeTeamHandler implements CommandHandler {
 		if (!errors.isEmpty()) {
 			return FORM_VIEW;
 		}
-		
+
 		try {
 			req.getSession().setAttribute("authTeam", member);
 			res.sendRedirect(req.getContextPath() + "/index.jsp");
@@ -73,6 +69,7 @@ public class MakeTeamHandler implements CommandHandler {
 	}
 	
 	private Member createMember(StudentUser stduser, HttpServletRequest req)
+	
 	{
 		TeamDao teamdao = new TeamDao();
 		Team team;

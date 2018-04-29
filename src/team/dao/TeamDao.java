@@ -83,14 +83,14 @@ public class TeamDao {
    
    public void delete(Connection conn, Team team) throws SQLException {
 	   try (PreparedStatement pstmt = conn.prepareStatement(
-			   "delect from team where teamNo = ?")) {
+			   "delete from team where teamNo = ?")) {
 		   pstmt.setString(1, team.getTeamNo());
 		   pstmt.executeUpdate();				   
 	   }
    }
    public void delete_teamNo(Connection conn, Student student) throws SQLException {
 	   try (PreparedStatement pstmt = conn.prepareStatement(
-			   "update stdent set teamNo = null where stuId = ?")){
+			   "update student set teamNo = null where stuId = ?")){
 		   pstmt.setString(1, student.getStuId());		   
 	   }
    }

@@ -30,7 +30,6 @@ public class LoginHandler implements CommandHandler {
 			return null;
 		}
 	}
-
 	private String processForm(HttpServletRequest req, HttpServletResponse res) {
 		return FORM_VIEW;
 	}
@@ -63,7 +62,12 @@ public class LoginHandler implements CommandHandler {
 			else if(Integer.parseInt(group) == Group.stunumber){
 				StudentUser studentuser = loginService.StudentLogin(id, password, parseint(group));
 				req.getSession().setAttribute("authStdUser", studentuser);
-				res.sendRedirect(req.getContextPath() + "/index.jsp");
+				if(studentuser.getTeamNo() != null) {
+					res.sendRedirect("authTeam.do");
+				}
+				else {
+					res.sendRedirect(req.getContextPath() + "/index.jsp");
+				}
 				return null;
 			}
 			else {

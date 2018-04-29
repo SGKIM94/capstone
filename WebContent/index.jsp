@@ -244,13 +244,13 @@
 </svg>
                     </div>
        <div class="profile_desc">
-                        <span class="desc">${authStdTeam.teamName}팀 ${authStdUser.name}님 반갑습니다.</span>
+                        <span class="desc">${authTeam.teamName}팀 ${authStdUser.name}님 반갑습니다.</span>
                     </div>
                 </div>
                 <div class="button_box flex-space-row">
-                    <a class="prof_btn">마이페이지</a>
-                    <a class="prof_btn" id="button" href="logout.do">로그아웃</a>
-                    <a class="prof_btn" id="button" href="deleteTeam.do">팀탈퇴</a>
+                    <a href="#"><button class="prof_btn">마이페이지</button></a>
+                	<a href="logout.do"><button class="prof_btn">로그아웃</button></a>
+                    <a href="deleteTeam.do"><button class="prof_btn">팀탈퇴</button></a>
                 </div>
             </div>
             <div class="approve_box">
@@ -394,13 +394,14 @@
 </svg>
                     </div>
        <div class="profile_desc">
-                        <span class="desc">${authStdTeam.teamName}팀 ${authStdUser.name}님 반갑습니다.</span>
+                        <span class="desc">${authStdUser.name}님 반갑습니다.</span>
                     </div>
                 </div>
                 <div class="button_box flex-space-row">
-                    <a class="prof_btn">마이페이지</a>
-                    <a class="prof_btn" id="button" href="logout.do">로그아웃</a>
-                    <a class="prof_btn" id="button" href="CreateTeam.do">팀생성</a>
+                    <a href="#"><button class="prof_btn">마이페이지</button></a>
+                	<a href="logout.do"><button class="prof_btn">로그아웃</button></a>
+                    <a href="createTeam.do"><button class="prof_btn">팀생성</button></a>
+                    <a href="selectTeam.do"><button class="prof_btn">팀참가</button></a>
                 </div>
             </div>
             <div class="approve_box">
@@ -485,7 +486,7 @@
                     </div>
                 </a>
                 <div class="btn_box flex-space-row">
-                    <a id="button" class="writing" href="teamlist.do">글쓰기</a>
+                    <a href="teamlist.do"><button class="writing">글쓰기 </button></a>
                 </div>
             </div>
         </div>

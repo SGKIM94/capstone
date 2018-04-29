@@ -13,7 +13,7 @@ public class Team {
    private Date teamJoinDate;         //팀생성일
    
    /*생성자*/
-   public Team( String teamNum, String teamName, String TeamSubject, String proId, String GroupNumber, 
+   public Team(String teamNum, String teamName, String TeamSubject, String proId, String GroupNumber, 
           boolean state,  Date teamJoinDate) {
 	  this.groupNo = GroupNumber;
 	  this.teamNo = teamNum;
