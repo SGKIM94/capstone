@@ -19,7 +19,7 @@ import article.notice.service.WriteArticleService;
 import article.notice.service.WriteRequest;
 import auth.service.User;
 import mvc.command.CommandHandler;
-import auth.service.AuthGrade;
+import auth.service.Authority;
 import auth.service.LoginFailException;
 
 public class WriteArticleHandler implements CommandHandler {
@@ -41,7 +41,7 @@ public class WriteArticleHandler implements CommandHandler {
 
    private String processForm(HttpServletRequest req, HttpServletResponse res) {
 	   User user = (User)req.getSession(false).getAttribute("authProUser");
-	   AuthGrade grade = new AuthGrade();
+	   Authority grade = new Authority();
 	   if(user.getAccess()!=grade.PRO) {
 		   throw new PermissionDeniedException();
 	   }

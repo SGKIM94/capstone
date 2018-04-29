@@ -11,6 +11,16 @@ public class Professor {
    private String proEmail;      //교수 이메일
    private Date proJoinDate;      //교수 가입일자
    
+   public Professor() {
+	      this.proId = null;
+	      this.proName = null;
+	      this.password = null;
+	      this.groupNo = 1;            //초기값 : 1
+	      this.phoneNo = null;
+	      this.proEmail = null;
+	      this.proJoinDate = null;
+	   }
+   
    public Professor(String id, String name, String password, 
          String phoneNo, String email, Date regDate) {
       this.proId = id;
