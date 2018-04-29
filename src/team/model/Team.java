@@ -12,6 +12,18 @@ public class Team {
    private String groupNo;         //요일,오전?오후반
    private Date teamJoinDate;         //팀생성일
    
+   
+   /*디폴트 생성자*/
+   public Team() {
+	  this.groupNo = null;
+	  this.teamNo = null;
+      this.teamName = null;
+      this.teamSubject = null;
+      this.advisor = null;
+      this.state = false;      
+      this.teamJoinDate = null;
+   }
+   
    /*생성자*/
    public Team(String teamNum, String teamName, String TeamSubject, String proId, String GroupNumber, 
           boolean state,  Date teamJoinDate) {
