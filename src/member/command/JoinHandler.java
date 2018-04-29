@@ -16,7 +16,7 @@ import team.teamnum;
 public class JoinHandler implements CommandHandler {
 	final private String TEAM_DEFAULT = "00000";
 	
-	private static final String FORM_VIEW = "/WEB-INF/view/new_join.jsp";
+	private static final String FORM_VIEW = "/WEB-INF/view/Join_Need.jsp";
 	private JoinService joinService = new JoinService();
 	private teamnum groupnum = new teamnum();
 	

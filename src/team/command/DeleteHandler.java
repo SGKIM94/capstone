@@ -11,8 +11,7 @@ import member.service.InvalidPasswordException;
 import member.service.MemberNotFoundException;
 import team.service.*;
 import mvc.command.CommandHandler;
-import team.teamnum;
-import team.command.*;
+
 
 
 public class DeleteHandler implements CommandHandler {	
@@ -39,14 +38,12 @@ public class DeleteHandler implements CommandHandler {
 
 	private String processSubmit(HttpServletRequest req, HttpServletResponse res)
 	throws Exception {
-		Member member = (Member)req.getSession().getAttribute("authTeam");	
-		StudentUser user = (StudentUser)req.getSession(false).getAttribute("authStdUser");
-		
+		Member member = (Member)req.getSession(false).getAttribute("authTeam");	
+
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);
 
 		String curPwd = req.getParameter("curPwd");
-		System.out.println("팀넘버입니다." + member.getTeamNo());
 		String curTeam = member.getTeamNo();
 		
 		if (curPwd == null || curPwd.isEmpty()) {
@@ -58,7 +55,6 @@ public class DeleteHandler implements CommandHandler {
 		
 		try {
 			removeTeamSvc.delete_team(curPwd, curTeam); // 현재 로그인상태의 teamNo값 불러오기
-			removeTeamSvc.delete_teamNo(user.getId());
 			return "/WEB-INF/view/DeleteTeamSuccess.jsp";
 			
 		} catch (InvalidPasswordException e) {

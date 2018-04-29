@@ -23,6 +23,12 @@ html, body{
     align-items: center;
     flex-direction: column;
 }
+.flex-space-column{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+}
 .flex-space-row{
     display: flex;
     justify-content: space-around;

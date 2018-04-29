@@ -6,17 +6,18 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import auth.service.*;
 import member.service.DuplicateIdException;
 import team.service.*;
-import team.service.MakeTeamService;
+import team.service.JoinTeamService;
 import mvc.command.CommandHandler;
 
-public class CreateHandler implements CommandHandler {
+public class JoinTeamHandler implements CommandHandler {
    
-   private static final String FORM_VIEW = "/WEB-INF/view/createTeam_new.jsp";
-   private MakeTeamService teamService = new MakeTeamService();
+   private static final String FORM_VIEW = "/WEB-INF/view/teamSearchForm.jsp";
+   private JoinTeamService jointeamService = new JoinTeamService();
 
    @Override
    public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
@@ -37,14 +38,9 @@ public class CreateHandler implements CommandHandler {
    private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws Exception {
 	  MakeTeamRequest mtReq = new MakeTeamRequest();
       StudentUser user = (StudentUser)req.getSession(false).getAttribute("authStdUser");
+      String teamNo = req.getParameter("teamNo");
+      String stuId = user.getId();
       
-      mtReq.setTeamNo(req.getParameter("teamNo"));
-      mtReq.setTeamName(req.getParameter("teamName"));
-      mtReq.setTeamSubject(req.getParameter("teamSubject"));
-      mtReq.setAdvisor(req.getParameter("advisor"));
-      mtReq.setGroupNo(req.getParameter("groupNo"));
-      
-      mtReq.SetId(user.getId()); //Student 테이블 TeamNo 값 update 하기 위함.
       
       Map<String, Boolean> errors = new HashMap<>();
       req.setAttribute("errors", errors);
@@ -57,7 +53,7 @@ public class CreateHandler implements CommandHandler {
       */
      try {
          if(mtReq.isState()==true){
-            teamService.MakeTeam(mtReq);         
+            jointeamService.JoinTeam(teamNo, stuId);         
             return "/WEB-INF/view/createTeamSuccess.jsp";
          }
          else{

@@ -19,16 +19,16 @@
 <p id="ClASS">
 	<label for="groupNo">수업반</label><br>
 	<select name="groupNo">
-		<option value=01>월요일오전</option>
-		<option value=02>월요일오후</option>
-		<option value=03>화요일오전</option>
-		<option value=04>화요일오후</option>
-		<option value=05>수요일오전</option>
-		<option value=06>수요일오후</option>
-		<option value=07>목요일오전</option>
-		<option value=08>목요일오후</option>
-		<option value=09>금요일오전</option>
-		<option value=10>금요일오후</option>
+		<option value='월요일오전'>월요일오전</option>
+		<option value='월요일오후'>월요일오후</option>
+		<option value='화요일오전'>화요일오전</option>
+		<option value='화요일오후'>화요일오후</option>
+		<option value='수요일오전'>수요일오전</option>
+		<option value='수요일오후'>수요일오후</option>
+		<option value='목요일오전'>목요일오전</option>
+		<option value='목요일오후'>목요일오후</option>
+		<option value='금요일오전'>금요일오전</option>
+		<option value='금요일오후'>금요일오후</option>
 	</select>
 <p id="TEAMNO">
    <label for="teamNo">조번호</label><br>
@@ -57,25 +57,25 @@
 <p id="TEAMSUBJECT">
    <label for="teamSubject">Subject</label><br>
    <select name="teamSubject">
-       <option value=0 selected>웹사이트</option>
-       <option value=1>임베디드</option>
-       <option value=2>소프트웨어</option>
-       <option value=3>하드웨어</option>
+       <option value='웹사이트' selected>웹사이트</option>
+       <option value='임베디트'>임베디드</option>
+       <option value='소프트웨어'>소프트웨어</option>
+       <option value='하드웨어'>하드웨어</option>
    </select>
 </p>
 <p id="ADVISOR">
    <label for="advisor">지도교수님</label><br>
    <select name="advisor">
-      <option value=0 selected>김점구</option>
-      <option value=1>정지문</option>
-      <option value=2>송은지</option>
-      <option value=3>나상엽</option>
-      <option value=4>황정희</option>
-      <option value=5>김현철</option>
-      <option value=6>김정길</option>
-      <option value=7>문송철</option>
-      <option value=8>Matthew Oakley</option>
-      <option value=9>기창진</option>
+      <option value='김점구' selected>김점구</option>
+      <option value='정지문'>정지문</option>
+      <option value='송은지'>송은지</option>
+      <option value='나상엽'>나상엽</option>
+      <option value='황정희'>황정희</option>
+      <option value='김현철'>김현철</option>
+      <option value='김정길'>김정길</option>
+      <option value='문송철'>문송철</option>
+      <option value='Oakley'>Matthew Oakley</option>
+      <option value='기창진'>기창진</option>
    </select>
 </p>
 <input type="submit" value="Create">

@@ -9,6 +9,8 @@ import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 import team.dao.*;
 import member.dao.*;
+import member.model.Professor;
+import member.service.DuplicateIdException;
 import team.model.*;
 import team.service.MakeTeamRequest;;
 
@@ -22,7 +24,11 @@ public class MakeTeamService {
       try {
          conn = ConnectionProvider.getConnection();
          conn.setAutoCommit(false);
-         
+         Team team = teamDao.selectByteam(conn, mtReq.getTeamNo());
+		 if (team != null) {
+			JdbcUtil.rollback(conn);
+			throw new DuplicateIdException();
+			}
          /*
          ArrayList<String> students = mtReq.getStuIds();
          
