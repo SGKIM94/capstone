@@ -15,6 +15,7 @@ import article.team.model.TeamArticleWriter;
 import article.team.service.WriteArticleService;
 import article.team.service.WriteRequest;
 import auth.service.LoginFailException;
+import auth.service.StudentUser;
 import auth.service.User;
 import jdbc.connection.ConnectionProvider;
 import member.model.Student;
@@ -45,7 +46,7 @@ public class WriteArticleHandler implements CommandHandler {
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);
 
-		User user = (User)req.getSession(false).getAttribute("authUser");
+		StudentUser user = (StudentUser)req.getSession(false).getAttribute("authStdUser");
 		WriteRequest writeReq = createWriteRequest(user, req);
 		writeReq.validate(errors);
 		
@@ -60,11 +61,11 @@ public class WriteArticleHandler implements CommandHandler {
 		
 		String listjsp = listarticlehandler.process(req, res);
 		
-		return listjsp;
+		return FORM_VIEW;
 		//return "/WEB-INF/view/listTeam.jsp";
 	}
 
-	private WriteRequest createWriteRequest(User user, HttpServletRequest req) {
+	private WriteRequest createWriteRequest(StudentUser user, HttpServletRequest req) {
 		StudentDao studentDao = new StudentDao();
 		Student student;
 		try (Connection conn = ConnectionProvider.getConnection()) {

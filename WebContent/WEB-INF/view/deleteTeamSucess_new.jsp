@@ -8,7 +8,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="./css/join/join.css">
-    <title>Join Team</title>
+    <title>Delete Team</title>
 </head>
 <body class="flex-center-row">
 <div class="center_box">
@@ -16,7 +16,7 @@
         <span class="_title">Management System</span>
     </div>
     <div class="join_box">
-        <span class="delete_h2">회원가입하였습니다. 로그인해주세요.</span><br>
+        <span class="delete_h2">팀을 삭제했습니다. <br>재로그인해주세요</span><br>
     </div>
     <%
     	session.invalidate();

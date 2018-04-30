@@ -27,15 +27,24 @@ public class TeamDao {
          pstmt.setString(1, teamNo);
          rs = pstmt.executeQuery();
          Team team = null;
+         
          if (rs.next()) {
+        	 boolean tstate = true;
+             if(rs.getString("state").equals("1"))
+            	 tstate = true;
+             else if(rs.getString("state").equals("0"))
+            	 tstate = false;
             team = new Team(
             	  rs.getString("teamNo"),         //이거 db int -> str 수정해야함 
                   rs.getString("teamName"), 
                   rs.getString("teamSubject"),
                   rs.getString("advisor"),
                   rs.getString("groupNo"),
-            	  Boolean.parseBoolean(rs.getString("state")),                           
+            	  tstate,                           
                   toDate(rs.getTimestamp("TeamJoinDate")));      //db 이름을 teamRegDate로 바꿧으면함.
+            	  
+            	System.out.println("teamDao에서의 state= " + rs.getString("state"));
+            	
        }
          return team;
       } finally {
@@ -52,12 +61,12 @@ public class TeamDao {
    Calendar currentCalendar = Calendar.getInstance();
    String strYear = Integer.toString(currentCalendar.get(Calendar.YEAR));
  
-   public void insert(Connection conn, Team team, String stu_Id) throws SQLException {
+   public void insert(Connection conn, Team team, String stu_Id, int s_groupNo) throws SQLException {
       try (PreparedStatement pstmt = 
             conn.prepareStatement("insert into team(teamNo,teamName,teamSubject"
             		+ ",advisor,groupNo,state,TeamJoinDate) values(?,?,?,?,?,?,?)")) {
     	   
-    	 strYear = strYear.substring(2);
+    	 strYear = strYear.substring(2,4);
     	 String tNo = (strYear + "_" + team.getTeamNo() + "_" + team.getGroupNo()); //팀 고유 번호 구하는 방식(생성연도 + 팀조번호 + 반)       
     	 pstmt.setString(1,  tNo);
          pstmt.setString(2,  team.getTeamName());
@@ -68,15 +77,15 @@ public class TeamDao {
          pstmt.setTimestamp(7, new Timestamp(team.getTeamJoinDate().getTime()));
          pstmt.executeUpdate();
          
-         studentDao.update_tNo(conn, tNo, stu_Id);
+         studentDao.update_tNo(conn, tNo, stu_Id, s_groupNo);
       }
    }
    /* 정보 변경 메소드 */
-   public void update(Connection conn, Student member) throws SQLException {
+   public void update_team(Connection conn, String stuId, String teamNo) throws SQLException {
       try (PreparedStatement pstmt = conn.prepareStatement(
-            "update student set team = ? where stuId = ?")) {
-          pstmt.setString(1, member.getTeamNo());
-    	  pstmt.setString(2, member.getStuId());
+            "update student set teamNo = ? where stuId = ?")) {
+          pstmt.setString(1, teamNo);
+    	  pstmt.setString(2, stuId);
           pstmt.executeUpdate();
       }
    }

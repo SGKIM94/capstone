@@ -1,24 +1,26 @@
-package auth.service;
+package article.team.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import auth.service.LoginFailException;
 
 import jdbc.connection.ConnectionProvider;
-import team.model.*;
 import team.dao.*;
+import team.model.*;
 
-public class MakeTeamService {
+
+public class ListTeamService {
+
+private TeamDao teamDao = new TeamDao();
 	
-	private TeamDao teamDao = new TeamDao();
-	
-	public Member MakeTeam(String teamNo, boolean state, String teamName, String groupNo) {
+	public Team searchTeam(String teamNo) {
 		try (Connection conn = ConnectionProvider.getConnection()) {
 			if(teamNo != null) {	
-				Team team = teamDao.selectByteam(conn, teamNo);
+			Team team = teamDao.selectByteam(conn, teamNo);
 			if (team == null) {
 				throw new LoginFailException();
-			}
-				return new Member(team.getTeamNo(), team.isState(), team.getTeamName(), team.getGroupNo());
+			}			
+			return team;
 			}else {
 				return null;
 			}						

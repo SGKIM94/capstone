@@ -104,12 +104,12 @@
                     </svg>
                 </div>                
                 <div class="profile_desc">
-                    <span class="desc">{authProUser.name}교수님 반갑습니다.</span>
+                    <span class="desc">${authProUser.name}교수님 반갑습니다.</span>
                 </div>
             </div>
             <div class="button_box flex-space-row">
-                <a class="prof_btn">마이페이지</a>
-                <a class="prof_btn" id="button" href="logout.do">로그아웃</a>
+                <a><button class="prof_btn">마이페이지</button></a>
+                <a href="logout.do"><button class="prof_btn">로그아웃</button></a>
             </div>
         </div>
         <div class="approve_box">
@@ -136,40 +136,71 @@
     </div>
     <div class="main_box">
         <span class="title_sub">팀 목록</span>
-        <div class="list_box flex-center-row">
-            <select class="custom-select">
-                <option value="0">수요일오전</option>
-                <option value="1">수요일오후</option>
-                <option value="2">목요일오후</option>
-                <option value="3">목요일오후</option>
+    <form action="listTeam.do" method="post">
+            <select class="custom-select-small" name="groupNo">
+                <option value=01>월요일오전</option>
+				<option value=02>월요일오후</option>
+				<option value=03>화요일오전</option>
+				<option value=04>화요일오후</option>
+				<option value=05>수요일오전</option>
+				<option value=06>수요일오후</option>
+				<option value=07>목요일오전</option>
+				<option value=08>목요일오후</option>
+				<option value=09>금요일오전</option>
+				<option value=10>금요일오후</option>
             </select>
-        </div>
+            <select class="custom-select-small" name="teamNo">
+             	<option value=01>1조</option>
+      	 	 	<option value=02>2조</option>
+     		 	<option value=03>3조</option>
+     		 	<option value=04>4조</option>
+      		 	<option value=05>5조</option>
+      		 	<option value=06>6조</option>
+      	 	 	<option value=07>7조</option>
+      		 	<option value=08>8조</option>
+      		 	<option value=09>9조</option>
+      		 	<option value=10>10조</option>
+      		 	<option value=11>11조</option>
+      		 	<option value=12>12조</option>
+            </select>
+            <select class="custom-select-small" name="date">
+                <option value=2018>2018</option>
+				<option value=2019>2019</option>
+				<option value=2020>2020</option>				
+            </select><select class="custom-select-small" name="date">
+            	<option value=00>전체보기</option>
+                <option value=01>회의록</option>
+				<option value=02>제안서</option>
+				<option value=03>요구분석서</option>
+				<option value=04>설계서</option>
+				<option value=05>구현서</option>
+				<option value=06>형상관리서</option>
+				<option value=07>메뉴얼</option>
+				<option value=08>최종보고서</option>				
+            </select>
+            <br><br><br><br><br>
+        <button type="submit" id="search">Search</button>
+    </form>
+    <form action="listTeamFile.do" method="post" name="findFile">
+    	<input type="hidden" name="team_no" value="${listTno}">    
+        <a href='teamlist.do' >${main_tName}</a>
+    </form>         
         <div class="team_list_box flex-space-row">
-            <div class="team_left_box">
-                <ul class="team">
-                    <li class="board_list"><a href="#"><span class="num">01</span>김희철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">02</span>김철희</a></li>
-                    <li class="board_list"><a href="#"><span class="num">03</span>기미철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">04</span>철희김</a></li>
-                    <li class="board_list"><a href="#"><span class="num">05</span>희철킴</a></li>
-                    <li class="board_list"><a href="#"><span class="num">06</span>김호철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">07</span>김철철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">08</span>철철철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">09</span>곰희철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">10</span>금희철</a></li>
-                </ul>
-            </div>
+               
             <div class="team_right_box">
-                <div class="team_info_box">
-                    <div class="_team-title">
-                        김희철
-                    </div>
-                    <div class="_team-desc">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of tpe and scrambled it to make a type specimen book.
-                    </div>
-                    <div class="_download">
-                        <a href="#">팀 자료 통합 다운로드</a>
-                    </div>
+                <c:if test="${articlePage.hasNoArticles()}">
+                	<p>게시글이 없습니다.</p>
+                </c:if>
+                <c:forEach var="article" items="${articlePage.content}">
+                	<a href="teamread.do?fileNo=${article.fileNo}&pageNo=${articlePage.currentPage}">
+                	<c:out value="${article.title}"/>
+                	</a>
+                	<p>${article.fileNo}</p>
+                	<p>${article.writer.writerId}</p>
+					<p>${article.downCount}</p>
+				</c:forEach>
+                <div class="btn_box flex-center-row">
+                    <a href="teamwrite.do"><button class="eval_btn">게시글쓰기</button></a>
                 </div>
                 <div class="btn_box flex-center-row">
                     <button class="eval_btn">평가하기</button>
@@ -188,6 +219,7 @@
             </a>
         </div>        
     </div>
+
 </div>
 </body>
 </u:professor>
@@ -202,6 +234,18 @@
     <title>Student</title>
 </head>
 <body class="flex-center-row">
+	<div class="toggle_box flex-space-column">
+        <a href="deleteTeam.do">
+            <button class="toggle_btn">
+                	팀삭제
+            </button>
+        </a>
+        <a href="deleteJoinTeam.do">
+            <button class="toggle_btn">
+                	팀탈퇴
+            </button>
+        </a>
+    </div>
     <div class="center_box flex-center-row">
         <div class="side_box">
             <div class="info_box flex-center-column">
@@ -244,15 +288,12 @@
 </svg>
                     </div>
        <div class="profile_desc">
-
-                        <span class="desc">${authTeam.teamName}팀 ${authStdUser.name}님 반갑습니다.</span>
-
+                        <span class="desc">${authTeam.teamName}팀  ${authStdUser.name}님</span>
                     </div>
                 </div>
                 <div class="button_box flex-space-row">
                     <a href="#"><button class="prof_btn">마이페이지</button></a>
                 	<a href="logout.do"><button class="prof_btn">로그아웃</button></a>
-                    <a href="deleteTeam.do"><button class="prof_btn">팀탈퇴</button></a>
                 </div>
             </div>
             <div class="approve_box">
@@ -354,6 +395,18 @@
     <title>Student</title>
 </head>
 <body class="flex-center-row">
+	<div class="toggle_box flex-space-column">
+        <a href="createTeam.do">
+            <button class="toggle_btn">
+                	팀생성
+            </button>
+        </a>
+        <a href="selectTeam.do"><button class="toggle_btn">
+            	팀참가
+        </button>
+        </a>
+      
+    </div>
     <div class="center_box flex-center-row">
         <div class="side_box">
             <div class="info_box flex-center-column">
@@ -396,16 +449,12 @@
 </svg>
                     </div>
        <div class="profile_desc">
-
                         <span class="desc">${authStdUser.name}님 반갑습니다.</span>
-
                     </div>
                 </div>
                 <div class="button_box flex-space-row">
                     <a href="#"><button class="prof_btn">마이페이지</button></a>
                 	<a href="logout.do"><button class="prof_btn">로그아웃</button></a>
-                    <a href="createTeam.do"><button class="prof_btn">팀생성</button></a>
-                    <a href="selectTeam.do"><button class="prof_btn">팀참가</button></a>
                 </div>
             </div>
             <div class="approve_box">
