@@ -15,7 +15,6 @@
 <body class="flex-center-row">
 	<div class="center_box flex-center-column">	
     <form action="login.do" method="post">
-    
         <div class="title_box">
             <span class="_title">Management System</span>
         </div>
@@ -104,7 +103,7 @@
                     </svg>
                 </div>                
                 <div class="profile_desc">
-                    <span class="desc">{authProUser.name}교수님 반갑습니다.</span>
+                    <span class="desc">${authProUser.name}교수님 반갑습니다.</span>
                 </div>
             </div>
             <div class="button_box flex-space-row">
@@ -122,16 +121,30 @@
         <div class="notice_box">
             <span class="title_sub">공지사항</span>
             <ul class="lists">
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
+               <c:forEach var="article" items="${articlePage.content}">
+                <li><span class="txt"><a href="noticeread.do?postNo=${article.postNo}&pageNo=${articlePage.currentPage}"><c:out value="${article.title}"/></a></span></li>
+                </c:forEach>
             </ul>
+            <c:if test="${articlePage.hasArticles()}">
+   <tr>
+      <td colspan="4">
+         <c:if test="${articlePage.startPage > 5}">
+         <a href="noticelist.do?pageNo=${articlePage.startPage - 5}">[이전]</a>
+         </c:if>
+         <c:forEach var="pNo" 
+                  begin="${articlePage.startPage}" 
+                  end="${articlePage.endPage}">
+         <a href="noticelist.do?pageNo=${pNo}">[${pNo}]</a>
+         </c:forEach>
+         <c:if test="${articlePage.endPage < articlePage.totalPages}">
+         <a href="noticelist.do?pageNo=${articlePage.startPage + 5}">[다음]</a>
+         </c:if>
+      </td>
+   </tr>
+</c:if>
+            <div class="btn_box flex-center-row">
+                    <button class="eval_btn" onclick="location.href='newNoticeForm.jsp'">공지사항 업로드</button>
+            </div>
         </div>
     </div>
     <div class="main_box">
@@ -264,17 +277,28 @@
             </div>
             <div class="notice_box">
                 <span class="title_sub">공지사항</span>
-                <ul class="lists">
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                </ul>
+               <ul class="lists">
+               <c:forEach var="article" items="${articlePage.content}">
+                <li><span class="txt"><a href="noticeread.do?postNo=${article.postNo}&pageNo=${articlePage.currentPage}"><c:out value="${article.title}"/></a></span></li>
+                </c:forEach>
+            </ul>
+            <c:if test="${articlePage.hasArticles()}">
+   <tr>
+      <td colspan="4">
+         <c:if test="${articlePage.startPage > 5}">
+         <a href="noticelist.do?pageNo=${articlePage.startPage - 5}">[이전]</a>
+         </c:if>
+         <c:forEach var="pNo" 
+                  begin="${articlePage.startPage}" 
+                  end="${articlePage.endPage}">
+         <a href="noticelist.do?pageNo=${pNo}">[${pNo}]</a>
+         </c:forEach>
+         <c:if test="${articlePage.endPage < articlePage.totalPages}">
+         <a href="noticelist.do?pageNo=${articlePage.startPage + 5}">[다음]</a>
+         </c:if>
+      </td>
+   </tr>
+</c:if>
             </div>
         </div>
         <div class="main_box">
@@ -418,16 +442,27 @@
             <div class="notice_box">
                 <span class="title_sub">공지사항</span>
                 <ul class="lists">
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                </ul>
+               <c:forEach var="article" items="${articlePage.content}">
+                <li><span class="txt"><a href="noticeread.do?postNo=${article.postNo}&pageNo=${articlePage.currentPage}"><c:out value="${article.title}"/></a></span></li>
+                </c:forEach>
+            </ul>
+            <c:if test="${articlePage.hasArticles()}">
+   <tr>
+      <td colspan="4">
+         <c:if test="${articlePage.startPage > 5}">
+         <a href="noticelist.do?pageNo=${articlePage.startPage - 5}">[이전]</a>
+         </c:if>
+         <c:forEach var="pNo" 
+                  begin="${articlePage.startPage}" 
+                  end="${articlePage.endPage}">
+         <a href="noticelist.do?pageNo=${pNo}">[${pNo}]</a>
+         </c:forEach>
+         <c:if test="${articlePage.endPage < articlePage.totalPages}">
+         <a href="noticelist.do?pageNo=${articlePage.startPage + 5}">[다음]</a>
+         </c:if>
+      </td>
+   </tr>
+</c:if>
             </div>
         </div>
         <div class="main_box">
@@ -490,7 +525,7 @@
                     </div>
                 </a>
                 <div class="btn_box flex-space-row">
-                    <a href="teamlist.do"><button class="writing">글쓰기 </button></a>
+                    <a href="teamlist.do"><button class="writing" >글쓰기 </button></a>
                 </div>
             </div>
         </div>
