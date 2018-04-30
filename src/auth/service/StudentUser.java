@@ -14,6 +14,14 @@ public class StudentUser {
 		this.access = access;
 
 	}
+	
+	public StudentUser() {
+		this.id = null;
+		this.name = null;
+		this.teamNo = null;
+		this.access = Authority.getDefault();
+
+	}	
 
 	public String getId() {
 		return id;
