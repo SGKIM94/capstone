@@ -1,6 +1,5 @@
 package team.command;
 
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +42,7 @@ public class CreateHandler implements CommandHandler {
       mtReq.setTeamSubject(req.getParameter("teamSubject"));
       mtReq.setAdvisor(req.getParameter("advisor"));
       mtReq.setGroupNo(req.getParameter("groupNo"));
-      
+     
       mtReq.SetId(user.getId()); //Student 테이블 TeamNo 값 update 하기 위함.
       
       Map<String, Boolean> errors = new HashMap<>();
@@ -56,12 +55,13 @@ public class CreateHandler implements CommandHandler {
       }
       */
      try {
-         if(mtReq.isState()==true){
+         if(teamService.searchTeam(mtReq) == true){
+        	 mtReq.setS_groupNo(3);
             teamService.MakeTeam(mtReq);         
             return "/WEB-INF/view/createTeamSuccess.jsp";
          }
          else{
-            errors.put("Commit first!!", Boolean.TRUE);
+            errors.put("ExistTeam", Boolean.TRUE);
             return FORM_VIEW;
          }
       } catch (DuplicateIdException e) {

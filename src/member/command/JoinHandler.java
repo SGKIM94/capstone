@@ -61,11 +61,11 @@ public class JoinHandler implements CommandHandler {
 		try {
 			if(joinReq.getGroupNo()==groupnum.pronumber){
 				joinService.join_pro(joinReq);	
-				return "/index.jsp";
+				return "/WEB-INF/view/joinSuccess.jsp";
 			}
 			else if(joinReq.getGroupNo()==groupnum.stunumber){
 				joinService.join_stu(joinReq);
-				return "/index.jsp";
+				return "/WEB-INF/view/joinSuccess.jsp";
 			}
 			else{
 				errors.put("choose group!!", Boolean.TRUE);

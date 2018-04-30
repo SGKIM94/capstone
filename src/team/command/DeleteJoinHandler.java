@@ -14,9 +14,9 @@ import mvc.command.CommandHandler;
 
 
 
-public class DeleteHandler implements CommandHandler {	
-	private static final String FORM_VIEW = "/WEB-INF/view/deleteTeamForm.jsp";
-	private RemoveTeamService removeTeamSvc = new RemoveTeamService();
+public class DeleteJoinHandler implements CommandHandler {	
+	private static final String FORM_VIEW = "/WEB-INF/view/deleteJoinTeamForm.jsp";
+	private RemoveJoinService removeJoinSvc = new RemoveJoinService();
 	
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) 
@@ -40,12 +40,11 @@ public class DeleteHandler implements CommandHandler {
 	throws Exception {
 		Member member = (Member)req.getSession(false).getAttribute("authTeam");	
 		StudentUser user = (StudentUser)req.getSession(false).getAttribute("authStdUser");
-		
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);
 
 		String curPwd = req.getParameter("curPwd");
-		String curTeam = member.getTeamNo();
+		String stuId = user.getId();
 		int accessNo = user.getAccess();
 		
 		if (curPwd == null || curPwd.isEmpty()) {
@@ -56,12 +55,12 @@ public class DeleteHandler implements CommandHandler {
 		}
 		
 		try {
-			if(accessNo == 3) {
-				removeTeamSvc.delete_team(curPwd, curTeam); // 현재 로그인상태의 teamNo값 불러오기
+			if(accessNo == 2) {
+				removeJoinSvc.delete_teamNo(stuId); // 현재 로그인상태의 teamNo값 불러오기
 				return "/WEB-INF/view/DeleteTeamSuccess.jsp";
 			}
 			else {
-				errors.put("NotAccessDelete", Boolean.TRUE);
+				errors.put("NotAccessCommand", Boolean.TRUE);
 				return FORM_VIEW;
 			}
 		} catch (InvalidPasswordException e) {

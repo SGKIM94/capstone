@@ -57,7 +57,7 @@ public class MakeTeamHandler implements CommandHandler {
 		if (!errors.isEmpty()) {
 			return FORM_VIEW;
 		}
-
+		System.out.println("MakeTeamHandler에서의 상태값 = " + member.getState());
 		try {
 			req.getSession().setAttribute("authTeam", member);
 			res.sendRedirect(req.getContextPath() + "/index.jsp");
@@ -69,7 +69,6 @@ public class MakeTeamHandler implements CommandHandler {
 	}
 	
 	private Member createMember(StudentUser stduser, HttpServletRequest req)
-	
 	{
 		TeamDao teamdao = new TeamDao();
 		Team team;

@@ -38,7 +38,7 @@ public class JoinTeamHandler implements CommandHandler {
    private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws Exception {
 	  MakeTeamRequest mtReq = new MakeTeamRequest();
       StudentUser user = (StudentUser)req.getSession(false).getAttribute("authStdUser");
-      String teamNo = req.getParameter("teamNo");
+      String teamNo = req.getParameter("team_no");
       String stuId = user.getId();
       
       
@@ -52,12 +52,12 @@ public class JoinTeamHandler implements CommandHandler {
       }
       */
      try {
-         if(mtReq.isState()==true){
+         if(jointeamService.searchTeam(teamNo) == true){
             jointeamService.JoinTeam(teamNo, stuId);         
             return "/WEB-INF/view/createTeamSuccess.jsp";
          }
          else{
-            errors.put("Commit first!!", Boolean.TRUE);
+            errors.put("NotExistTeams", Boolean.TRUE);
             return FORM_VIEW;
          }
       } catch (DuplicateIdException e) {

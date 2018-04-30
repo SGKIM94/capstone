@@ -54,9 +54,9 @@ public class LoginHandler implements CommandHandler {
 		
 		try {
 			if(Integer.parseInt(group) == Group.pronumber) {
-				User user = loginService.ProfessorLogin(id, password, parseint(group));
-				req.getSession().setAttribute("authProUser", user);
-				res.sendRedirect("noticelist.do");
+				User prouser = loginService.ProfessorLogin(id, password, parseint(group));
+				req.getSession().setAttribute("authProUser", prouser);
+				res.sendRedirect(req.getContextPath() + "/index.jsp");
 				return null;
 			}
 			else if(Integer.parseInt(group) == Group.stunumber){

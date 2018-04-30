@@ -19,16 +19,16 @@
     <div class="sign_box">
         <div class="list_box flex-center-row">
             <select class="custom-select" name="groupNo">
-                <option value=0>월요일오전</option>
-				<option value=1>월요일오후</option>
-				<option value=2>화요일오전</option>
-				<option value=3>화요일오후</option>
-				<option value=4>수요일오전</option>
-				<option value=5>수요일오후</option>
-				<option value=6>목요일오전</option>
-				<option value=7>목요일오후</option>
-				<option value=8>금요일오전</option>
-				<option value=9>금요일오후</option>
+                <option value=01>월요일오전</option>
+				<option value=02>월요일오후</option>
+				<option value=03>화요일오전</option>
+				<option value=04>화요일오후</option>
+				<option value=05>수요일오전</option>
+				<option value=06>수요일오후</option>
+				<option value=07>목요일오전</option>
+				<option value=08>목요일오후</option>
+				<option value=09>금요일오전</option>
+				<option value=10>금요일오후</option>
             </select>
         </div>
     </div>
@@ -56,7 +56,7 @@
     <div class="list_box flex-center-row">
             <input type="text" name="teamName" value="${param.teamName}" maxlength="8" placeholder="팀이름 입력">
             <c:if test="${errors.teamName}">팀이름를 입력하세요.</c:if>
-			<c:if test="${errors.duplicateId}">이미 사용중인 팀이름입니다.</c:if>
+			<c:if test="${errors.ExistTeam}">이미 사용중인 팀이름입니다.</c:if>
         </div>
     </div>
     <div class="sign_box">

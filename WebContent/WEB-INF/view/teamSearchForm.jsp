@@ -9,10 +9,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="./css/join/join.css">
     <title>Join Team</title>
+   
 </head>
 <body class="flex-center-row">
 <div class="center_box">
+
 <form action="selectTeam.do" method="post">
+<%-- <script>
+	function join(){
+		var tno = <%=session.getAttribute("tno")%>;
+		document.joinForm.joinTeam.value = tno;
+		document.joinForm.submit();
+	}
+</script>--%>
     <div class="title_box">
         <span class="_title">Management System</span>
     </div>
@@ -50,20 +59,30 @@
             </select>
         </div>
     </div>
-    	팀 이름 : <%= session.getAttribute("tName") %><br>
-    	지도 교수님 : <%= session.getAttribute("advisor") %>
-    <div class="button_box flex-center-column">
-        <button type="submit">Search</button>    
+    <div class="sign_box">
+        <div class="list_box flex-center-row">
+            <select class="custom-select" name="date">
+                <option value=2018>2018</option>
+				<option value=2019>2019</option>
+				<option value=2020>2020</option>				
+            </select>
+        </div>
     </div>
-    </form>
-    <form action="joinTeam.do" method="post">
+    	팀이름 : ${tName}<br>
+    	지도교수님 : ${advisor}<br>
+    	
     	<div class="button_box flex-center-column">
-        	<button type="submit">Join Team</button>    
+        	<button type="submit" id="search">Search</button> 
+        	<c:if test="${errors.NotTeam1}">팀이 존재하지 않습니다.</c:if>  
+    	</div>
+</form>
+    <form action="joinTeam.do" method="post" name="joinForm">
+    	<div class="button_box flex-center-column">
+    	<input type="hidden" name="team_no" value="${tno}">
+        	<button type="submit">Join Team</button>   
+        	<c:if test="${errors.NotExistTeams}">팀을 참가할 수 없습니다.</c:if>
     	</div>
     </form>
 </div>
-
-
-
 </body>
 </html>

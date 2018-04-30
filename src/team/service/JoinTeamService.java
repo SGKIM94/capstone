@@ -20,18 +20,7 @@ public class JoinTeamService {
       try {
          conn = ConnectionProvider.getConnection();
          conn.setAutoCommit(false);
-         Team team = teamDao.selectByteam(conn, teamNo);
-         
-         teamDao.insert(conn, 
-               new Team(
-            		 team.getTeamNo(), 
-                     team.getTeamName(), 
-                     team.getTeamSubject(),
-                     team.getAdvisor(),                     
-                     team.getGroupNo(),
-                     team.isState(),
-                     new Date())
-               , stuId);
+         teamDao.update_team(conn, stuId, teamNo);
          conn.commit();
       } catch (SQLException e) {
          JdbcUtil.rollback(conn);
@@ -39,5 +28,25 @@ public class JoinTeamService {
       } finally {
          JdbcUtil.close(conn);
       }
+   }
+   
+   public boolean searchTeam(String teamNo) {
+	   Connection conn = null;
+	      try {
+	         conn = ConnectionProvider.getConnection();
+	         conn.setAutoCommit(false);
+	         Team team = teamDao.selectByteam(conn, teamNo);
+			 if (team == null) {				
+				JdbcUtil.rollback(conn);
+				return false;
+			 }else {
+					return true;
+				}	         
+	      } catch (SQLException e) {
+	          JdbcUtil.rollback(conn);
+	          throw new RuntimeException(e);
+	      } finally {
+	          JdbcUtil.close(conn);
+	      }
    }
 }
