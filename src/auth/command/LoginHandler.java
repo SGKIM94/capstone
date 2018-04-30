@@ -51,18 +51,23 @@ public class LoginHandler implements CommandHandler {
 		if (!errors.isEmpty()) {
 			return FORM_VIEW;
 		}
-		
+
 		try {
 			if(Integer.parseInt(group) == Group.pronumber) {
 				User user = loginService.ProfessorLogin(id, password, parseint(group));
 				req.getSession().setAttribute("authProUser", user);
-				res.sendRedirect("noticelist.do");
+				res.sendRedirect(req.getContextPath() + "/index.jsp");
 				return null;
 			}
 			else if(Integer.parseInt(group) == Group.stunumber){
 				StudentUser studentuser = loginService.StudentLogin(id, password, parseint(group));
 				req.getSession().setAttribute("authStdUser", studentuser);
-				res.sendRedirect("noticelist.do");
+				if(studentuser.getTeamNo() != null) {
+					res.sendRedirect("authTeam.do");
+				}
+				else {
+					res.sendRedirect(req.getContextPath() + "/index.jsp");
+				}
 				return null;
 			}
 			else {
