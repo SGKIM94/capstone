@@ -23,7 +23,7 @@ import auth.service.Authority;
 import auth.service.LoginFailException;
 
 public class WriteArticleHandler implements CommandHandler {
-   private static final String FORM_VIEW = "newNoticeForm.jsp";
+   private static final String FORM_VIEW = "/WEB-INF/view/newNoticeForm.jsp";
    private WriteArticleService writeService = new WriteArticleService();
    private static final Integer defaut_PostId = 0;
    
@@ -41,9 +41,8 @@ public class WriteArticleHandler implements CommandHandler {
 
    private String processForm(HttpServletRequest req, HttpServletResponse res) {
 	   User user = (User)req.getSession(false).getAttribute("authProUser");
-	   if(user.getAccess()!=Authority.getProDean() && 
-			   user.getAccess()!=Authority.getProEval() &&
-			   		user.getAccess()!=Authority.getProNotEval()) {
+	   Authority grade = new Authority();
+	   if(user.getAccess()!=grade.PRO) {
 		   throw new PermissionDeniedException();
 	   }
 	   return FORM_VIEW;
@@ -74,7 +73,7 @@ public class WriteArticleHandler implements CommandHandler {
    
    private WriteRequest createWriteRequest(User user, HttpServletRequest req) {
 	   ProfessorDao ProfessorDao = new ProfessorDao();
-       Professor professor = null;
+       Professor professor;
        try (Connection conn = ConnectionProvider.getConnection()) {
     	   professor = ProfessorDao.selectById(conn, user.getId());
            if (professor == null) {
@@ -86,7 +85,7 @@ public class WriteArticleHandler implements CommandHandler {
        MultipartRequest multi = null;
        int sizeLimit = 10 * 1024 * 1024 ; // 10메가입니다.
 
-       String savePath = req.getSession().getServletContext().getRealPath("/upload/notice");    // 파일이 업로드될 실제 tomcat 폴더의 WebContent 기준
+       String savePath = req.getSession().getServletContext().getRealPath("/upload");    // 파일이 업로드될 실제 tomcat 폴더의 WebContent 기준
 
        try{
     	   multi=new MultipartRequest(req, savePath, sizeLimit, "euc-kr", new DefaultFileRenamePolicy()); 
@@ -106,7 +105,4 @@ public class WriteArticleHandler implements CommandHandler {
           multi.getContentType("file")
        );
    }
-   
-   
-   
 }

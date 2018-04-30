@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.io.File;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -82,9 +81,7 @@ public class WriteArticleHandler implements CommandHandler {
 		int sizeLimit = 10 * 1024 * 1024 ; // 10메가입니다.
 
 		String savePath = req.getSession().getServletContext().getRealPath("/upload");    // 파일이 업로드될 실제 tomcat 폴더의 WebContent 기준
-		
-		savePath = makeDirectory(savePath, student.getTeamNo());
-	
+
 		try{
 		multi=new MultipartRequest(req, savePath, sizeLimit, "euc-kr", new DefaultFileRenamePolicy()); 
 		}catch (Exception e) {
@@ -101,20 +98,5 @@ public class WriteArticleHandler implements CommandHandler {
 				multi.getFile("file").length(),
 				multi.getContentType("file"),
 				multi.getParameter("filetype"));
-	}
-	/* 팀폴더 생성 함수 */
-	public String makeDirectory(String path, String teamNo) {
-		String savePath = path + "/" + teamNo;
-		File file = new File(path);
-        //upload 폴더가 있는지 점검하는 것 -> 필요한지는 모르겠음
-		/*
-		if(!file.mkdirs()) {
-        	return savePath;
-        }*/
-        file = new File(savePath);
-        if(!file.mkdirs()){
-        	return savePath;
-        }
-		return savePath;
 	}
 }
