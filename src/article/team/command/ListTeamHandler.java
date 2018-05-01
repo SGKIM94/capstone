@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import article.team.service.ListTeamService;
 import member.service.DuplicateIdException;
 import team.model.Team;
 import team.service.*;
@@ -12,12 +13,14 @@ import mvc.command.CommandHandler;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ListTeamHandler implements CommandHandler {
    
    private static final String FORM_VIEW = "/index.jsp";
-   private SelectTeamService searchService = new SelectTeamService();
+   private ListTeamService searchService = new ListTeamService();
      
    @Override
    public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
@@ -43,29 +46,34 @@ public class ListTeamHandler implements CommandHandler {
       String teamNo;
       String teamName;
       String date;
-      String error = "존재하지 않습니다.";
+      String filetype;
       
       teamNo = req.getParameter("teamNo");
       groupNo = req.getParameter("groupNo");
       date = req.getParameter("date");
-      
+      filetype = req.getParameter("filetype");
       String subYear = date.substring(2,4);
       String tNo = (subYear + "_" + teamNo + "_" + groupNo);
       
-      Team team = searchService.searchTeam(tNo);
-      teamName = team.getTeamName();
+      Map<String, Boolean> errors = new HashMap<>();
+      req.setAttribute("errors", errors);
       
-     try {
-         if(team!=null){        	
+      
+      try {
+         if(searchService.searchTeam(tNo) == true){        	
+        	Team team = searchService.selectTeam(tNo);        	
+        	teamName = team.getTeamName();
         	session.setAttribute("main_tName", teamName);
+        	session.setAttribute("listTno", tNo);
+        	session.setAttribute("fileType", filetype);
             return FORM_VIEW;
          }
          else {
-        	 req.setAttribute("error", error);
-        	 return null;		// 에러처리 다시해야됌
+        	 errors.put("listTeamNotExist", Boolean.TRUE);
+        	 return FORM_VIEW;		// 에러처리 다시해야됌
          }
       } catch (DuplicateIdException e) {
-    	 req.setAttribute("error", error);
+    	 req.setAttribute("error", errors);
          return null;
       }
    }

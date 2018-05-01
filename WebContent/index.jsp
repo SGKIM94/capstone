@@ -180,32 +180,34 @@
                 <option value=2018>2018</option>
 				<option value=2019>2019</option>
 				<option value=2020>2020</option>				
-            </select><select class="custom-select-small" name="date">
+            </select>
+            <select class="custom-select-small" name="filetype">
             	<option value=00>전체보기</option>
-                <option value=01>회의록</option>
-				<option value=02>제안서</option>
-				<option value=03>요구분석서</option>
-				<option value=04>설계서</option>
-				<option value=05>구현서</option>
-				<option value=06>형상관리서</option>
-				<option value=07>메뉴얼</option>
-				<option value=08>최종보고서</option>				
+                <option value=a>회의록</option>
+				<option value=b>제안서</option>
+				<option value=c>요구분석서</option>
+				<option value=d>설계서</option>
+				<option value=e>구현서</option>
+				<option value=f>형상관리서</option>
+				<option value=g>메뉴얼</option>
+				<option value=h>최종보고서</option>				
             </select>
             <br><br><br><br><br>
-        <button type="submit" id="search">Search</button>
+        <button type="submit" id="search">Search</button>  
     </form>
+    	<a href='teamlist.do'>${main_tName}</a>
+        <c:if test="${errors.listTeamNotExist}">팀이 존재하지 않습니다.</c:if>
     <form action="listTeamFile.do" method="post" name="findFile">
     	<input type="hidden" name="team_no" value="${listTno}">    
-        <a href='teamlist.do' >${main_tName}</a>
-    </form>         
-        <div class="team_list_box flex-space-row">
-               
+    </form>    
+    	     
+        <div class="team_list_box flex-space-row">               
             <div class="team_right_box">
-                <c:if test="${articlePage.hasNoArticles()}">
+                <c:if test="${articleTeamPage.hasNoArticles()}">
                 	<p>게시글이 없습니다.</p>
                 </c:if>
-                <c:forEach var="article" items="${articlePage.content}">
-                	<a href="teamread.do?fileNo=${article.fileNo}&pageNo=${articlePage.currentPage}">
+                <c:forEach var="article" items="${articleTeamPage.content}">
+                	<a href="teamread.do?fileNo=${article.fileNo}&pageNo=${articleTeamPage.currentPage}">
                 	<c:out value="${article.title}"/>
                 	</a>
                 	<p>${article.fileNo}</p>

@@ -17,10 +17,11 @@ private TeamDao teamDao = new TeamDao();
 		try (Connection conn = ConnectionProvider.getConnection()) {
 			if(teamNo != null) {	
 			Team team = teamDao.selectByteam(conn, teamNo);
-			if (team == null) {
-				throw new LoginFailException();
-			}			
-			return team;
+				if (team == null) {
+					return null;
+				}else {
+					return team;
+				}					
 			}else {
 				return null;
 			}						
