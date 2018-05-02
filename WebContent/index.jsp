@@ -28,17 +28,15 @@
             <div class="list_box flex-center-row">
                 <!--<span class="list_head">아이디</span>-->
                 <input type="text" maxlength="8" placeholder="아이디 입력" name="id" value="${param.id}">
-                <c:if test="${errors.id}">ID를 입력하세요.</c:if>
             </div>
             <div class="list_box flex-center-row">
                <!--<span class="list_head">패스워드</span>-->
                 <input type="password" placeholder="비밀번호 입력" name="password" >
-                <c:if test="${errors.password}">암호를 입력하세요.</c:if>
             </div>
             <div class="guide_box">
-            	<c:if test="${errors.idOrPwNotMatch}">
-					아이디와 암호가 일치하지 않습니다.
-				</c:if>
+            <c:if test="${errors.id}">ID를 입력하세요.</c:if>
+            <c:if test="${errors.password}">암호를 입력하세요.</c:if>
+            <c:if test="${errors.idOrPwNotMatch}">아이디와 암호가 일치하지 않습니다.</c:if>
             </div>
         </div>
         <div class="button_box flex-center-column">
@@ -120,30 +118,30 @@
         </div>
         <div class="notice_box">
             <span class="title_sub">공지사항</span>
-            <ul class="lists">
-               <c:forEach var="article" items="${articlePage.content}">
-                <li><span class="txt"><a href="noticeread.do?postNo=${article.postNo}&pageNo=${articlePage.currentPage}"><c:out value="${article.title}"/></a></span></li>
-                </c:forEach>
-            </ul>
+	            <ul class="lists">
+	               <c:forEach var="article" items="${articlePage.content}">
+	                <li><span class="txt"><a href="noticeread.do?postNo=${article.postNo}&pageNo=${articlePage.currentPage}"><c:out value="${article.title}"/></a></span></li>
+	                </c:forEach>
+	            </ul>
             <c:if test="${articlePage.hasArticles()}">
-   <tr>
-      <td colspan="4">
-         <c:if test="${articlePage.startPage > 5}">
-         <a href="noticelist.do?pageNo=${articlePage.startPage - 5}">[이전]</a>
-         </c:if>
-         <c:forEach var="pNo" 
-                  begin="${articlePage.startPage}" 
-                  end="${articlePage.endPage}">
-         <a href="noticelist.do?pageNo=${pNo}">[${pNo}]</a>
-         </c:forEach>
-         <c:if test="${articlePage.endPage < articlePage.totalPages}">
-         <a href="noticelist.do?pageNo=${articlePage.startPage + 5}">[다음]</a>
-         </c:if>
-      </td>
-   </tr>
-</c:if>
+				   <tr>
+				      <td colspan="4">
+				         <c:if test="${articlePage.startPage > 5}">
+				         <span class="txt"><a href="noticelist.do?pageNo=${articlePage.startPage - 5}">[이전]</a></span>
+				         </c:if>
+				         <c:forEach var="pNo" 
+				                  begin="${articlePage.startPage}" 
+				                  end="${articlePage.endPage}">
+				         <span class="txt"><a href="noticelist.do?pageNo=${pNo}">[${pNo}]</a></span>
+				         </c:forEach>
+				         <c:if test="${articlePage.endPage < articlePage.totalPages}">
+				         <span class="txt"><a href="noticelist.do?pageNo=${articlePage.startPage + 5}">[다음]</a></span>
+				         </c:if>
+				      </td>
+				   </tr>
+				</c:if>
             <div class="btn_box flex-center-row">
-                    <button class="eval_btn" onclick="location.href='newNoticeForm.jsp'">공지사항 업로드</button>
+                    <button class="eval_btn" onclick="location.href='noticewrite.do';">공지사항 업로드</button>
             </div>
         </div>
     </div>
@@ -214,9 +212,6 @@
                 	<p>${article.writer.writerId}</p>
 					<p>${article.downCount}</p>
 				</c:forEach>
-                <div class="btn_box flex-center-row">
-                    <a href="teamwrite.do"><button class="eval_btn">게시글쓰기</button></a>
-                </div>
                 <div class="btn_box flex-center-row">
                     <button class="eval_btn">평가하기</button>
                 </div>
@@ -329,15 +324,15 @@
    <tr>
       <td colspan="4">
          <c:if test="${articlePage.startPage > 5}">
-         <a href="noticelist.do?pageNo=${articlePage.startPage - 5}">[이전]</a>
+         <span class="txt"><a href="noticelist.do?pageNo=${articlePage.startPage - 5}">[이전]</a></span>
          </c:if>
          <c:forEach var="pNo" 
                   begin="${articlePage.startPage}" 
                   end="${articlePage.endPage}">
-         <a href="noticelist.do?pageNo=${pNo}">[${pNo}]</a>
+         <span class="txt"><a href="noticelist.do?pageNo=${pNo}">[${pNo}]</a></span>
          </c:forEach>
          <c:if test="${articlePage.endPage < articlePage.totalPages}">
-         <a href="noticelist.do?pageNo=${articlePage.startPage + 5}">[다음]</a>
+         <span class="txt"><a href="noticelist.do?pageNo=${articlePage.startPage + 5}">[다음]</a></span>
          </c:if>
       </td>
    </tr>
@@ -501,15 +496,15 @@
    <tr>
       <td colspan="4">
          <c:if test="${articlePage.startPage > 5}">
-         <a href="noticelist.do?pageNo=${articlePage.startPage - 5}">[이전]</a>
+         <span class="txt"><a href="noticelist.do?pageNo=${articlePage.startPage - 5}">[이전]</a></span>
          </c:if>
          <c:forEach var="pNo" 
                   begin="${articlePage.startPage}" 
                   end="${articlePage.endPage}">
-         <a href="noticelist.do?pageNo=${pNo}">[${pNo}]</a>
+         <span class="txt"><a href="noticelist.do?pageNo=${pNo}">[${pNo}]</a></span>
          </c:forEach>
          <c:if test="${articlePage.endPage < articlePage.totalPages}">
-         <a href="noticelist.do?pageNo=${articlePage.startPage + 5}">[다음]</a>
+         <span class="txt"><a href="noticelist.do?pageNo=${articlePage.startPage + 5}">[다음]</a></span>
          </c:if>
       </td>
    </tr>
