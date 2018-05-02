@@ -40,8 +40,7 @@ public class ListTeamHandler implements CommandHandler {
 
    private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws Exception {	  
 
-	  HttpSession session = req.getSession();
-      
+	 
       String groupNo;
       String teamNo;
       String teamName;
@@ -63,12 +62,13 @@ public class ListTeamHandler implements CommandHandler {
          if(searchService.searchTeam(tNo) == true){        	
         	Team team = searchService.selectTeam(tNo);        	
         	teamName = team.getTeamName();
-        	session.setAttribute("main_tName", teamName);
-        	session.setAttribute("listTno", tNo);
-        	session.setAttribute("fileType", filetype);
+        	req.setAttribute("main_tName", teamName);
+        	req.setAttribute("listTno", tNo);
+        	req.setAttribute("fileType", filetype);
             return FORM_VIEW;
          }
          else {
+        	 req.setAttribute("main_tName", null);
         	 errors.put("listTeamNotExist", Boolean.TRUE);
         	 return FORM_VIEW;		// 에러처리 다시해야됌
          }

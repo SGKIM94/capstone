@@ -28,6 +28,7 @@ public class ListArticleHandler implements CommandHandler {
       }
       ArticlePage articlePage = listService.getArticlePage(pageNo);
       req.setAttribute("articlePage", articlePage);
+      
       if(stduser != null) {
     	  if(stduser.getTeamNo() != null) {
       	  	RequestDispatcher dispatcher = req.getRequestDispatcher("authTeam.do");

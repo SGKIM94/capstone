@@ -61,13 +61,13 @@ public class SearchTeamHandler implements CommandHandler {
 			return FORM_VIEW;
       }
       
+      
      try {
          if(searchService.searchTeam(tNo) == true){
-        	Team team = searchService.selectTeam(tNo);
-        	teamName = team.getTeamName();
-            advisor = team.getAdvisor();                        
-
-            advisor = selectPro(advisor);
+        	 Team team = searchService.selectTeam(tNo);
+         	 teamName = team.getTeamName();
+             advisor = team.getAdvisor();                        
+             advisor = selectPro(advisor);
                         
         	session.setAttribute("tno", tNo);
             session.setAttribute("subdate", date);
@@ -76,8 +76,10 @@ public class SearchTeamHandler implements CommandHandler {
             return FORM_VIEW;
          }
          else{
+        	 session.setAttribute("advisor", null);
+        	 session.setAttribute("tName", null);
         	 errors.put("NotTeam1", Boolean.TRUE);
-        	 return FORM_VIEW;		// 에러처리 다시해야됌
+        	 return FORM_VIEW;		
          }
       } catch (DuplicateIdException e) {
     	 req.setAttribute("error", error);

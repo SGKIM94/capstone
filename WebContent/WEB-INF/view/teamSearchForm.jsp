@@ -67,15 +67,14 @@
 				<option value=2020>2020</option>				
             </select>
         </div>
-    </div>
-    	팀이름 : ${tName}<br>
-    	지도교수님 : ${advisor}<br>
-    	
+    </div> 	
     	<div class="button_box flex-center-column">
-        	<button type="submit" id="search">Search</button> 
-        	<c:if test="${errors.NotTeam1}">팀이 존재하지 않습니다.</c:if>  
+        	<button type="submit" id="search">Search</button>   
     	</div>
 </form>
+    	팀이름 : ${tName}<br>
+    	지도교수님 : ${advisor}<br>
+        <c:if test="${errors.NotTeam1}">팀이 존재하지 않습니다.</c:if>
     <form action="joinTeam.do" method="post" name="joinForm">
     	<div class="button_box flex-center-column">
     	<input type="hidden" name="team_no" value="${tno}">
