@@ -28,11 +28,12 @@ public class ListArticleHandler implements CommandHandler {
       }
       ArticlePage articlePage = listService.getArticlePage(pageNo);
       req.setAttribute("articlePage", articlePage);
-      
-      if(stduser.getTeamNo() != null) {
-    	  	RequestDispatcher dispatcher = req.getRequestDispatcher("authTeam.do");
-    	  	dispatcher.forward(req,res);
-    	  	return null;
+      if(stduser != null) {
+    	  if(stduser.getTeamNo() != null) {
+      	  	RequestDispatcher dispatcher = req.getRequestDispatcher("authTeam.do");
+      	  	dispatcher.forward(req,res);
+      	  	return null;
+        }
       }
       return FORM_VIEW;
    }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -56,7 +57,8 @@ public class LoginHandler implements CommandHandler {
 			if(Integer.parseInt(group) == ClassifyMember.getPro()) {
 				User prouser = loginService.ProfessorLogin(id, password, parseint(group));
 				req.getSession().setAttribute("authProUser", prouser);
-				res.sendRedirect(req.getContextPath() + "/index.jsp");
+				RequestDispatcher dispatcher = req.getRequestDispatcher("noticelist.do");
+		    	dispatcher.forward(req,res);
 				return null;
 			}
 			else if(Integer.parseInt(group) == ClassifyMember.getStu()){
