@@ -1,10 +1,12 @@
 package article.team.command;
 
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import article.notice.command.ListArticleHandler;
 import article.team.service.ListTeamService;
 import member.service.DuplicateIdException;
 import team.model.Team;
@@ -58,7 +60,6 @@ public class ListTeamHandler implements CommandHandler {
       Map<String, Boolean> errors = new HashMap<>();
       req.setAttribute("errors", errors);
       
-      
       try {
          if(searchService.searchTeam(tNo) == true){        	
         	Team team = searchService.selectTeam(tNo);        	
@@ -66,9 +67,11 @@ public class ListTeamHandler implements CommandHandler {
         	session.setAttribute("main_tName", teamName);
         	session.setAttribute("listTno", tNo);
         	session.setAttribute("fileType", filetype);
+
             return FORM_VIEW;
          }
          else {
+        	 session.setAttribute("main_tName", null);
         	 errors.put("listTeamNotExist", Boolean.TRUE);
         	 return FORM_VIEW;		// 에러처리 다시해야됌
          }
