@@ -105,7 +105,7 @@
                 </div>
             </div>
             <div class="button_box flex-space-row">
-                <a href="changePwd.do"><button class="prof_btn">패스워드변경</button></a>
+                <a href=#><button class="prof_btn">패스워드변경</button></a>
                 <a href="logout.do"><button class="prof_btn">로그아웃</button></a>
             </div>
         </div>
