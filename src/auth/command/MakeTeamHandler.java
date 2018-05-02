@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.sql.Connection;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import jdbc.connection.ConnectionProvider;
@@ -60,7 +62,8 @@ public class MakeTeamHandler implements CommandHandler {
 		System.out.println("MakeTeamHandler에서의 상태값 = " + member.getState());
 		try {
 			req.getSession().setAttribute("authTeam", member);
-			res.sendRedirect(req.getContextPath() + "/index.jsp");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/index.jsp");
+    	  	dispatcher.forward(req,res);
 			return null;
 		} catch (LoginFailException e) {
 			errors.put("idOrPwNotMatch", Boolean.TRUE);

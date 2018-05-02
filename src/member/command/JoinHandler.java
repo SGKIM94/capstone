@@ -6,19 +6,19 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import auth.service.Authority;
 import auth.service.LoginFailException;
 import member.service.DuplicateIdException;
 import member.service.JoinRequest;
 import member.service.JoinService;
 import mvc.command.CommandHandler;
-import team.teamnum;
+import member.service.ClassifyMember;
 
 public class JoinHandler implements CommandHandler {
 	final private String TEAM_DEFAULT = "00000";
 	
 	private static final String FORM_VIEW = "/WEB-INF/view/Join_Need.jsp";
 	private JoinService joinService = new JoinService();
-	private teamnum groupnum = new teamnum();
 	
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) {
@@ -42,11 +42,13 @@ public class JoinHandler implements CommandHandler {
 		joinReq.setName(req.getParameter("name"));
 		joinReq.setPassword(req.getParameter("password"));
 		joinReq.setConfirmPassword(req.getParameter("confirmPassword"));
-		joinReq.setGroupNo(parseint(req.getParameter("groupnumber")));
 		joinReq.setPhoneNo(req.getParameter("phonenumber"));
 		joinReq.setEmail(req.getParameter("email"));
-		if(joinReq.getGroupNo()==groupnum.stunumber){
+		if(parseint(req.getParameter("groupnumber"))==ClassifyMember.getStu()){
+			joinReq.setGroupNo(Authority.getStuNotTeam());
 			joinReq.setTeamNo(TEAM_DEFAULT);
+		}else {
+			joinReq.setGroupNo(Authority.getProNotEval());
 		}
 		
 		Map<String, Boolean> errors = new HashMap<>();
@@ -59,11 +61,11 @@ public class JoinHandler implements CommandHandler {
 		}
 		
 		try {
-			if(joinReq.getGroupNo()==groupnum.pronumber){
+			if(joinReq.getGroupNo()==ClassifyMember.getPro()){
 				joinService.join_pro(joinReq);	
 				return "/WEB-INF/view/joinSuccess.jsp";
 			}
-			else if(joinReq.getGroupNo()==groupnum.stunumber){
+			else if(joinReq.getGroupNo()==ClassifyMember.getStu()){
 				joinService.join_stu(joinReq);
 				return "/WEB-INF/view/joinSuccess.jsp";
 			}

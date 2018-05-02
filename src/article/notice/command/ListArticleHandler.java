@@ -1,5 +1,6 @@
 package article.notice.command;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,12 +15,13 @@ public class ListArticleHandler implements CommandHandler {
 	 private static final String FORM_VIEW = "/index.jsp";
 	
    private ListArticleService listService = new ListArticleService();
-   private static StudentUser studentuser = new StudentUser();
    
    @Override
    public String process(HttpServletRequest req, HttpServletResponse res) 
          throws Exception {
       String pageNoVal = req.getParameter("pageNo");
+      StudentUser stduser = (StudentUser)req.getSession(false).getAttribute("authStdUser");
+      
       int pageNo = 1;
       if (pageNoVal != null) {
          pageNo = Integer.parseInt(pageNoVal);
@@ -27,8 +29,10 @@ public class ListArticleHandler implements CommandHandler {
       ArticlePage articlePage = listService.getArticlePage(pageNo);
       req.setAttribute("articlePage", articlePage);
       
-      if(studentuser.getTeamNo() != null) {
-			res.sendRedirect("authTeam.do");
+      if(stduser.getTeamNo() != null) {
+    	  	RequestDispatcher dispatcher = req.getRequestDispatcher("authTeam.do");
+    	  	dispatcher.forward(req,res);
+    	  	return null;
       }
       return FORM_VIEW;
    }

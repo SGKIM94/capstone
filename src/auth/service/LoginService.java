@@ -6,18 +6,18 @@ import java.sql.SQLException;
 import jdbc.connection.ConnectionProvider;
 import member.dao.*;
 import member.model.*;
-import team.teamnum;
+import member.service.ClassifyMember;
 
 public class LoginService {
 	
-	private teamnum Group = new teamnum();
+	
 	
 	private ProfessorDao professorDao = new ProfessorDao();
 	private StudentDao studentDao = new StudentDao();
 	
 	public User ProfessorLogin(String id, String password, int grade) {
 		try (Connection conn = ConnectionProvider.getConnection()) {
-			if(grade == Group.pronumber){
+			if(grade == ClassifyMember.getPro()){
 				Professor professor = professorDao.selectById(conn, id);
 				if (professor == null) {
 					throw new LoginFailException();
@@ -37,7 +37,7 @@ public class LoginService {
 	
 	public StudentUser StudentLogin(String id, String password, int grade) {
 		try (Connection conn = ConnectionProvider.getConnection()) {
-			if(grade == Group.stunumber) {
+			if(grade == ClassifyMember.getStu()) {
 				Student student = studentDao.selectById(conn, id);
 				if(student == null) {
 					throw new LoginFailException();
