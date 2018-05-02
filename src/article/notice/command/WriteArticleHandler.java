@@ -93,8 +93,13 @@ public class WriteArticleHandler implements CommandHandler {
        }catch (Exception e) {
     	   e.printStackTrace();
        } 
-       
-       System.out.print(multi.getParameter("noticetitle"));
+       String file = multi.getOriginalFileName("file");
+       if(file == null) {
+    	   return new WriteRequest(defaut_PostId,
+    		          new Writer(professor.getProId(), professor.getProname()),
+    		          multi.getParameter("noticetitle"),
+    		          multi.getParameter("content"));
+       }
        
        /*여기서의 이름과 뷰.jsp 파일에서의 이름이 같아야함.*/
        /* 파일 시스템상의 이름을 구하는 방법을 알아보고 코드 다시 수정해야함. */
@@ -108,7 +113,4 @@ public class WriteArticleHandler implements CommandHandler {
           multi.getContentType("file")
        );
    }
-   
-   
-   
 }

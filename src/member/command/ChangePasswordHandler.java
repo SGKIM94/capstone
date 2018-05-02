@@ -14,7 +14,8 @@ import mvc.command.CommandHandler;
 import auth.service.Authority;
 import auth.service.StudentUser;
 
-	
+public class ChangePasswordHandler implements CommandHandler {
+
 	private static final String FORM_VIEW = "/WEB-INF/view/changePwdForm.jsp";
 	private ChangePasswordService changePwdSvc = new ChangePasswordService();
 	
