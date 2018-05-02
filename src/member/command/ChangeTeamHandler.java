@@ -11,11 +11,11 @@ import member.service.ChangeTeamService;
 import member.service.InvalidPasswordException;
 import member.service.MemberNotFoundException;
 import mvc.command.CommandHandler;
-import team.teamnum;
+import auth.service.Authority;
 
 
 public class ChangeTeamHandler implements CommandHandler {
-	private teamnum groupnum = new teamnum();
+	
 	
 	private static final String FORM_VIEW = "/WEB-INF/view/changeTeamForm.jsp";
 	private ChangeTeamService changeTeamSvc = new ChangeTeamService();
@@ -60,8 +60,7 @@ public class ChangeTeamHandler implements CommandHandler {
 		
 		try {
 			int group = user.getAccess();
-			
-			if(group == groupnum.stunumber){
+			if(group == Authority.getStuTeam()){
 				changeTeamSvc.changeTeam(user.getId(), curPwd, newTeam);
 				return "/WEB-INF/view/changeTeamSuccess.jsp";
 			}

@@ -11,11 +11,10 @@ import member.service.ChangePasswordService;
 import member.service.InvalidPasswordException;
 import member.service.MemberNotFoundException;
 import mvc.command.CommandHandler;
-import team.teamnum;
+import auth.service.Authority;
 
 
 public class ChangePasswordHandler implements CommandHandler {
-	private teamnum groupnum = new teamnum();
 	
 	private static final String FORM_VIEW = "/WEB-INF/view/changePwdForm.jsp";
 	private ChangePasswordService changePwdSvc = new ChangePasswordService();
@@ -60,11 +59,18 @@ public class ChangePasswordHandler implements CommandHandler {
 		
 		try {
 			int group = user.getAccess();
-			if(group == groupnum.pronumber){
+			/* 권한 체크 */
+			boolean value1 = ((group==Authority.getProDean())||(group==Authority.getProEval())
+					||(group==Authority.getProNotEval()));
+			boolean value2 = ((group == Authority.getStuTeam())
+					||(group == Authority.getStuTeamMaker())
+					||(group == Authority.getStuNotTeam()));
+			
+			if(value1){
 				changePwdSvc.changePassword_Pro(user.getId(), curPwd, newPwd);
 				return "/WEB-INF/view/changePwdSuccess.jsp";
 			}
-			else if(group == groupnum.stunumber){
+			else if(value2){
 				changePwdSvc.changePassword_Stu(user.getId(), curPwd, newPwd);
 				return "/WEB-INF/view/changePwdSuccess.jsp";
 			}

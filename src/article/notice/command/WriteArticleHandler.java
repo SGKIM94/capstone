@@ -23,7 +23,7 @@ import auth.service.Authority;
 import auth.service.LoginFailException;
 
 public class WriteArticleHandler implements CommandHandler {
-   private static final String FORM_VIEW = "newNoticeForm.jsp";
+   private static final String FORM_VIEW = "/WEB-INF/view/writeNotice.jsp";
    private WriteArticleService writeService = new WriteArticleService();
    private static final Integer defaut_PostId = 0;
    
@@ -56,10 +56,10 @@ public class WriteArticleHandler implements CommandHandler {
       User user = (User)req.getSession(false).getAttribute("authProUser");
       WriteRequest writeReq = createWriteRequest(user, req);
       writeReq.validate(errors);
-      /*
+      
       if (!errors.isEmpty()) {
          return FORM_VIEW;
-      }*/
+      }
       
       int newArticleNo = writeService.write(writeReq);
       req.setAttribute("newArticleNo", newArticleNo);
@@ -68,7 +68,7 @@ public class WriteArticleHandler implements CommandHandler {
 		
       String listjsp = listarticlehandler.process(req, res);
 		
-      return listjsp;
+      return "/index.jsp";
      //return "/WEB-INF/view/listNotice.jsp";
    }
    
@@ -94,11 +94,13 @@ public class WriteArticleHandler implements CommandHandler {
     	   e.printStackTrace();
        } 
        
+       System.out.print(multi.getParameter("noticetitle"));
+       
        /*여기서의 이름과 뷰.jsp 파일에서의 이름이 같아야함.*/
        /* 파일 시스템상의 이름을 구하는 방법을 알아보고 코드 다시 수정해야함. */
        return new WriteRequest(defaut_PostId,
           new Writer(professor.getProId(), professor.getProname()),
-          multi.getParameter("title"),
+          multi.getParameter("noticetitle"),
           multi.getParameter("content"),
           multi.getOriginalFileName("file"),
           multi.getFilesystemName("file"),
