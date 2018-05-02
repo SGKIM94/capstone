@@ -3,6 +3,7 @@ package article.notice.command;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import article.notice.service.ArticlePage;
 import article.notice.service.ListArticleService;
@@ -22,13 +23,15 @@ public class ListArticleHandler implements CommandHandler {
       String pageNoVal = req.getParameter("pageNo");
       StudentUser stduser = (StudentUser)req.getSession(false).getAttribute("authStdUser");
       
+      HttpSession session = req.getSession();
+      
       int pageNo = 1;
       if (pageNoVal != null) {
          pageNo = Integer.parseInt(pageNoVal);
       }
       ArticlePage articlePage = listService.getArticlePage(pageNo);
-      req.setAttribute("articlePage", articlePage);
       
+      session.setAttribute("articlePage", articlePage);
       if(stduser != null) {
     	  if(stduser.getTeamNo() != null) {
       	  	RequestDispatcher dispatcher = req.getRequestDispatcher("authTeam.do");

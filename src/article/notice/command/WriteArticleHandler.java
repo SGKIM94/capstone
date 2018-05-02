@@ -66,9 +66,7 @@ public class WriteArticleHandler implements CommandHandler {
       
       ListArticleHandler listarticlehandler = new ListArticleHandler();
 		
-      String listjsp = listarticlehandler.process(req, res);
-		
-      return "/index.jsp";
+      return listarticlehandler.process(req, res);
      //return "/WEB-INF/view/listNotice.jsp";
    }
    
