@@ -195,8 +195,17 @@
 				<option value=g>메뉴얼</option>
 				<option value=h>최종보고서</option>				
             </select>
-       <button type="submit">${main_tName}</button>    
-    	</form>
+
+            <br><br><br><br><br>
+        <button type="submit" id="search">Search</button>
+        <c:if test="${errors.listTeamNotExist}">팀이 존재하지 않습니다.</c:if>   
+    </form>
+    	<a href='teamlist.do'>${main_tName}</a>
+        <c:if test="${errors.listTeamNotExist}">팀이 존재하지 않습니다.</c:if>
+    <form action="teamlist.do" method="post" name="findFile">
+    	<input type="hidden" name="team_no" value="${listTno}">    
+    </form>    
+
         <div class="team_list_box flex-space-row">               
             <div class="team_right_box">
                 <c:if test="${articleTeamPage.hasNoArticles()}">
