@@ -396,9 +396,11 @@
     </svg>
                     </div>
                 </a>
+    		<form action="teamwrite.do" method="post">
                 <div class="btn_box flex-space-row">
-                    <a id="button" class="writing" href="teamlist.do">글쓰기</a>
+                    <button type="submit" class="prof_btn">글쓰기</button>     		
                 </div>
+            </form>
             </div>
         </div>
      </div>

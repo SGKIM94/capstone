@@ -51,3 +51,23 @@ button:hover{
     background-color: #f0f0f0;
     color: #000000;
 }
+<!-- notice list css-->
+
+body { background: #fff; }
+.blueone {
+  border-collapse: collapse;
+}  
+.blueone th {
+  padding: 10px;
+  color: #168;
+  border-bottom: 3px solid #168;
+  text-align: left;
+}
+.blueone td {
+  color: #669;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+.blueone tr:hover td {
+  color: #004;
+}

@@ -23,21 +23,18 @@
         </div>
     </div>
     <div class="join_box">
-    	<span class="desc">번호 <br> ${articleData.article.fileNo}</span>
-    	<span class="desc">작성자 <br> ${articleData.article.writer.writerId}</span>
-    	<span class="desc">제목 <br> <c:out value='${articleData.article.title}' /></span>
-    	<span class="desc">내용 <br> <c:out value='${articleData.content}'/></span>
+    	<span class="desc">번호 <br> ${noticeData.article.fileNo}</span>
+    	<span class="desc">작성자 <br> ${noticeData.article.writer.writerId}</span>
+    	<span class="desc">제목 <br> <c:out value='${noticeData.article.title}' /></span>
+    	<span class="desc">내용 <br> <c:out value='${noticeData.content}'/></span>
     	<br><br>
     	
     	<c:set var="pageNo" value="${empty param.pageNo ? '1' : param.pageNo}" />
 		<a href="teamlist.do?pageNo=${pageNo}"><button class="prof_btn">목록</button></a>
-		<c:if test="${authUser.id == articleData.article.writer.writerId}">
-		<a href="teamarticlemodify.do?fileNo=${articleData.article.fileNo}"><button class="prof_btn">게시글수정</button></a>
-		<a href="teamarticledelete.do?fileNo=${articleData.article.fileNo}"><button class="prof_btn">게시글삭제</button></a>
+		<c:if test="${authUser.id == noticeData.article.writer.writerId}">
+		<a href="teamarticlemodify.do?fileNo=${noticeData.article.fileNo}"><button class="prof_btn">게시글수정</button></a>
+		<a href="teamarticledelete.do?fileNo=${noticeData.article.fileNo}"><button class="prof_btn">게시글삭제</button></a>
 		</c:if>
-    </div>
-    <div class="button_box flex-center-column">
-        <button type="submit">Join</button>
     </div>
 </div>
 </form>

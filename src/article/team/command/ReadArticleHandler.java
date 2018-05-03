@@ -2,6 +2,7 @@ package article.team.command;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import article.common.ArticleContentNotFoundException;
 import article.team.service.TeamWriteData;
@@ -16,13 +17,16 @@ public class ReadArticleHandler implements CommandHandler {
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) 
 			throws Exception {
+		
+		HttpSession session = req.getSession();
+		
 		String fileNo = req.getParameter("fileNo");
 		try {
 			TeamWriteData articleData = readService.getArticle(fileNo, true);
-			req.setAttribute("articleData", articleData);
+			session.setAttribute("articleData", articleData);
 			return "/WEB-INF/view/readTeam.jsp";
 		} catch (ArticleNotFoundException | ArticleContentNotFoundException e) {
-			req.getServletContext().log("no article", e);
+			session.getServletContext().log("no article", e);
 			res.sendError(HttpServletResponse.SC_NOT_FOUND);
 			return null;
 		}

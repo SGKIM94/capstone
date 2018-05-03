@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -42,6 +43,7 @@ public class ModifyArticleHandler implements CommandHandler {
 	private String processForm(HttpServletRequest req, HttpServletResponse res)
 			throws IOException {
 		try {
+			HttpSession session = req.getSession();
 			String noVal = req.getParameter("no");
 			int no = Integer.parseInt(noVal);
 			NoticeData noticeData = readService.getNotice(no, false);
@@ -54,7 +56,7 @@ public class ModifyArticleHandler implements CommandHandler {
 					noticeData.getContent(), noticeData.getOrigin(), noticeData.getStored(), 
 					noticeData.getFileSize(), noticeData.getFileType());
 
-			req.setAttribute("modReq", modReq);
+			session.setAttribute("modReq", modReq);
 			return FORM_VIEW;
 		} catch (ArticleNotFoundException e) {
 			res.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -72,7 +74,7 @@ public class ModifyArticleHandler implements CommandHandler {
 	private String processSubmit(HttpServletRequest req, HttpServletResponse res)
 			throws Exception {
 
-		
+		HttpSession session = req.getSession();
 		User authUser = (User) req.getSession().getAttribute("authProUser");
 		
 		MultipartRequest multi = null;
@@ -99,7 +101,7 @@ public class ModifyArticleHandler implements CommandHandler {
 				multi.getContentType("file")
 				
 				);
-		req.setAttribute("modReq", modReq);
+		session.setAttribute("modReq", modReq);
 
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);

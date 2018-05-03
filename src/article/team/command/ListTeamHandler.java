@@ -42,7 +42,8 @@ public class ListTeamHandler implements CommandHandler {
 
    private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws Exception {	  
 
-	 
+	  HttpSession session = req.getSession();
+	   
       String groupNo;
       String teamNo;
       String teamName;

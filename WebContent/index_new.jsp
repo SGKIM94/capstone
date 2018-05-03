@@ -1,50 +1,57 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=utf-8"%>
-<!doctype html>
-<html lang="en">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="u" tagdir="/WEB-INF/tags" %>
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="./css/index/main.css">
-    <title>Main</title>
+<title>게시글 읽기</title>
+<link href="css/background.css?ver=2" rel="stylesheet" type="text/css" >
 </head>
-<body class="flex-center-row">
-    <form action="login.do" method="post">
-    <div class="center_box flex-center-column">
-        <div class="title_box">
-            <span class="_title">Management System</span>
-        </div>
-        <div class="sign_box">            
-            <div class="list_box flex-center-row">
-                <select class="custom-select" name="groupnumber">
-                    <option value="2">학생</option>
-                    <option value="1">교수</option>
-                </select>
-            </div>
-            <div class="list_box flex-center-row">
-                <!--<span class="list_head">아이디</span>-->
-                <input type="text" maxlength="8" placeholder="아이디 입력" name="id" value="${param.id}">
-                <c:if test="${errors.id}">ID를 입력하세요.</c:if>
-            </div>
-            <div class="list_box flex-center-row">
-               <!--<span class="list_head">패스워드</span>-->
-                <input type="password" placeholder="비밀번호 입력" name="password" >
-                <c:if test="${errors.password}">암호를 입력하세요.</c:if>
-            </div>
-            <div class="guide_box">
-            	<c:if test="${errors.idOrPwNotMatch}">
-					아이디와 암호가 일치하지 않습니다.
-				</c:if>
-            </div>
-        </div>
-        <div class="button_box flex-center-column">
-            <button>Login</button>
-            <br>
-            <button>Join</button>
-        </div>
-    </div>
- </form>   
+<body>
+<header class="title">
+        <h1>Capstone Design Management System</h1>
+</header>
+
+<table border="1" width="100%">
+<tr>
+	<td>번호</td>
+	<td>${noticeData.notice.postNo}</td>
+</tr>
+<tr>
+	<td>작성자</td>
+	<td>${noticeData.notice.writer.name}</td>
+</tr>
+<tr>
+	<td>제목</td>
+	<td><c:out value='${noticeData.notice.title}' /></td>
+</tr>
+<tr>
+	<td>내용</td>
+	<td><u:pre value='${noticeData.content}'/></td>
+</tr>
+<tr>
+	<td>파일</td>
+	<td><c:out value='${noticeData.file}'/></td>
+</tr>
+<tr>
+	<td colspan="2">
+		<c:set var="pageNo" value="${empty param.pageNo ? '1' : param.pageNo}" />
+		<a href="noticelist.do?pageNo=${pageNo}">[목록]</a>
+		<c:if test="${authUser.id == noticeData.notice.writer.id}">
+		<a href="noticemodify.do?no=${noticeData.notice.postNo}">[게시글수정]</a>
+		<a href="noticedelete.do?no=${noticeData.notice.postNo}">[게시글삭제]</a>
+		</c:if>
+	</td>
+</tr>
+</table>
+
 </body>
 </html>
+
+<table class="blueone">
+  <tr><th>위키SW</th><th>제작자</th><th>첫 릴리즈</th></tr>
+  <tr><td>유즈모드위키</td><td>Clifford Adams</td><td>2000년</td></tr>
+  <tr><td>모인모인</td><td>Jürgen Hermann 등</td><td>2000년</td></tr>
+  <tr><td>미디어위키</td><td>Magnus Manske</td><td>2002년</td></tr>
+  <tr><td>도쿠위키</td><td>Andreas Gohr</td><td>2004년</td></tr>
+</table>

@@ -38,7 +38,6 @@ public class WriteArticleHandler implements CommandHandler {
          return null;
       }
    }
-
    private String processForm(HttpServletRequest req, HttpServletResponse res) {
 	   User user = (User)req.getSession(false).getAttribute("authProUser");
 	   if(user.getAccess()!=Authority.getProDean() && 
