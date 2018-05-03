@@ -27,18 +27,18 @@ public class ListArticleHandler implements CommandHandler {
 		if(filetype == null) {
 			filetype = "00";
 		}
+		
 		ArticlePage articlePage = null;
-	      StudentUser team = (StudentUser)req.getSession(false).getAttribute("authStdUser");
-	      
-	      if(team == null) {
-	         String teamNo = req.getParameter("team_no");
-	         articlePage = listService.getArticlePage(pageNo, teamNo, filetype);
-	      } else {
-	         articlePage = listService.getArticlePage(pageNo, team.getTeamNo(), filetype);
-	      }
+		StudentUser team = (StudentUser)req.getSession(false).getAttribute("authStdUser");
+		
+		if(team == null) {
+			String teamNo = req.getParameter("team_no");
+			articlePage = listService.getArticlePage(pageNo, teamNo, filetype);
+		} else {
+			articlePage = listService.getArticlePage(pageNo, team.getTeamNo(), filetype);
+		}
 		
 		session.setAttribute("articleTeamPage", articlePage);
 		return "/index.jsp";
 	}
-
 }
