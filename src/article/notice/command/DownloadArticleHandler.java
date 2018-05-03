@@ -38,7 +38,7 @@ public class DownloadArticleHandler implements CommandHandler {
 	  String path = req.getSession().getServletContext().getRealPath("/upload/notice/"); 
 	  System.out.println("경로 = " + path + " file 이름 = " + filename);
 	  
-	  File file = new File(path, Docname);
+	  File file = new File(path, filename);
       Map<String, Boolean> errors = new HashMap<>();
       req.setAttribute("errors", errors);
 
