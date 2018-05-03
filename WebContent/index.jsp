@@ -105,7 +105,7 @@
                 </div>
             </div>
             <div class="button_box flex-space-row">
-                <a href=#><button class="prof_btn">패스워드변경</button></a>
+                <a href="changePwd.do"><button class="prof_btn">패스워드변경</button></a>
                 <a href="logout.do"><button class="prof_btn">로그아웃</button></a>
             </div>
         </div>
@@ -178,8 +178,13 @@
                 <option value=2018>2018</option>
 				<option value=2019>2019</option>
 				<option value=2020>2020</option>				
-            </select>
-            <select class="custom-select-small" name="filetype">
+            </select>  
+            <br><br><br><br><br>
+        <button type="submit" id="search">Search</button>  
+    </form>
+    	<form action="teamlist.do" method="post" name="findFile">
+       <input type="hidden" name="team_no" value="${listTno}">
+       <select class="custom-select-small" name="filetype">
             	<option value=00>전체보기</option>
                 <option value=a>회의록</option>
 				<option value=b>제안서</option>
@@ -190,15 +195,8 @@
 				<option value=g>메뉴얼</option>
 				<option value=h>최종보고서</option>				
             </select>
-            <br><br><br><br><br>
-        <button type="submit" id="search">Search</button>  
-    </form>
-    	<a href='teamlist.do'>${main_tName}</a>
-        <c:if test="${errors.listTeamNotExist}">팀이 존재하지 않습니다.</c:if>
-    <form action="teamlist.do" method="post" name="findFile">
-    	<input type="hidden" name="team_no" value="${listTno}">    
-    </form>    
-    	     
+       <button type="submit">${main_tName}</button>    
+    	</form>
         <div class="team_list_box flex-space-row">               
             <div class="team_right_box">
                 <c:if test="${articleTeamPage.hasNoArticles()}">
@@ -400,18 +398,13 @@
 				</c:if>
 				</table>
             </ul>
+            <a href="newTeamArticleForm.jsp">팀게시글 작성</a> 
             <div class="board_bottom flex-space-row">
-                <a href="#">
                     <div class="goToDisplay_box flex-space-row">
                         <svg x="0px" y="0px" width="15px" height="15px" viewBox="0 0 511.626 511.627" >
         <path d="M506.206,179.012L360.025,32.834c-3.617-3.617-7.898-5.426-12.847-5.426s-9.233,1.809-12.847,5.426   c-3.617,3.619-5.428,7.902-5.428,12.85v73.089h-63.953c-135.716,0-218.984,38.354-249.823,115.06C5.042,259.335,0,291.03,0,328.907   c0,31.594,12.087,74.514,36.259,128.762c0.57,1.335,1.566,3.614,2.996,6.849c1.429,3.233,2.712,6.088,3.854,8.565   c1.146,2.471,2.384,4.565,3.715,6.276c2.282,3.237,4.948,4.859,7.994,4.859c2.855,0,5.092-0.951,6.711-2.854   c1.615-1.902,2.424-4.284,2.424-7.132c0-1.718-0.238-4.236-0.715-7.569c-0.476-3.333-0.715-5.564-0.715-6.708   c-0.953-12.938-1.429-24.653-1.429-35.114c0-19.223,1.668-36.449,4.996-51.675c3.333-15.229,7.948-28.407,13.85-39.543   c5.901-11.14,13.512-20.745,22.841-28.835c9.325-8.09,19.364-14.702,30.118-19.842c10.756-5.141,23.413-9.186,37.974-12.135   c14.56-2.95,29.215-4.997,43.968-6.14s31.455-1.711,50.109-1.711h63.953v73.091c0,4.948,1.807,9.232,5.421,12.847   c3.62,3.613,7.901,5.424,12.847,5.424c4.948,0,9.232-1.811,12.854-5.424l146.178-146.183c3.617-3.617,5.424-7.898,5.424-12.847   C511.626,186.92,509.82,182.636,506.206,179.012z" fill="#595959"/>
-
     </svg>
                     </div>
-                </a>
-                <div class="btn_box flex-space-row">
-                    <a id="button" class="writing" href="teamwrite.do">글쓰기</a>
-                </div>
             </div>
         </div>
      </div>

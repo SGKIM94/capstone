@@ -21,10 +21,14 @@
 	<label for="filetype">문서타입</label><br>
 	<select name="filetype">
     	<option value="0">종류</option>
-    	<option value=a>제안서</option>
-    	<option value=b>회의록</option>
-    	<option value=c>설계서</option>
-    	<option value=d>발표자료</option>
+    	<option value="a">회의록</option>
+       	<option value="b">제안서</option>
+       	<option value="c">요구분석서</option>
+       	<option value="d">설계서</option>
+       	<option value="e">구현서</option>
+       	<option value="f">형상관리서</option>
+       	<option value="g">메뉴얼</option>
+       	<option value="h">최종보고서</option>  
 	</select>
 	<input name="file" type = "file"/>${param.file}<br/>
 </p>
