@@ -57,30 +57,33 @@ public class TeamArticleDao {
 		return new Timestamp(date.getTime());
 	}
 
-	public int selectCount(Connection conn) throws SQLException {
-		Statement stmt = null;
+	public int selectCount(Connection conn, String teamNo) throws SQLException {
+		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select count(*) from teamboard");
+			pstmt = conn.prepareStatement("select count(*) from teamboard where ?");
+			pstmt.setString(1, teamNo);
+			rs = pstmt.executeQuery();
+			
 			if (rs.next()) {
 				return rs.getInt(1);
 			}
 			return 0;
 		} finally {
 			JdbcUtil.close(rs);
-			JdbcUtil.close(stmt);
+			JdbcUtil.close(pstmt);
 		}
 	}
 
-	public List<TeamArticle> select(Connection conn, int startRow, int size) throws SQLException {
+	public List<TeamArticle> select(Connection conn, int startRow, int size, String teamNo) throws SQLException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("select * from teamboard " +
+			pstmt = conn.prepareStatement("select * from teamboard where teamNo = ? " +
 					"order by regDate desc limit ?, ?");
-			pstmt.setInt(1, startRow);
-			pstmt.setInt(2, size);
+			pstmt.setString(1, teamNo);
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, size);
 			rs = pstmt.executeQuery();
 			List<TeamArticle> result = new ArrayList<>();
 			while (rs.next()) {
@@ -92,6 +95,29 @@ public class TeamArticleDao {
 			JdbcUtil.close(pstmt);
 		}
 	}
+	
+	public List<TeamArticle> selectByFiletype(Connection conn, int startRow, int size, String teamNo, String type) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			String searchtype = "'"+"%"+type+"'";
+			pstmt = conn.prepareStatement("select * from teamboard where teamNo = ? and fileNo like "+ searchtype +
+					"order by regDate desc limit ?, ?");
+			pstmt.setString(1, teamNo);
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, size);
+			rs = pstmt.executeQuery();
+			List<TeamArticle> result = new ArrayList<>();
+			while (rs.next()) {
+				result.add(convertArticle(rs));
+			}
+			return result;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+	}
+	
 	/*이부분 문제 있을 수 있음*/
 	private TeamArticle convertArticle(ResultSet rs) throws SQLException {
 		return new TeamArticle(rs.getString("fileNo"),
