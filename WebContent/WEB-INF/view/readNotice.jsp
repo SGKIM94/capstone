@@ -26,6 +26,7 @@
     	<span class="desc"><strong>작성자</strong>&nbsp;&nbsp;&nbsp;${noticeData.notice.writer.name}</span><br><br>
     	<span class="desc"><strong>제목</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<c:out value='${noticeData.notice.title}' /></span><br><br>
     	<span class="desc"><strong>내용</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<c:out value='${noticeData.content}'/></span><br><br><br><br><br>
+    	
     	<form action="downloadFile.do" method="post" name="downFile">
     	<span class="desc"><strong>파일</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	  	
     	<a>

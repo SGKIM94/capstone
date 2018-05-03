@@ -96,6 +96,27 @@ public class TeamArticleDao {
 		}
 	}
 	
+	public List<TeamArticle> selectbyTitle(Connection conn, int startRow, int size, String title) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("select * from teamboard where title = ? " +
+					"order by regDate desc limit ?, ?");
+			pstmt.setString(1, title);
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, size);
+			rs = pstmt.executeQuery();
+			List<TeamArticle> result = new ArrayList<>();
+			while (rs.next()) {
+				result.add(convertArticle(rs));
+			}
+			return result;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+	}
+	
 	public List<TeamArticle> selectByFiletype(Connection conn, int startRow, int size, String teamNo, String type) throws SQLException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;

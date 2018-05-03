@@ -179,26 +179,26 @@
 				<option value=2019>2019</option>
 				<option value=2020>2020</option>				
             </select>
-            <select class="custom-select-small" name="filetype">
-            	<option value=00>전체보기</option>
-                <option value=a>회의록</option>
-				<option value=b>제안서</option>
-				<option value=c>요구분석서</option>
-				<option value=d>설계서</option>
-				<option value=e>구현서</option>
-				<option value=f>형상관리서</option>
-				<option value=g>메뉴얼</option>
-				<option value=h>최종보고서</option>				
-            </select>
+            
             <br><br><br><br><br>
         <button type="submit" id="search">Search</button>
         <c:if test="${errors.listTeamNotExist}">팀이 존재하지 않습니다.</c:if>   
     </form>
-    	<a href='teamlist.do'>${main_tName}</a>
-        <c:if test="${errors.listTeamNotExist}">팀이 존재하지 않습니다.</c:if>
-    <form action="teamlist.do" method="post" name="findFile">
-    	<input type="hidden" name="team_no" value="${listTno}">    
-    </form>    
+     <form action="teamlist.do" method="post" name="findFile">
+       <input type="hidden" name="team_no" value="${listTno}">
+       <select class="custom-select-small" name="filetype">
+               <option value=00>전체보기</option>
+                <option value=a>회의록</option>
+            <option value=b>제안서</option>
+            <option value=c>요구분석서</option>
+            <option value=d>설계서</option>
+            <option value=e>구현서</option>
+            <option value=f>형상관리서</option>
+            <option value=g>메뉴얼</option>
+            <option value=h>최종보고서</option>            
+            </select>
+       <button type="submit">${main_tName}</button>    
+       </form>    
     	     
         <div class="team_list_box flex-space-row">               
             <div class="team_right_box">
@@ -206,9 +206,11 @@
                 	<p>게시글이 없습니다.</p>
                 </c:if>
                 <c:forEach var="teamarticle_pro" items="${articleTeamPage.content}">
-                	<a href="teamread.do?fileNo=${teamarticle_pro.fileNo}&pageNo=${articleTeamPage.currentPage}">
-                	<c:out value="${teamarticle_pro.title}"/>
-                	</a>
+                	<form action="downloadTeamFile.do" method="post" name="downTeamFile">   	 	  	
+    					<a>
+    					<button type="submit" name="filename" value='${teamarticle_pro.fileNo}'>'${teamarticle_pro.title}'</button>
+    					</a> 	
+    				</form>
                 	<p>${teamarticle_pro.fileNo}</p>
                 	<p>${teamarticle_pro.writer.writerId}</p>
 					<p>${teamarticle_pro.downCount}</p>
@@ -374,10 +376,13 @@
 					<tr>
 						<td><span class="num">${teamarticle.fileNo}</span></td>
 						<td class="board_list">
-						<a href="teamread.do?fileNo=${teamarticle.fileNo}&pageNo=${articleTeamPage.currentPage}">
-						<c:out value="${teamarticle.title}"/>
-						</a>
+						<form action="downloadTeamFile.do" method="post" name="downTeamFile">   	 	  	
+    					<a>
+    					<button type="submit" name="filename" value='${teamarticle_pro.fileNo}'>'${teamarticle_pro.title}'</button>
+    					</a> 	
+    				</form>
 						</td>
+						<td>${teamarticle_pro.fileNo}</td>
 						<td>${teamarticle.writer.writerId}</td>
 						<td>${teamarticle.downCount}</td>
 					</tr>
