@@ -194,9 +194,9 @@
         <button type="submit" id="search">Search</button>
         <c:if test="${errors.listTeamNotExist}">팀이 존재하지 않습니다.</c:if>   
     </form>
-    <form action="listTeamFile.do" method="post" name="findFile">
     	<a href='teamlist.do'>${main_tName}</a>
-          
+        <c:if test="${errors.listTeamNotExist}">팀이 존재하지 않습니다.</c:if>
+    <form action="teamlist.do" method="post" name="findFile">
     	<input type="hidden" name="team_no" value="${listTno}">    
     </form>    
     	     
@@ -205,13 +205,13 @@
                 <c:if test="${articleTeamPage.hasNoArticles()}">
                 	<p>게시글이 없습니다.</p>
                 </c:if>
-                <c:forEach var="article" items="${articleTeamPage.content}">
-                	<a href="teamread.do?fileNo=${article.fileNo}&pageNo=${articleTeamPage.currentPage}">
-                	<c:out value="${article.title}"/>
+                <c:forEach var="teamarticle_pro" items="${articleTeamPage.content}">
+                	<a href="teamread.do?fileNo=${teamarticle_pro.fileNo}&pageNo=${articleTeamPage.currentPage}">
+                	<c:out value="${teamarticle_pro.title}"/>
                 	</a>
-                	<p>${article.fileNo}</p>
-                	<p>${article.writer.writerId}</p>
-					<p>${article.downCount}</p>
+                	<p>${teamarticle_pro.fileNo}</p>
+                	<p>${teamarticle_pro.writer.writerId}</p>
+					<p>${teamarticle_pro.downCount}</p>
 				</c:forEach>
                 <div class="btn_box flex-center-row">
                     <button class="eval_btn">평가하기</button>
@@ -298,95 +298,108 @@
 </svg>
                     </div>
        <div class="profile_desc">
-                        <span class="desc">${authTeam.teamName}팀  ${authStdUser.name}님</span>
-                    </div>
-                </div>
-                <div class="button_box flex-space-row">
-                    <a href="changePwd.do"><button class="prof_btn">패스워드변경</button></a>
-                	<a href="logout.do"><button class="prof_btn">로그아웃</button></a>
-                </div>
-            </div>
-            <div class="approve_box">
-                <span class="title_sub">알람</span>
-                <ul class="lists">
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                </ul>
-            </div>
-            <div class="notice_box">
-                <span class="title_sub">공지사항</span>
-               <ul class="lists">
-               <c:forEach var="article" items="${articlePage.content}">
-                <li><span class="txt"><a href="noticeread.do?postNo=${article.postNo}&pageNo=${articlePage.currentPage}"><c:out value="${article.title}"/></a></span></li>
-                </c:forEach>
-            </ul>
-            <c:if test="${articlePage.hasArticles()}">
-   <tr>
-      <td colspan="4">
-         <c:if test="${articlePage.startPage > 5}">
-         <span class="txt"><a href="noticelist.do?pageNo=${articlePage.startPage - 5}">[이전]</a></span>
-         </c:if>
-         <c:forEach var="pNo" 
-                  begin="${articlePage.startPage}" 
-                  end="${articlePage.endPage}">
-         <span class="txt"><a href="noticelist.do?pageNo=${pNo}">[${pNo}]</a></span>
-         </c:forEach>
-         <c:if test="${articlePage.endPage < articlePage.totalPages}">
-         <span class="txt"><a href="noticelist.do?pageNo=${articlePage.startPage + 5}">[다음]</a></span>
-         </c:if>
-      </td>
-   </tr>
+	                        <span class="desc">${authTeam.teamName}팀  ${authStdUser.name}님</span>
+	                    </div>
+	                </div>
+	                <div class="button_box flex-space-row">
+	                    <a href="changePwd.do"><button class="prof_btn">패스워드변경</button></a>
+	                	<a href="logout.do"><button class="prof_btn">로그아웃</button></a>
+	                </div>
+	            </div>
+	            <div class="approve_box">
+	                <span class="title_sub">알람</span>
+	                <ul class="lists">
+	                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
+	                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
+	                </ul>
+	            </div>
+	            <div class="notice_box">
+	                <span class="title_sub">공지사항</span>
+	               <ul class="lists">
+	               <c:forEach var="article" items="${articlePage.content}">
+	                <li><span class="txt"><a href="noticeread.do?postNo=${article.postNo}&pageNo=${articlePage.currentPage}"><c:out value="${article.title}"/></a></span></li>
+	                </c:forEach>
+	            </ul>
+	            <c:if test="${articlePage.hasArticles()}">
+				   <tr>
+				      <td colspan="4">
+				         <c:if test="${articlePage.startPage > 5}">
+				         <span class="txt"><a href="noticelist.do?pageNo=${articlePage.startPage - 5}">[이전]</a></span>
+				         </c:if>
+				         <c:forEach var="pNo" 
+				                  begin="${articlePage.startPage}" 
+				                  end="${articlePage.endPage}">
+				         <span class="txt"><a href="noticelist.do?pageNo=${pNo}">[${pNo}]</a></span>
+				         </c:forEach>
+				         <c:if test="${articlePage.endPage < articlePage.totalPages}">
+				         <span class="txt"><a href="noticelist.do?pageNo=${articlePage.startPage + 5}">[다음]</a></span>
+				         </c:if>
+				      </td>
+				   </tr>
 			</c:if>
             </div>
         </div>
         <div class="main_box">
             <span class="title_sub">팀 게시판</span>
             <div class="options_box flex-space-row">
-                <label class="container">전체보기
-                    <input type="checkbox" checked="checked">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="container">회의록
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="container">제안서
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="container">김희철
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="container">김희철
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="container">김희철
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="container">김희철
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="container">김희철
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="container">김희철
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
+             <form action="teamlist.do" method="post">
+                <select class="custom-select-small" name="filetype">
+                	<option value="00" selected="selected">전체보기</option>
+                	<option value="a">회의록</option>
+                	<option value="b">제안서</option>
+                	<option value="c">요구분석서</option>
+                	<option value="d">설계서</option>
+                	<option value="e">구현서</option>
+                	<option value="f">형상관리서</option>
+                	<option value="g">메뉴얼</option>
+                	<option value="h">최종보고서</option>  
+                </select>
+                <button type="submit" id="search">Search</button>
+                </form>
             </div>
             <ul class="board">
-                <span class="num">01</span><li class="board_list">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a g</li>
-                <span class="num">02</span><li class="board_list">d scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently wit</li>
-                <span class="num">03</span><li class="board_list">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piec</li>
-                <span class="num">04</span><li class="board_list">College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cite</li>
-                <span class="num">05</span><li class="board_list">Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very po</li>
-                <span class="num">06</span><li class="board_list">d scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently wit</li>
-
+					<table border="1">
+					<tr>
+						<td>파일번호</td>
+						<td>제목</td>
+						<td>작성자</td>
+						<td>다운로드수</td>
+					</tr>
+				<c:if test="${articleTeamPage.hasNoArticles()}">
+					<tr>
+						<td colspan="4">게시글이 없습니다.</td>
+					</tr>
+				</c:if>
+				<c:forEach var="teamarticle" items="${articleTeamPage.content}">
+					<tr>
+						<td><span class="num">${teamarticle.fileNo}</span></td>
+						<td class="board_list">
+						<a href="teamread.do?fileNo=${teamarticle.fileNo}&pageNo=${articleTeamPage.currentPage}">
+						<c:out value="${teamarticle.title}"/>
+						</a>
+						</td>
+						<td>${teamarticle.writer.writerId}</td>
+						<td>${teamarticle.downCount}</td>
+					</tr>
+				</c:forEach>
+				<c:if test="${articleTeamPage.hasArticles()}">
+					<tr>
+						<td colspan="4">
+							<c:if test="${articleTeamPage.startPage > 5}">
+							<a href="teamlist.do?pageNo=${articleTeamPage.startPage - 5}">[이전]</a>
+							</c:if>
+							<c:forEach var="pNo" 
+									   begin="${articleTeamPage.startPage}" 
+									   end="${articleTeamPage.endPage}">
+							<a href="teamlist.do?pageNo=${pNo}">[${pNo}]</a>
+							</c:forEach>
+							<c:if test="${articleTeamPage.endPage < articleTeamPage.totalPages}">
+							<a href="teamlist.do?pageNo=${articleTeamPage.startPage + 5}">[다음]</a>
+							</c:if>
+						</td>
+					</tr>
+				</c:if>
+				</table>
             </ul>
             <div class="board_bottom flex-space-row">
                 <a href="#">
@@ -397,11 +410,9 @@
     </svg>
                     </div>
                 </a>
-    		<form action="teamwrite.do" method="post">
                 <div class="btn_box flex-space-row">
-                    <button type="submit" class="prof_btn">글쓰기</button>     		
+                    <a id="button" class="writing" href="teamwrite.do">글쓰기</a>
                 </div>
-            </form>
             </div>
         </div>
      </div>

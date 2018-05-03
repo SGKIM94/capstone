@@ -13,11 +13,23 @@ public class ListArticleService {
 	private TeamArticleDao articleDao = new TeamArticleDao();
 	private int size = 10;
 
-	public ArticlePage getArticlePage(int pageNum) {
+	public ArticlePage getArticlePage(int pageNum, String teamNo, String filetype) {
 		try (Connection conn = ConnectionProvider.getConnection()) {
-			int total = articleDao.selectCount(conn);
-			List<TeamArticle> content = articleDao.select(
-					conn, (pageNum - 1) * size, size);
+			int total = articleDao.selectCount(conn, teamNo);
+			List<TeamArticle> content = null;
+			
+			if(teamNo == null) {
+				return null;
+			}
+			
+			if(filetype.equals("00")) {
+				content = articleDao.select(
+						conn, (pageNum - 1) * size, size, teamNo);
+			}
+			else {
+				content = articleDao.selectByFiletype(
+						conn, (pageNum - 1) * size, size, teamNo, filetype);
+			}
 			return new ArticlePage(total, pageNum, size, content);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
