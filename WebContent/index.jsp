@@ -203,8 +203,8 @@
      <form action="teamlist.do" method="post" name="findFile">
        <input type="hidden" name="team_no" value="${listTno}">
        <select class="custom-select-small" name="filetype">
-               <option value=00>전체보기</option>
-                <option value=a>회의록</option>
+            <option value=00>전체보기</option>
+            <option value=a>회의록</option>
             <option value=b>제안서</option>
             <option value=c>요구분석서</option>
             <option value=d>설계서</option>
@@ -436,8 +436,45 @@
     </svg>
                     </div>
             </div>
+            <div class="btn_box flex-space-row">
+                    <a href="#">
+                    <button class="writing" id="write">글쓰기</button>
+                    </a>
+            </div>           
         </div>
      </div>
+     <form action="teamwrite.do" method="post" enctype="multipart/form-data">
+     <div class="write_box" id="write_board">
+            <div class="w_title_box flex-center-row">
+                <div class="list_box flex-center-row">
+                    <select class="custom-select" name="filetype">
+                        <option value="">분류선택</option>
+            			<option value=a>회의록</option>
+            			<option value=b>제안서</option>
+            			<option value=c>요구분석서</option>
+            			<option value=d>설계서</option>
+            			<option value=e>구현서</option>
+            			<option value=f>형상관리서</option>
+            			<option value=g>메뉴얼</option>
+            			<option value=h>최종보고서</option>
+                    </select>
+                </div>
+            </div>
+            <div class="w_title_box flex-center-row">
+                <input type="text" name="title" placeholder="제목">
+                <c:if test="${errors.title}">제목을 입력하세요.</c:if>
+            </div>
+            <div class="w_title_box flex-center-row">
+                <input type="file" name="file">
+                ${param.file}
+            </div>
+            <div class="w_title_box flex-space-row">
+                <button type="reset" id ="cancel">취소</button>
+                <button type="submit" id="register">등록</button>
+            </div>
+        </div>
+      </form>
+<script src="src/write.js"></script>
 </body>
 </u:hasTeam>
 <u:hasnTeam>

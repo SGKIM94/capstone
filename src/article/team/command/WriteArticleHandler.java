@@ -26,7 +26,7 @@ import member.dao.StudentDao;
 import mvc.command.CommandHandler;
 
 public class WriteArticleHandler implements CommandHandler {
-	private static final String FORM_VIEW = "/WEB-INF/view/newTeamArticleForm.jsp";	//수정과 같은 뷰면 될듯
+	private static final String FORM_VIEW = "/index.jsp";
 	private WriteArticleService writeService = new WriteArticleService();
 	
 	@Override
@@ -60,9 +60,9 @@ public class WriteArticleHandler implements CommandHandler {
 		String newFileNo = writeService.write(writeReq);
 		req.setAttribute("newArticleNo", newFileNo);
 		
-		ListArticleHandler listarticlehandler = new ListArticleHandler();
-		
-		String listjsp = listarticlehandler.process(req, res);
+//		ListArticleHandler listarticlehandler = new ListArticleHandler();
+//		
+//		String listjsp = listarticlehandler.process(req, res);
 		
 		return FORM_VIEW;
 		//return "/WEB-INF/view/listTeam.jsp";
