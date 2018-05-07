@@ -56,7 +56,7 @@ public class CreateHandler implements CommandHandler {
       */
      try {
          if(teamService.searchTeam(mtReq) == true){
-        	 mtReq.setS_groupNo(3);
+        	 mtReq.setS_groupNo(Authority.getStuTeamMaker());
             teamService.MakeTeam(mtReq);         
             return "/WEB-INF/view/createTeamSuccess.jsp";
          }

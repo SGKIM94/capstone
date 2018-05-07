@@ -4,24 +4,40 @@ html, body{
     min-width: 530px;
     width: 100%;
     height: 100%;
-    background-color: #f0f0f0;
     overflow: hidden;
     background: url("../../assets/background.jpg");
     background-repeat: no-repeat;
     background-size: cover;
 }
-
 .flex-center-row{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-}
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     flex-direction: row;
+ }
 .flex-center-column{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+.flex-space-column{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+}
+.flex-space-row{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+}
+.flex-end-row{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: row;
 }
 .center_box{
     padding: 10px;
@@ -31,8 +47,8 @@ html, body{
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 .title_box{
-    margin-top: 10px;
-    margin-bottom: 30px;
+    margin-top: 30px;
+    margin-bottom: 60px;
     width: 100%;
     height: 30px;
     text-align: center;
@@ -56,7 +72,6 @@ html, body{
 .list_box{
     width: 100%;
     height: 60px;
-    /*line-height: 30px;*/
 }
 
 .list_box .list_head{
@@ -99,7 +114,7 @@ button{
 button:hover{
     box-shadow: 0 3px 8px rgba(104, 104, 104, 0.25), 0 5px 5px rgba(153, 153, 153, 0.22);
 }
-.custom-select{
+.custom-select {
     width: 210px;
     height: 40px;
     border: none;

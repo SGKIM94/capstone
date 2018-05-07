@@ -1,6 +1,7 @@
 package team.command;
 
 import java.util.HashMap;
+import auth.service.Authority;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +57,7 @@ public class DeleteHandler implements CommandHandler {
 		}
 		
 		try {
-			if(accessNo == 3) {
+			if(accessNo == Authority.getStuTeamMaker()) {
 				removeTeamSvc.delete_team(curPwd, curTeam); // 현재 로그인상태의 teamNo값 불러오기
 				return "/WEB-INF/view/DeleteTeamSuccess.jsp";
 			}
