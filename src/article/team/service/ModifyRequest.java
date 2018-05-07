@@ -59,8 +59,4 @@ public class ModifyRequest {
 			errors.put("origin", Boolean.TRUE);
 		}
 	}
-
-	public void setFileNo(String fileNo) {
-		this.fileNo = fileNo;
-	}
 }

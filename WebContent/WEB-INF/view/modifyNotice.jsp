@@ -1,30 +1,52 @@
-<%@ page contentType="text/html; charset=utf-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-<title>게시글 수정</title>
-<link href="css/background.css?ver=2" rel="stylesheet" type="text/css" >
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/join/join.css">
+    <title>Join</title>
 </head>
-<body>
-<header class="title">
-        <h1>Capstone Design Management System</h1>
-</header>
-<form action="noticemodify.do" method="post" enctype="multipart/form-data">
-<input type="hidden" name="no" value="${modReq.postNo}">
-<p>
-	번호:<br/>${modReq.postNo}
-</p>
-<p>
-	제목:<br/><input type="text" name="title" value="${modReq.title}">
+<body class="flex-center-row">
+ <form action="noticewrite.do" method="post" enctype="multipart/form-data">
+<div class="center_box">
+    <div class="title_box" margin:3px >
+        <span class="_title" >Management System</span>
+    </div>
+    <div class="button_box flex-center-column">
+	<div padding:1px>
+	<div class="list_box flex-center-row">
+	<p>
+	<input style="margin-top: 300px;" type="text" name="noticetitle" value="${param.title}" maxlength="20" placeholder="제목 입력">
 	<c:if test="${errors.title}">제목을 입력하세요.</c:if>
-</p>
-<p>
-	내용:<br/>
-	<textarea name="content" rows="5" cols="30">${modReq.content}</textarea>
-	파일:	<input name="file" type = "file"/>${modReq.origin}<br/>
-</p>
-<input type="submit" value="글 수정">
+	</p>
+	</div>
+	</div>
+	<div padding:3px>
+	<div class="list_box flex-center-row">
+	<p>
+	<%--!!이부분을 파일업로드로 수정해야함. 자바스크립스 이용!! --%>
+	<textarea style="margin-top: 350px;" name="content" rows="7" cols="30" maxlength="255" placeholder="공지사항 입력">${param.content}</textarea><br/>
+	</p>
+	</div>
+	</div>
+	<div padding:3px>
+	<div class="list_box flex-center-row">
+	<p>
+	<input style="margin-top: 400px;" name="file" type = "file" size="15" placeholder="파일 선택"/>${param.file}<br/>
+	</p>
+	</div>
+	<div padding:3px>
+	<div class="button_box_notice flex-center-column">
+        <button style="margin-top: 400px;" type="submit">작성</button>
+    </div>
+	</div>
+	</div>
+	</div>
+</div>
 </form>
 </body>
 </html>

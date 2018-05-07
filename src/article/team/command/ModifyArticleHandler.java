@@ -81,25 +81,23 @@ public class ModifyArticleHandler implements CommandHandler {
 		String savePath = req.getSession().getServletContext().getRealPath("/upload/") + teamNo;    // 파일이 업로드될 실제 tomcat 폴더의 WebContent 기준
 
 		try{
-		multi=new MultipartRequest(req, savePath, sizeLimit, "euc-kr", new DefaultFileRenamePolicy()); 
+		multi=new MultipartRequest(req, savePath, sizeLimit, "utf-8", new DefaultFileRenamePolicy()); 
 		}catch (Exception e) {
 			e.printStackTrace();
 		} 
-		
-		System.out.println(multi.getParameter("fileNo"));
-		
+		String origin_file = multi.getOriginalFileName("file");
+		String store_file = multi.getFilesystemName("file");
+		origin_file = new String(origin_file.getBytes("euc-kr"),"KSC5601");
+		store_file = new String(store_file.getBytes("euc-kr"),"KSC5601");
 		String fileNo = multi.getParameter("fileNo");
-		String filetype = multi.getParameter("filetype");
-		
 		ModifyRequest modReq = new ModifyRequest(fileNo,
 				multi.getParameter("title"),
-				multi.getOriginalFileName("file"),
-				multi.getFilesystemName("file"),
+				origin_file,
+				store_file,
 				new TeamArticleWriter(teamNo, authUser.getId()),
 				multi.getFile("file").length(),
 				multi.getContentType("file"));
 		
-		modReq.setFileNo(modifyService.changeFileNo(fileNo, filetype));
 		
 		req.setAttribute("modReq", modReq);
 

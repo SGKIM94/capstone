@@ -70,6 +70,13 @@ html, body{
     width: 100%;
     height: 100px;
 }
+
+.button_box_notice{
+    width: 100%;
+    height: 100px;
+    
+}
+
 .guide_box {
     margin: 5px auto;
     width: 200px;

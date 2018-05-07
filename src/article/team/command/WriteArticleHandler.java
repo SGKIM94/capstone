@@ -105,18 +105,6 @@ public class WriteArticleHandler implements CommandHandler {
 		store_file = new String(store_file.getBytes("euc-kr"),"KSC5601");
 		/*여기서의 이름과 뷰.jsp 파일에서의 이름이 같아야함.*/
 //		/* 파일 시스템상의 이름을 구하는 방법을 알아보고 코드 다시 수정해야함. */
-//		System.out.println(new String(origin_file.getBytes("KSC5601"), "utf-8"));
-//		System.out.println(new String(origin_file.getBytes("KSC5601"), "8859_1"));
-//		System.out.println(new String(origin_file.getBytes("KSC5601"), "euc-kr"));	//이것도 됨.
-//		System.out.println(new String(origin_file.getBytes("utf-8"), "KSC5601"));
-//		System.out.println(new String(origin_file.getBytes("utf-8"), "8859_1"));
-//		System.out.println(new String(origin_file.getBytes("utf-8"), "euc-kr"));
-		System.out.println(new String(origin_file.getBytes("euc-kr"), "KSC5601"));	//
-//		System.out.println(new String(origin_file.getBytes("euc-kr"), "8859_1"));
-//		System.out.println(new String(origin_file.getBytes("euc-kr"), "utf-8"));
-//		System.out.println(new String(origin_file.getBytes("8859_1"), "KSC5601"));
-//		System.out.println(new String(origin_file.getBytes("8859_1"), "euc-kr"));
-//		System.out.println(new String(origin_file.getBytes("8859_1"), "utf-8"));
 		
 		return new WriteRequest(null,
 				multi.getParameter("title"),

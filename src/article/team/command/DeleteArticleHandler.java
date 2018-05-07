@@ -42,7 +42,6 @@ public class DeleteArticleHandler implements CommandHandler {
 	}
 	private boolean canDelete(String id, TeamWriteData articleData) {
 		String writerId = articleData.getArticle().getWriter().getWriterId();
-		//정수 -> 문자열 변환함
 		String temp = id;
 		return temp.equals(writerId);
 	}

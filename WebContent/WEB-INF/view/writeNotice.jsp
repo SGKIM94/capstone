@@ -29,19 +29,19 @@
 	<div class="list_box flex-center-row">
 	<p>
 	<%--!!이부분을 파일업로드로 수정해야함. 자바스크립스 이용!! --%>
-	<textarea style="margin-top: 400px;" name="content" rows="5" cols="30" maxlength="255" placeholder="공지사항 입력">${param.content}</textarea><br/>
+	<textarea style="margin-top: 350px;" name="content" rows="7" cols="30" maxlength="255" placeholder="공지사항 입력">${param.content}</textarea><br/>
 	</p>
 	</div>
 	</div>
 	<div padding:3px>
 	<div class="list_box flex-center-row">
 	<p>
-	<input style="margin-top: 600px;" name="file" type = "file" size="15" placeholder="파일 선택"/>${param.file}<br/>
+	<input style="margin-top: 400px;" name="file" type = "file" size="15" placeholder="파일 선택"/>${param.file}<br/>
 	</p>
 	</div>
 	<div padding:3px>
-	<div class="button_box flex-center-column">
-        <button type="submit">Join</button>
+	<div class="button_box_notice flex-center-column">
+        <button style="margin-top: 400px;" type="submit">작성</button>
     </div>
 	</div>
 	</div>

@@ -51,9 +51,5 @@ public class ModifyArticleService {
 		String temp = article.getWriter().getWriterId();
 		return temp.equals(modfyingUserId);
 	}
-	
-	public String changeFileNo(String fileno, String filetype) {
-		String temp = fileno.substring(fileno.length()-1);
-		return temp+filetype;
-	}
+
 }

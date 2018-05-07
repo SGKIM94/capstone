@@ -327,26 +327,25 @@
                     <c:forEach var="teamarticle" items="${articleTeamPage.content}">
                     <div class="board-list flex-center-row">
                         <div class="file_num_box file_base">
-							<span class="text-data">${teamarticle.writer.writerId}</span>
+                     <span class="text-data">${teamarticle.writer.writerId}</span>
                         </div>
                         <div class="file_title_box file_base">
                             <form action="downloadTeamFile.do" method="post" name="downTeamFile">
-                            	<span class="text-data">
-                            	<input class="submitLink" type="submit" name="filtitle" value='${teamarticle.title}'>
-                            	<input type="hidden" name="fileNo" value="${teamarticle.fileNo}">     		
-    							</span>
-    						</form>
+                               <span class="text-data">
+                               <input class="submitLink" type="submit" name="filtitle" value='${teamarticle.title}'>
+                               <input class = "mod_file_class" type="hidden" name="fileNo" value="${teamarticle.fileNo}">           
+                         </span>
+                      </form>
                         </div>
                         <div class="file_time_box  flex-center-column">
-                            <span class="text-data">${teamarticle.regDate}</span>
+                            <span class="text-data_date">${teamarticle.regDate}</span>
                             <div class="edit_box">
-                                <button class="modify_section" id = "modify">수정</button>
-                                
-    							<form action="teamarticledelete.do" method="post" name="deleteTeamFile">
-                            		<span class="text-data">
-                            			<button class="delete_section" type = "submit">삭제</button>
-                            			<input type="hidden" name="fileNo" value="${teamarticle.fileNo}">     		
-    								</span>
+<!--                                 <button class="modify_section" id = "modify">수정</button> -->
+                         <form action="teamarticledelete.do" method="post" name="deleteTeamFile">
+                                  <span class="text-data">
+                                     <button class="delete_section" type = "submit">삭제</button>
+                                     <input type="hidden" name="fileNo" value="${teamarticle.fileNo}">           
+                            </span>
                                 </form>
                             </div>
                         </div>
@@ -375,6 +374,7 @@
                     </select>
                 </div>
             </div>
+            
             <input type="hidden" name="fileNo" value="${teamarticle.fileNo}">
             <div class="w_title_box flex-center-row">
                 <input type="text" name="title" placeholder="제목">
@@ -390,23 +390,9 @@
             </div>
           </form>
         </div>    
-        <div class="write_box" id="modify_board">
+         <div class="write_box" id="modify_board">
           <form action="teamarticlemodify.do" method="post" enctype="multipart/form-data">       
-            <div class="w_title_box flex-center-row">
-                <div class="list_box flex-center-row">
-                    <select class="custom-select" name="filetype">
-                        <option value="">분류선택</option>
-            			<option value=a>회의록</option>
-            			<option value=b>제안서</option>
-            			<option value=c>요구분석서</option>
-            			<option value=d>설계서</option>
-            			<option value=e>구현서</option>
-            			<option value=f>형상관리서</option>
-            			<option value=g>메뉴얼</option>
-            			<option value=h>최종보고서</option>
-                    </select>
-                </div>
-            </div>
+            <input class="mod_class" type="hidden" name="fileNo" value="">
             <div class="w_title_box flex-center-row">
                 <input type="text" name="title" placeholder="제목">
                 <c:if test="${errors.title}">제목을 입력하세요.</c:if>
@@ -417,7 +403,7 @@
             </div>
             <div class="w_title_box flex-space-row">
                 <button type="reset" id ="modify_cancel">취소</button>
-                <button type="submit" id="register">수정</button>
+                <button type="submit" id="mod_register">수정</button>
             </div>
           </form>
         </div>   	
@@ -425,6 +411,7 @@
 <script src="src/modify.js"></script>
 <script src="src/write.js"></script>
 <script src="src/alert.js"></script>
+<script src="src/mod_alert.js"></script>
 </body>
 </u:hasTeam>
 <u:hasnTeam>
