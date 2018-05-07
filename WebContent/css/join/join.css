@@ -120,3 +120,17 @@ input.submitLink {
 
     cursor: pointer;
 }
+
+.prof_btn_small{
+    background-color: #278eff;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: normal;
+    color: #ffffff;
+    width: 100px;
+    height: 25px;
+    margin-left: auto; 
+    margin-right: auto;
+}

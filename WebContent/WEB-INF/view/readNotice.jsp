@@ -28,7 +28,7 @@
     	<span class="desc"><strong>내용</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<c:out value='${noticeData.content}'/></span><br><br><br><br><br>
     	
     	<form action="downloadFile.do" method="post" name="downFile">
-    	<span class="desc"><strong>파일</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	  	
+    	<span class="desc"><strong>파일</strong>	  	
     	<a>
     	<input type="submit" class="submitLink" name="filename" value='${noticeData.file}'>
     	</a> 	
@@ -37,11 +37,12 @@
     	<br><br>
     	
     	<c:set var="pageNo" value="${empty param.pageNo ? '1' : param.pageNo}" />
-		<a href="noticelist.do?pageNo=${pageNo}"><button class="prof_btn">목록</button></a>
+		<a href="noticelist.do?pageNo=${pageNo}"><button class="prof_btn_small">목록</button></a>
+		<a href="noticemodify.do?no=${noticeData.notice.postNo}"><button class="prof_btn_small">게시글수정</button></a>
+		<a href="noticemodify.do?no=${noticeData.notice.postNo}"><button class="prof_btn_small">게시글삭제</button></a>
 		<c:if test="${errors.NotExistNoticeFile}">파일이 존재하지 않습니다.</c:if>
 		<c:if test="${authUser.id == noticeData.notice.writer.id}">
-		<a href="noticemodify.do?no=${noticeData.notice.postNo}"><button class="prof_btn">게시글수정</button></a>
-		<a href="noticemodify.do?no=${noticeData.notice.postNo}"><button class="prof_btn">게시글삭제</button></a>
+		
 		</c:if>
     </div>
 </div>

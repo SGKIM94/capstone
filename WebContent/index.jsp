@@ -1,4 +1,5 @@
-<%@ page contentType="text/html; charset=utf-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%-- <%@ page language="java" pageEncoding="EUC-KR" %> --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="u" tagdir="/WEB-INF/tags" %>
 <!doctype html>
@@ -117,8 +118,11 @@
 	                	<li><span class="txt"><a href="noticeread.do?postNo=${article.postNo}&pageNo=${articlePage.currentPage}">
 	                	<c:out value="${article.title}"/></a></span></li>
 	                	</c:forEach>
-	            		</ul>
+	               </ul>
+	        <div class="btn_box flex-center-row">
+	        <button class="eval_btn" onclick="location.href='noticewrite.do';">공지사항 업로드</button>
             </div>
+        </div>
     </div>
     <div class="main_box">
         <span class="title_sub">팀 목록</span>
@@ -458,13 +462,6 @@
                     <a href="changePwd.do"><button class="prof_btn">패스워드변경</button></a>
                 	<a href="logout.do"><button class="prof_btn">로그아웃</button></a>
                 </div>
-            </div>
-            <div class="approve_box">
-                <span class="title_sub">알람</span>
-                <ul class="lists">
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                </ul>
             </div>
             <div class="notice_box">
 	                	<span class="title_sub">공지사항</span>

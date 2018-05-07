@@ -69,7 +69,7 @@ public class WriteArticleHandler implements CommandHandler {
      //return "/WEB-INF/view/listNotice.jsp";
    }
    
-   private WriteRequest createWriteRequest(User user, HttpServletRequest req) {
+   private WriteRequest createWriteRequest(User user, HttpServletRequest req) throws Exception {
 	   ProfessorDao ProfessorDao = new ProfessorDao();
        Professor professor = null;
        try (Connection conn = ConnectionProvider.getConnection()) {
@@ -86,11 +86,12 @@ public class WriteArticleHandler implements CommandHandler {
        String savePath = req.getSession().getServletContext().getRealPath("/upload/notice");    // 파일이 업로드될 실제 tomcat 폴더의 WebContent 기준
 
        try{
-    	   multi=new MultipartRequest(req, savePath, sizeLimit, "euc-kr", new DefaultFileRenamePolicy()); 
+    	   multi=new MultipartRequest(req, savePath, sizeLimit, "utf-8", new DefaultFileRenamePolicy()); 
        }catch (Exception e) {
     	   e.printStackTrace();
        } 
        String file = multi.getOriginalFileName("file");
+       
        if(file == null) {
     	   return new WriteRequest(defaut_PostId,
     		          new Writer(professor.getProId(), professor.getProname()),
@@ -98,6 +99,8 @@ public class WriteArticleHandler implements CommandHandler {
     		          multi.getParameter("content"));
        }
        
+       file = new String(file.getBytes("euc-kr"),"KSC5601");
+              
        /*여기서의 이름과 뷰.jsp 파일에서의 이름이 같아야함.*/
        /* 파일 시스템상의 이름을 구하는 방법을 알아보고 코드 다시 수정해야함. */
        return new WriteRequest(defaut_PostId,

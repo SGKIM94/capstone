@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,7 +70,7 @@ public class WriteArticleHandler implements CommandHandler {
 		//return "/WEB-INF/view/listTeam.jsp";
 	}
 
-	private WriteRequest createWriteRequest(StudentUser user, HttpServletRequest req) {
+	private WriteRequest createWriteRequest(StudentUser user, HttpServletRequest req) throws Exception {
 		StudentDao studentDao = new StudentDao();
 		Student student;
 		
@@ -91,17 +93,35 @@ public class WriteArticleHandler implements CommandHandler {
 		savePath = makeDirectory(savePath, student.getTeamNo());
 		
 		try{
-		multi=new MultipartRequest(req, savePath, sizeLimit, "euc-kr", new DefaultFileRenamePolicy()); 
+		multi=new MultipartRequest(req, savePath, sizeLimit, "utf-8", new DefaultFileRenamePolicy()); 	//utf-8로 해야됨
 		}catch (Exception e) {
 			e.printStackTrace();
 		} 
-
+		
+		String origin_file = multi.getOriginalFileName("file");
+		
+		String store_file = multi.getFilesystemName("file");
+		origin_file = new String(origin_file.getBytes("euc-kr"),"KSC5601");	//인코딩 문제
+		store_file = new String(store_file.getBytes("euc-kr"),"KSC5601");
 		/*여기서의 이름과 뷰.jsp 파일에서의 이름이 같아야함.*/
-		/* 파일 시스템상의 이름을 구하는 방법을 알아보고 코드 다시 수정해야함. */
+//		/* 파일 시스템상의 이름을 구하는 방법을 알아보고 코드 다시 수정해야함. */
+//		System.out.println(new String(origin_file.getBytes("KSC5601"), "utf-8"));
+//		System.out.println(new String(origin_file.getBytes("KSC5601"), "8859_1"));
+//		System.out.println(new String(origin_file.getBytes("KSC5601"), "euc-kr"));	//이것도 됨.
+//		System.out.println(new String(origin_file.getBytes("utf-8"), "KSC5601"));
+//		System.out.println(new String(origin_file.getBytes("utf-8"), "8859_1"));
+//		System.out.println(new String(origin_file.getBytes("utf-8"), "euc-kr"));
+		System.out.println(new String(origin_file.getBytes("euc-kr"), "KSC5601"));	//
+//		System.out.println(new String(origin_file.getBytes("euc-kr"), "8859_1"));
+//		System.out.println(new String(origin_file.getBytes("euc-kr"), "utf-8"));
+//		System.out.println(new String(origin_file.getBytes("8859_1"), "KSC5601"));
+//		System.out.println(new String(origin_file.getBytes("8859_1"), "euc-kr"));
+//		System.out.println(new String(origin_file.getBytes("8859_1"), "utf-8"));
+		
 		return new WriteRequest(null,
 				multi.getParameter("title"),
-				multi.getOriginalFileName("file"),
-				multi.getFilesystemName("file"),
+				origin_file,
+				store_file,
 				new TeamArticleWriter(user.getTeamNo(), user.getId()),	//분,초 + 문서번호
 				multi.getFile("file").length(),
 				multi.getContentType("file"),
