@@ -5,5 +5,3 @@
     location.reload();
   });
 })();
-
-

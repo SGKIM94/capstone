@@ -8,6 +8,7 @@ import article.common.ArticleNotFoundException;
 import article.team.service.DeleteArticleService;
 import article.team.service.ReadArticleService;
 import article.team.service.TeamWriteData;
+import auth.service.StudentUser;
 import auth.service.User;
 import mvc.command.CommandHandler;
 
@@ -23,8 +24,8 @@ public class DeleteArticleHandler implements CommandHandler {
 		try {
 			
 			TeamWriteData articleData = readService.getArticle(fileNo, false);
-			User authUser = (User) req.getSession().getAttribute("authUser");
-			if (!canDelete(authUser, articleData)) {
+			StudentUser authUser = (StudentUser) req.getSession().getAttribute("authStdUser");
+			if (!canDelete(authUser.getId(), articleData)) {
 				res.sendError(HttpServletResponse.SC_FORBIDDEN);
 				return null;
 			}
@@ -32,17 +33,17 @@ public class DeleteArticleHandler implements CommandHandler {
 			deleteService.deleteArticle(fileNo);
 			//TeamWriteData articleData = deleteService.deleteArticle(fileNo);
 			//req.setAttribute("articleData", articleData);
-			return "/WEB-INF/view/deleteTeamboardSuccess.jsp";
+			return "/index.jsp";
 		} catch (ArticleNotFoundException | ArticleContentNotFoundException e) {
 			req.getServletContext().log("no article", e);
 			res.sendError(HttpServletResponse.SC_NOT_FOUND);
 			return null;
 		}
 	}
-	private boolean canDelete(User authUser, TeamWriteData articleData) {
+	private boolean canDelete(String id, TeamWriteData articleData) {
 		String writerId = articleData.getArticle().getWriter().getWriterId();
 		//정수 -> 문자열 변환함
-		String temp = authUser.getId();
+		String temp = id;
 		return temp.equals(writerId);
 	}
 }
