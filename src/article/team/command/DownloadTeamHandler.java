@@ -41,11 +41,17 @@ public class DownloadTeamHandler implements CommandHandler {
 	  
 	  Member member = (Member)req.getSession(false).getAttribute("authTeam"); 
 	  String filename = req.getParameter("fileNo");
+	  String teamNo = req.getParameter("teamNo");
+	  String path;
 	  
 	  TeamContent teamContent = content.selectTeam(filename);
 	  String Docname = URLEncoder.encode(filename,"UTF-8");
-	  String path = req.getSession().getServletContext().getRealPath("/upload/"+member.getTeamNo());
-
+	  
+	  if(member != null)	  
+		  path = req.getSession().getServletContext().getRealPath("/upload/"+member.getTeamNo());
+	  else
+		  path = req.getSession().getServletContext().getRealPath("/upload/"+ teamNo);
+	  
 	  System.out.println("경로 = " + path + " file 이름 = " + teamContent.getOrigin());
 	  
 	  File file = new File(path, teamContent.getOrigin());

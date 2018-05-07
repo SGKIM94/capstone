@@ -1,6 +1,4 @@
-
-<!doctype html>
-<html lang="en">
+<u:hasTeam>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -11,17 +9,16 @@
 </head>
 <body class="flex-center-row">
     <div class="toggle_box flex-space-column">
-        <a href="createTeam.html">
+        <a href="deleteTeam.do">
             <button class="toggle_btn">
-                팀생성
+                	팀삭제
             </button>
         </a>
-        <button class="toggle_btn">
-            팀참가
-        </button>
-        <button class="toggle_btn">
-            팀제거
-        </button>
+        <a href="deleteJoinTeam.do">
+            <button class="toggle_btn">
+                	팀탈퇴
+            </button>
+        </a>
     </div>
     <div class="center_box flex-center-row">
         <div class="side_box">
@@ -65,115 +62,113 @@
                         </svg>
                     </div>
                     <div class="profile_desc">
-                        <span class="desc">김희철님 반갑습니다.</span>
+                        <span class="desc">>${authTeam.teamName}팀  ${authStdUser.name}님</span>
                     </div>
                 </div>
                 <div class="button_box flex-space-row">
-                    <button class="prof_btn">마이페이지</button>
-                    <a href="#"><button class="prof_btn">로그아웃</button></a>
+                    <a href="changePwd.do"><button class="prof_btn">패스워드변경</button></a>
+                    <a href="logout.do"><button class="prof_btn">로그아웃</button></a>
                 </div>
             </div>
             <div class="notice_box">
-                <span class="title_sub">공지사항</span>
-                <ul class="lists">
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                    <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                </ul>
+	                	<span class="title_sub">공지사항</span>
+	               <ul class="lists">
+	               		<c:forEach var="article" items="${articlePage.content}">
+	                	<li><span class="txt"><a href="noticeread.do?postNo=${article.postNo}&pageNo=${articlePage.currentPage}">
+	                	<c:out value="${article.title}"/></a></span></li>
+	                	</c:forEach>
+	            		</ul>
             </div>
         </div>
         <div class="main_box">
             <span class="title_sub">팀 게시판</span>
             <div class="board">
                 <div class="search_box flex-center-row">
-                    <select class="board-select">
-                        <option value="">--분류선택--</option>
-                        <option value="0">회의록</option>
-                        <option value="1">제안서</option>
-                        <option value="2">제안서</option>
-                        <option value="3">제안서</option>
-                        <option value="4">제안서</option>
-                        <option value="5">제안서</option>
-                        <option value="6">제안서</option>
-                        <option value="7">제안서</option>
+                <form action="teamlist.do" method="post">
+                    <select class="board-select" name="filetype">
+                    	<option value="00">전체보기</option>
+                		<option value="a">회의록</option>
+                		<option value="b">제안서</option>
+                		<option value="c">요구분석서</option>
+                		<option value="d">설계서</option>
+                		<option value="e">구현서</option>
+                		<option value="f">형상관리서</option>
+                		<option value="g">메뉴얼</option>
+                		<option value="h">최종보고서</option> 
                     </select>
-                    <button id="search_btn">찾기</button>
+                    <button type="submit" id="search">찾기</button>
+                 </form>
                 </div>
                 <div class="board-list-box">
                     <ul class="board-info">
-                        <li class="file_num">파일번호</li>
-                        <li class="file_title">파일제목</li>
+                        <li class="file_num">작성자</li>
+                        <li class="file_title">제목</li>
                         <li class="file_time">게시날짜</li>
                     </ul>
+                    <c:forEach var="teamarticle" items="${articleTeamPage.content}">
                     <div class="board-list flex-center-row">
                         <div class="file_num_box file_base">
-                            <span class="text-data">01</span>
+							<span class="text-data">${teamarticle.writer.writerId}</span>
                         </div>
                         <div class="file_title_box file_base">
-                            <span class="text-data">First Board</span>
+                            <form action="downloadTeamFile.do" method="post" name="downTeamFile">
+                            	<span class="text-data">
+                            	<input class="submitLink" type="submit" name="filtitle" value='${teamarticle.title}'>
+                            	<input type="hidden" name="fileNo" value="${teamarticle.fileNo}">     		
+    							</span>
+    						</form>
                         </div>
                         <div class="file_time_box  flex-center-column">
-                            <span class="text-data">2018-05-02</span>
+                            <span class="text-data">${teamarticle.regDate}</span>
                             <div class="edit_box">
                                 <button class="board_editBtn">수정</button>
                                 <button class="board_editBtn">삭제</button>
                             </div>
                         </div>
                     </div>
+                    </c:forEach>
                 </div>
 
 
             </div>
-            <div class="board_bottom flex-space-row">
-                <a href="#">
-                    <div class="goToDisplay_box flex-space-row">
-                        <svg x="0px" y="0px" width="15px" height="15px" viewBox="0 0 511.626 511.627" >
-                            <path d="M506.206,179.012L360.025,32.834c-3.617-3.617-7.898-5.426-12.847-5.426s-9.233,1.809-12.847,5.426   c-3.617,3.619-5.428,7.902-5.428,12.85v73.089h-63.953c-135.716,0-218.984,38.354-249.823,115.06C5.042,259.335,0,291.03,0,328.907   c0,31.594,12.087,74.514,36.259,128.762c0.57,1.335,1.566,3.614,2.996,6.849c1.429,3.233,2.712,6.088,3.854,8.565   c1.146,2.471,2.384,4.565,3.715,6.276c2.282,3.237,4.948,4.859,7.994,4.859c2.855,0,5.092-0.951,6.711-2.854   c1.615-1.902,2.424-4.284,2.424-7.132c0-1.718-0.238-4.236-0.715-7.569c-0.476-3.333-0.715-5.564-0.715-6.708   c-0.953-12.938-1.429-24.653-1.429-35.114c0-19.223,1.668-36.449,4.996-51.675c3.333-15.229,7.948-28.407,13.85-39.543   c5.901-11.14,13.512-20.745,22.841-28.835c9.325-8.09,19.364-14.702,30.118-19.842c10.756-5.141,23.413-9.186,37.974-12.135   c14.56-2.95,29.215-4.997,43.968-6.14s31.455-1.711,50.109-1.711h63.953v73.091c0,4.948,1.807,9.232,5.421,12.847   c3.62,3.613,7.901,5.424,12.847,5.424c4.948,0,9.232-1.811,12.854-5.424l146.178-146.183c3.617-3.617,5.424-7.898,5.424-12.847   C511.626,186.92,509.82,182.636,506.206,179.012z" fill="#595959"/>
-
-                        </svg>
-                        <span class="goToDisplay">작품전시회 바로가기</span>
-                    </div>
-                </a>
+                
                 <div class="btn_box flex-space-row">
                     <a href="#"><button class="writing" id="write">글쓰기</button></a>
                 </div>
-            </div>
         </div>
         <div class="write_box" id="write_board">
+          <form action="teamwrite.do" method="post" enctype="multipart/form-data">       
             <div class="w_title_box flex-center-row">
                 <div class="list_box flex-center-row">
-                    <select class="custom-select">
+                    <select class="custom-select" name="filetype">
                         <option value="">분류선택</option>
-                        <option value="0">회의록</option>
-                        <option value="1">제안서</option>
-                        <option value="2">김호철</option>
-                        <option value="3">김후철</option>
-                        <option value="4">곰희철</option>
-                        <option value="5">금희철</option>
-                        <option value="6">철철김</option>
-                        <option value="7">킹희철</option>
+            			<option value=a>회의록</option>
+            			<option value=b>제안서</option>
+            			<option value=c>요구분석서</option>
+            			<option value=d>설계서</option>
+            			<option value=e>구현서</option>
+            			<option value=f>형상관리서</option>
+            			<option value=g>메뉴얼</option>
+            			<option value=h>최종보고서</option>
                     </select>
                 </div>
             </div>
             <div class="w_title_box flex-center-row">
-                <input type="text" placeholder="제목">
+                <input type="text" name="title" placeholder="제목">
+                <c:if test="${errors.title}">제목을 입력하세요.</c:if>
             </div>
             <div class="w_title_box flex-center-row">
-                <input type="file">
+                <input type="file" name="file">
+                ${param.file}
             </div>
             <div class="w_title_box flex-space-row">
-                <button id="cancel">취소</button>
-                <button id="register">등록</button>
+                <button type="reset" id ="cancel">취소</button>
+                <button type="submit" id="register">등록</button>
             </div>
-        </div>
-    </div>
+          </form>
+        </div>     	
+	</div>
 <script src="src/write.js"></script>
 <script src="src/alert.js"></script>
 </body>
-</html>
+</u:hasTeam>

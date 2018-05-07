@@ -30,7 +30,7 @@
     	<form action="downloadFile.do" method="post" name="downFile">
     	<span class="desc"><strong>파일</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	  	
     	<a>
-    	<input type="submit" name="filename" value='${noticeData.file}'>
+    	<input type="submit" class="submitLink" name="filename" value='${noticeData.file}'>
     	</a> 	
     	</span>
     	</form>

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import article.team.service.ArticlePage;
 import article.team.service.ListArticleService;
+import auth.service.Member;
 import auth.service.StudentUser;
 import mvc.command.CommandHandler;
 
@@ -16,7 +17,6 @@ public class ListArticleHandler implements CommandHandler {
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) 
 			throws Exception {		
-		HttpSession session = req.getSession();
 		
 		String filetype = req.getParameter("filetype");
 		String pageNoVal = req.getParameter("pageNo");
@@ -38,7 +38,7 @@ public class ListArticleHandler implements CommandHandler {
 			articlePage = listService.getArticlePage(pageNo, team.getTeamNo(), filetype);
 		}
 		
-		session.setAttribute("articleTeamPage", articlePage);
+		req.setAttribute("articleTeamPage", articlePage);
 		return "/index.jsp";
 	}
 }

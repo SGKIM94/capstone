@@ -68,7 +68,7 @@ public class WriteArticleService {
 		
 		strDate = strDate.substring(2,7);
 		
-		String fileNo = req.getWriter().getTeamNo()+"_"+req.getFiletype() + "_" + strDate;
+		String fileNo = req.getWriter().getTeamNo()+ "_" + strDate +"_"+req.getFiletype() ;
 		return fileNo;
 	}
 }

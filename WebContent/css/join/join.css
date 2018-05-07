@@ -106,3 +106,17 @@ button:hover{
     background-color: #f0f0f0;
     color: #000000;
 }
+
+a.button {
+  	-webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+  	}
+
+input.submitLink {
+    background-color: transparent;
+    text-decoration: underline;
+    border: none;
+
+    cursor: pointer;
+}
