@@ -93,6 +93,25 @@
     width: 40px;
     height: 20px;
 }
+
+.modify_section{
+    background-color: white;
+    color: black;
+    border: 1px solid #d7d7d7;
+    font-size: 6px;
+    width: 40px;
+    height: 20px;
+}
+
+.delete_section{
+    background-color: white;
+    color: black;
+    border: 1px solid #d7d7d7;
+    font-size: 6px;
+    width: 40px;
+    height: 20px;
+}
+
 /*****************/
 
 
