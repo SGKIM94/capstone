@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import article.notice.command.DownloadUtil;
+import article.team.dao.TeamContentDao;
+import article.team.model.TeamContent;
+import article.team.service.DownloadTeamService;
+import auth.service.Member;
+import auth.service.StudentUser;
 import member.service.DuplicateIdException;
 import mvc.command.CommandHandler;
 
@@ -32,13 +37,18 @@ public class DownloadTeamHandler implements CommandHandler {
    }
 
    private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws Exception {
+	  DownloadTeamService content = new DownloadTeamService();
 	  
-	  String filename = req.getParameter("filename");
+	  Member member = (Member)req.getSession(false).getAttribute("authTeam"); 
+	  String filename = req.getParameter("fileNo");
+	  
+	  TeamContent teamContent = content.selectTeam(filename);
 	  String Docname = URLEncoder.encode(filename,"UTF-8");
-	  String path = req.getSession().getServletContext().getRealPath("/upload/team/"); 
-	  System.out.println("경로 = " + path + " file 이름 = " + filename);
+	  String path = req.getSession().getServletContext().getRealPath("/upload/"+member.getTeamNo());
+
+	  System.out.println("경로 = " + path + " file 이름 = " + teamContent.getOrigin());
 	  
-	  File file = new File(path, filename);
+	  File file = new File(path, teamContent.getOrigin());
       Map<String, Boolean> errors = new HashMap<>();
       req.setAttribute("errors", errors);
 
@@ -55,5 +65,4 @@ public class DownloadTeamHandler implements CommandHandler {
          return FORM_VIEW;
       }
    }
-
 }

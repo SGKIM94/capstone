@@ -71,9 +71,7 @@ public class WriteArticleHandler implements CommandHandler {
 	private WriteRequest createWriteRequest(StudentUser user, HttpServletRequest req) {
 		StudentDao studentDao = new StudentDao();
 		Student student;
-		DecimalFormat df = new DecimalFormat("00"); // 연도 구하기위한 포맷 형식 지정
-		Calendar currentCalendar = Calendar.getInstance();
-		String strYear = Integer.toString(currentCalendar.get(Calendar.YEAR));
+		
 		
 		try (Connection conn = ConnectionProvider.getConnection()) {
 			student = studentDao.selectById(conn, user.getId());
@@ -91,7 +89,6 @@ public class WriteArticleHandler implements CommandHandler {
 		String savePath = req.getSession().getServletContext().getRealPath("/upload");    // 파일이 업로드될 실제 tomcat 폴더의 WebContent 기준
 		
 		savePath = makeDirectory(savePath, student.getTeamNo());
-		strYear = strYear.substring(2,4);
 		
 		try{
 		multi=new MultipartRequest(req, savePath, sizeLimit, "euc-kr", new DefaultFileRenamePolicy()); 
@@ -105,7 +102,7 @@ public class WriteArticleHandler implements CommandHandler {
 				multi.getParameter("title"),
 				multi.getOriginalFileName("file"),
 				multi.getFilesystemName("file"),
-				new TeamArticleWriter("strYear", strYear),
+				new TeamArticleWriter(user.getTeamNo(), user.getId()),	//분,초 + 문서번호
 				multi.getFile("file").length(),
 				multi.getContentType("file"),
 				multi.getParameter("filetype"));

@@ -11,7 +11,7 @@
 }
 
 
-/****** 게시판 *******/
+/****** 寃뚯떆�뙋 *******/
 .board{
     margin: 0 auto;
     width: 500px;
@@ -40,10 +40,10 @@
     border-left: 1px solid #d7d7d7;
     border-right: 1px solid #d7d7d7;
     box-sizing: border-box;
-    width: 340px;
+    width: 290px;
 }
 .file_time{
-    width: 100px;
+    width: 150px;
 }
 .board-select{
     width: 100px;
@@ -78,12 +78,12 @@
 }
 .file_num_box{width: 60px;}
 .file_title_box{
-    width: 340px;
+    width: 290px;
     border-left: 1px solid #d7d7d7;
     border-right: 1px solid #d7d7d7;
     box-sizing: border-box;
 }
-.file_time_box{width: 100px;}
+.file_time_box{width: 150px;}
 .text-data{font-size: 12px;}
 .board_editBtn{
     background-color: white;

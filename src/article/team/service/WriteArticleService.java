@@ -2,6 +2,8 @@ package article.team.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import article.team.dao.*;
@@ -57,7 +59,16 @@ public class WriteArticleService {
 	//이거 구현해야함.
 	
 	private String toGetFileNo(WriteRequest req) {
-		String fileNo = req.getWriter().getTeamNo()+"_"+req.getFiletype();
+		DecimalFormat df = new DecimalFormat("00"); // 연도 구하기위한 포맷 형식 지정
+		Calendar currentCalendar = Calendar.getInstance();
+		String strYear = Integer.toString(currentCalendar.get(Calendar.YEAR));
+		String strMin = Integer.toString(currentCalendar.get(Calendar.MINUTE));
+		String strSecd = Integer.toString(currentCalendar.get(Calendar.SECOND));
+		String strDate = strYear + strMin + strSecd;
+		
+		strDate = strDate.substring(2,7);
+		
+		String fileNo = req.getWriter().getTeamNo()+"_"+req.getFiletype() + "_" + strDate;
 		return fileNo;
 	}
 }
