@@ -339,15 +339,15 @@
                         </div>
                         <div class="file_time_box  flex-center-column">
                             <span class="text-data_date">${teamarticle.regDate}</span>
-                            <div class="edit_box">
+       
 <!--                                 <button class="modify_section" id = "modify">수정</button> -->
-                         <form action="teamarticledelete.do" method="post" name="deleteTeamFile">
-                                  <span class="text-data">
-                                     <button class="delete_section" type = "submit">삭제</button>
-                                     <input type="hidden" name="fileNo" value="${teamarticle.fileNo}">           
-                            </span>
+                         		<form action="teamarticledelete.do" method="post" name="deleteTeamFile">                                 
+                                  <div class="edit_box">
+                                     <button class="board_editBtn" type = "submit">삭제</button>
+                                     <input type="hidden" name="fileNo" value="${teamarticle.fileNo}">
+                                  </div>              
                                 </form>
-                            </div>
+                            
                         </div>
                     </div>
                     </c:forEach>

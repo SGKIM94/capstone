@@ -9,15 +9,16 @@
     margin-top: 10px;
     width: 580px;
 }
-
-
-/****** 寃뚯떆�뙋 *******/
+/****** 게시판 *******/
 .board{
     margin: 0 auto;
     width: 500px;
     height: 500px;
 }
 .board-info{
+    top: 0;
+    position: sticky;
+    background-color: white;
     margin: 0 auto;
     display: block;
     width: 500px;
@@ -45,6 +46,7 @@
 .file_time{
     width: 150px;
 }
+
 .board-select{
     width: 100px;
     height: 30px;
@@ -57,14 +59,15 @@
 }
 .board-list-box{
     margin: 10px auto;
-    width: 500px;
+    width: 520px;
     height: 420px;
     overflow-y: scroll;
+    overflow-x: hidden;
     border: 1px solid #d7d7d7;
     border-radius: 5px;
 }
 .board-list{
-    width: 500px;
+    width: 505px;
     height: 50px;
     border-bottom: 1px solid #d7d7d7;
 }
@@ -85,7 +88,7 @@
 }
 .file_time_box{width: 150px;}
 .text-data{font-size: 12px;}
-.text-data_date{font-size: 10px;}
+.text-data_date{font-size: 9px;}
 .board_editBtn{
     background-color: white;
     color: black;
@@ -94,25 +97,6 @@
     width: 40px;
     height: 20px;
 }
-
-.modify_section{
-    background-color: white;
-    color: black;
-    border: 1px solid #d7d7d7;
-    font-size: 6px;
-    width: 40px;
-    height: 20px;
-}
-
-.delete_section{
-    background-color: white;
-    color: black;
-    border: 1px solid #d7d7d7;
-    font-size: 6px;
-    width: 40px;
-    height: 20px;
-}
-
 /*****************/
 
 

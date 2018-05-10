@@ -9,18 +9,16 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/write-notice/write-notice.css">
     <link rel="stylesheet" href="./css/join/join.css">
     <title>게시글작성</title>
 </head>
 <body class="flex-center-row">
 <div class="center_box">
-    <div class="title_box">
+    <div class="center_box">
         <span class="_title">Management System</span>
     </div>
     <div class="sign_box">
-        <div class="list_box flex-center-row">
-            
-        </div>
     </div>
     <div class="join_box_notice">
     	<span class="desc"><strong>번호</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${noticeData.notice.postNo}</span><br><br>

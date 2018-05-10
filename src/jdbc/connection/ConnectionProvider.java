@@ -8,6 +8,6 @@ public class ConnectionProvider {
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(
-                "jdbc:apache:commons:dbcp:capstonedb");
+                "jdbc:mysql://localhost:3306/capstonedb","caps","capstone123");
     }
 }
