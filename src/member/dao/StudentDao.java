@@ -85,6 +85,26 @@ public class StudentDao {
 		   pstmt.executeUpdate();
 	   }	   	
    }
-}
+   
+   public String selectNamebyTeamNo(Connection conn, String teamNo) throws SQLException {
+	   PreparedStatement pstmt = null;
+	   ResultSet rs = null;	   
+	   try {
+		   pstmt = conn.prepareStatement(
+			   "select stuName from student where teamNo = ?");
+		   pstmt.setString(1, teamNo);
+		   rs = pstmt.executeQuery();
+		   String stName = null;
+		   if(rs.next()) {
+			   stName = rs.getString("stuName");			   
+		   }
+		   return stName;
+	   } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	     }
+	  }			   
+   }   
+  
    
    

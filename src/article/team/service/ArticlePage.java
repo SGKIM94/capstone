@@ -9,14 +9,16 @@ public class ArticlePage {
 	private int total;
 	private int currentPage;
 	private List<TeamArticle> content;	//코드 재사용이 안됨.... 공지사항과 따로??
+	private List<String> stuName;
 	private int totalPages;
 	private int startPage;
 	private int endPage;
 
-	public ArticlePage(int total, int currentPage, int size, List<TeamArticle> content) {
+	public ArticlePage(int total, int currentPage, int size, List<TeamArticle> content, List<String> stuName) {
 		this.total = total;
 		this.currentPage = currentPage;
 		this.content = content;
+		this.stuName = stuName;
 		if (total == 0) {
 			totalPages = 0;
 			startPage = 0;
@@ -57,6 +59,10 @@ public class ArticlePage {
 
 	public List<TeamArticle> getContent() {
 		return content;
+	}
+	
+	public List<String> getStuName() {
+		return stuName;
 	}
 
 	public int getStartPage() {

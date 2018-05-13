@@ -322,29 +322,29 @@
                     <ul class="board-info">
                         <li class="file_num">작성자</li>
                         <li class="file_title">제목</li>
-                        <li class="file_time">게시날짜</li>
+                        <li class="file_time">게시날짜</li>           
                     </ul>
-                    <c:forEach var="teamarticle" items="${articleTeamPage.content}">
+                    <c:forEach var="teamarticle1" items="${articleTeamPage.content}" varStatus="status">
                     <div class="board-list flex-center-row">
                         <div class="file_num_box file_base">
-                     <span class="text-data">${teamarticle.writer.writerId}</span>
+                     <span class="text-data">${articleTeamPage.stuName[status.index]}</span>
                         </div>
                         <div class="file_title_box file_base">
                             <form action="downloadTeamFile.do" method="post" name="downTeamFile">
                                <span class="text-data">
-                               <input class="submitLink" type="submit" name="filtitle" value='${teamarticle.title}'>
-                               <input class = "mod_file_class" type="hidden" name="fileNo" value="${teamarticle.fileNo}">           
-                         </span>
-                      </form>
+                               	<input class="submitLink" type="submit" name="filtitle" value='${teamarticle1.title}'>
+                               		<input class = "mod_file_class" type="hidden" name="fileNo" value="${teamarticle1.fileNo}">           
+                         	   </span>
+                      		</form>
                         </div>
                         <div class="file_time_box  flex-center-column">
-                            <span class="text-data_date">${teamarticle.regDate}</span>
+                            <span class="text-data_date">${teamarticle1.regDate}</span>
        
 <!--                                 <button class="modify_section" id = "modify">수정</button> -->
                          		<form action="teamarticledelete.do" method="post" name="deleteTeamFile">                                 
                                   <div class="edit_box">
                                      <button class="board_editBtn" type = "submit">삭제</button>
-                                     <input type="hidden" name="fileNo" value="${teamarticle.fileNo}">
+                                     <input type="hidden" name="fileNo" value="${teamarticle1.fileNo}">
                                   </div>              
                                 </form>
                             
@@ -361,7 +361,7 @@
           <form action="teamwrite.do" method="post" enctype="multipart/form-data">       
             <div class="w_title_box flex-center-row">
                 <div class="list_box flex-center-row">
-                    <select class="custom-select" name="filetype">
+                    <select class="custom-select" name="filetype" id="teamFileType">
                         <option value="">분류선택</option>
             			<option value=a>회의록</option>
             			<option value=b>제안서</option>
@@ -377,18 +377,19 @@
             
             <input type="hidden" name="fileNo" value="${teamarticle.fileNo}">
             <div class="w_title_box flex-center-row">
-                <input type="text" name="title" placeholder="제목">
+                <input type="text" name="title" id="fileTitle" placeholder="제목">
                 <c:if test="${errors.title}">제목을 입력하세요.</c:if>
             </div>
             <div class="w_title_box flex-center-row">
-                <input type="file" name="file">
+                <input type="file" name="file" id="teamFile">
                 ${param.file}
             </div>
             <div class="w_title_box flex-space-row">
                 <button type="reset" id ="cancel">취소</button>
                 <button type="submit" id="register">등록</button>
             </div>
-          </form>
+            <c:if test="${errors.NotAllw}">잘못된 값입니다.</c:if>
+          </form>        
         </div>    
          <div class="write_box" id="modify_board">
           <form action="teamarticlemodify.do" method="post" enctype="multipart/form-data">       

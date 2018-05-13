@@ -13,9 +13,15 @@ import java.util.List;
 import article.common.ArticleNotFoundException;
 import article.team.model.*;
 import jdbc.JdbcUtil;
+import member.dao.StudentDao;
+import member.model.Student;
+import team.dao.TeamDao;
+import team.model.Team;
 
 public class TeamArticleDao {
-
+	
+	StudentDao studentDao = new StudentDao();
+	
 	public TeamArticle insert(Connection conn, TeamArticle article) throws SQLException {
 		PreparedStatement pstmt = null;
 		Statement stmt = null;
@@ -86,8 +92,9 @@ public class TeamArticleDao {
 			pstmt.setInt(3, size);
 			rs = pstmt.executeQuery();
 			List<TeamArticle> result = new ArrayList<>();
+			String stuName = studentDao.selectNamebyTeamNo(conn, teamNo);
 			while (rs.next()) {
-				result.add(convertArticle(rs));
+				result.add(convertArticle(rs, stuName));
 			}
 			return result;
 		} finally {
@@ -140,6 +147,17 @@ public class TeamArticleDao {
 	}
 	
 	/*이부분 문제 있을 수 있음*/
+	private TeamArticle convertArticle(ResultSet rs, String stuName) throws SQLException {
+		return new TeamArticle(rs.getString("fileNo"),
+				rs.getString("title"),
+				new TeamArticleWriter(
+						rs.getString("teamNo"),
+						rs.getString("writeId")),
+				toDate(rs.getTimestamp("regDate")),
+				toDate(rs.getTimestamp("modDate")),
+				rs.getInt("downCnt"));
+	}
+	
 	private TeamArticle convertArticle(ResultSet rs) throws SQLException {
 		return new TeamArticle(rs.getString("fileNo"),
 				rs.getString("title"),
@@ -219,4 +237,23 @@ public class TeamArticleDao {
 			JdbcUtil.close(pstmt);
 		}
 	}
+	
+	public String selectNamebyWriterId(Connection conn, String writeId) throws SQLException {
+		   PreparedStatement pstmt = null;
+		   ResultSet rs = null;	   
+		   try {
+			   pstmt = conn.prepareStatement(
+				   "select a.stuName from student a, teamboard b where a.stuId=b.writeId and b.writeId = ?");
+			   pstmt.setString(1, writeId);
+			   rs = pstmt.executeQuery();
+			   String stName = null;
+			   if(rs.next()) {
+				   stName = rs.getString("stuName");			   
+			   }
+			   return stName;
+		   } finally {
+		         JdbcUtil.close(rs);
+		         JdbcUtil.close(pstmt);
+		   }
+	}			   
 }

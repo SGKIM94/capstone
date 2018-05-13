@@ -17,6 +17,7 @@ import article.team.service.ModifyArticleService;
 import article.team.service.ModifyRequest;
 import article.team.service.TeamWriteData;
 import article.team.service.ReadArticleService;
+import auth.service.Member;
 import auth.service.StudentUser;
 import auth.service.User;
 import mvc.command.CommandHandler;
@@ -72,6 +73,7 @@ public class ModifyArticleHandler implements CommandHandler {
 	private String processSubmit(HttpServletRequest req, HttpServletResponse res)
 			throws Exception {
 		StudentUser authUser = (StudentUser)req.getSession().getAttribute("authStdUser");
+		Member authTeam = (Member)req.getSession().getAttribute("authTeam");
 		
 		String teamNo = authUser.getTeamNo();
 		

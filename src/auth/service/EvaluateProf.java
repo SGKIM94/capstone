@@ -9,6 +9,7 @@ public class EvaluateProf {
 	private User user;
 	private String EvalNo;
 	private String TeamNo;
+	private String 
 	
 	EvaluateProf(String id, String name, int access, String teamNo){
 		user = new User(id, name, access);

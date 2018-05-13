@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import article.team.model.TeamContent;
 import article.team.service.ArticlePage;
 import article.team.service.ListArticleService;
 import auth.service.Member;
@@ -19,7 +20,8 @@ public class ListArticleHandler implements CommandHandler {
 			throws Exception {		
 		
 		String filetype = req.getParameter("filetype");
-		String pageNoVal = req.getParameter("pageNo");
+		String pageNoVal = req.getParameter("pageNo");	
+		
 		int pageNo = 1;
 		if (pageNoVal != null) {
 			pageNo = Integer.parseInt(pageNoVal);
@@ -39,6 +41,31 @@ public class ListArticleHandler implements CommandHandler {
 		}
 		
 		req.setAttribute("articleTeamPage", articlePage);
+		
 		return "/index.jsp";
+	}
+	
+	public String getFileType(String filetype)
+	{
+		if(filetype.equals("a"))
+			filetype = "회의록";
+		else if(filetype.equals("b"))
+			filetype = "제안서";
+		else if(filetype.equals("c"))
+			filetype = "요구분석서";
+		else if(filetype.equals("d"))
+			filetype = "설계서";
+		else if(filetype.equals("e"))
+			filetype = "구현서";
+		else if(filetype.equals("f"))
+			filetype = "형상관리서";
+		else if(filetype.equals("g"))
+			filetype = "메뉴얼";
+		else if(filetype.equals("h"))
+			filetype = "최종보고서";
+		else
+			filetype = "알수없음";
+		
+		return filetype;
 	}
 }

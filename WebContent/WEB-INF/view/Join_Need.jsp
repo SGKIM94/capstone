@@ -54,6 +54,7 @@
     </div>
     <div class="button_box flex-center-column">
         <button type="submit">Join</button>
+        <c:if test="${errors.putValues}">값을 입력하세요.</c:if>
     </div>
 </div>
 </form>

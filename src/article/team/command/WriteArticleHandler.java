@@ -26,6 +26,8 @@ import jdbc.connection.ConnectionProvider;
 import member.model.Student;
 import member.dao.StudentDao;
 import mvc.command.CommandHandler;
+import team.dao.TeamDao;
+import team.model.Team;
 
 public class WriteArticleHandler implements CommandHandler {
 	private static final String FORM_VIEW = "/index.jsp";
@@ -52,22 +54,26 @@ public class WriteArticleHandler implements CommandHandler {
 		req.setAttribute("errors", errors);
 
 		StudentUser user = (StudentUser)req.getSession(false).getAttribute("authStdUser");
-		WriteRequest writeReq = createWriteRequest(user, req);
-		writeReq.validate(errors);
+		String filetype = req.getParameter("filetype");
 		
 		if (!errors.isEmpty()) {
 			return FORM_VIEW;
 		}
 		
-		String newFileNo = writeService.write(writeReq);
-		req.setAttribute("newArticleNo", newFileNo);
 		
-//		ListArticleHandler listarticlehandler = new ListArticleHandler();
-//		
-//		String listjsp = listarticlehandler.process(req, res);
+		WriteRequest writeReq = createWriteRequest(user, req);
+//		if(writeReq == null || filetype == null)
+//		{
+//			errors.put("NotAllow", Boolean.TRUE);
+//			return FORM_VIEW;
+//		}
+//		else {
+			writeReq.validate(errors);	
+			String newFileNo = writeService.write(writeReq);
+			req.setAttribute("newArticleNo", newFileNo);
+//		}
 		
 		return FORM_VIEW;
-		//return "/WEB-INF/view/listTeam.jsp";
 	}
 
 	private WriteRequest createWriteRequest(StudentUser user, HttpServletRequest req) throws Exception {
@@ -77,6 +83,7 @@ public class WriteArticleHandler implements CommandHandler {
 		
 		try (Connection conn = ConnectionProvider.getConnection()) {
 			student = studentDao.selectById(conn, user.getId());
+			
 			if (student == null) {
 				throw new LoginFailException();
 			}
@@ -96,7 +103,11 @@ public class WriteArticleHandler implements CommandHandler {
 		multi=new MultipartRequest(req, savePath, sizeLimit, "utf-8", new DefaultFileRenamePolicy()); 	//utf-8로 해야됨
 		}catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
+		String file = multi.getOriginalFileName("file");
+
+//		if(file == null)
+//			return null;
 		
 		String origin_file = multi.getOriginalFileName("file");
 		
@@ -105,6 +116,7 @@ public class WriteArticleHandler implements CommandHandler {
 		store_file = new String(store_file.getBytes("euc-kr"),"KSC5601");
 		/*여기서의 이름과 뷰.jsp 파일에서의 이름이 같아야함.*/
 //		/* 파일 시스템상의 이름을 구하는 방법을 알아보고 코드 다시 수정해야함. */
+		System.out.println("글쓴이는 " + user.getName() + "입니다");
 		
 		return new WriteRequest(null,
 				multi.getParameter("title"),

@@ -22,7 +22,7 @@
     	session.invalidate();
 	%>
     <div class="button_box flex-center-column">
-        <a href="${ctxPath}/Capstone/index.jsp">
+        <a href="${ctxPath}/index.jsp">
         <button>처음화면</button></a>
     </div>
 </div>

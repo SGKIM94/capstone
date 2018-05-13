@@ -44,6 +44,7 @@ public class JoinHandler implements CommandHandler {
 		joinReq.setConfirmPassword(req.getParameter("confirmPassword"));
 		joinReq.setPhoneNo(req.getParameter("phonenumber"));
 		joinReq.setEmail(req.getParameter("email"));
+		
 		if(parseint(req.getParameter("groupnumber"))==ClassifyMember.getStu()){
 			joinReq.setGroupNo(Authority.getStuNotTeam());
 			joinReq.setTeamNo(TEAM_DEFAULT);
@@ -61,16 +62,16 @@ public class JoinHandler implements CommandHandler {
 		}
 		
 		try {
-			if(joinReq.getGroupNo()==ClassifyMember.getPro()){
+			if(joinReq.getGroupNo()==Authority.getProNotEval()){
 				joinService.join_pro(joinReq);	
 				return "/WEB-INF/view/joinSuccess.jsp";
 			}
-			else if(joinReq.getGroupNo()==ClassifyMember.getStu()){
+			else if(joinReq.getGroupNo()==Authority.getStuNotTeam()){
 				joinService.join_stu(joinReq);
 				return "/WEB-INF/view/joinSuccess.jsp";
 			}
 			else{
-				errors.put("choose group!!", Boolean.TRUE);
+				errors.put("putValues", Boolean.TRUE);
 				return FORM_VIEW;
 			}
 		} catch (DuplicateIdException e) {

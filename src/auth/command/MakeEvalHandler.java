@@ -17,7 +17,7 @@ import auth.service.Member;
 import team.dao.*;
 import team.model.*;
 
-public class MakeTeamHandler implements CommandHandler {
+public class MakeEvalHandler implements CommandHandler {
 
 	private static final String FORM_VIEW = "/index.jsp";
 	
