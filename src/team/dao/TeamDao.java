@@ -6,7 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
+
+import article.team.model.TeamArticle;
+import article.team.model.TeamArticleWriter;
+
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import member.model.*;
@@ -52,6 +58,38 @@ public class TeamDao {
          JdbcUtil.close(pstmt);
       }
    }
+   /* 학과장님의 평가 시작 페이지에서 평가받아야할 팀의 이름들만 가져오는 select 함수 */
+   public List<String> selectAllTeam(Connection conn, String strYear) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      String year = "'" + strYear.substring(2,2) + "%'";
+
+	      try {
+	         pstmt = conn.prepareStatement(
+	               "select teamName from team where teamNo like "+ year);
+	         rs = pstmt.executeQuery();
+	         List<String> result = new ArrayList<>();
+	         
+	         while (rs.next()) {
+					result.add(rs.getString("teamName"));
+				}
+				return result;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }	      
+	   }
+//   
+//   private Team convertArticle(ResultSet rs) throws SQLException {
+//		return new Team(
+//          	  rs.getString("teamNo"),         //이거 db int -> str 수정해야함 
+//              rs.getString("teamName"), 
+//              rs.getString("teamSubject"),
+//              rs.getString("advisor"),
+//              rs.getString("groupNo"),
+//              true,                           
+//              toDate(rs.getTimestamp("TeamJoinDate")));
+//	}
    
    private Date toDate(Timestamp date) {
       return date == null ? null : new Date(date.getTime());

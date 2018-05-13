@@ -206,11 +206,12 @@
                 </div>
                 </div>
 				</c:forEach>
-                
             	</div>
         	</div>
         	<div class="btn_box flex-center-row">
-                    <button class="eval_btn">평가하기</button>
+        		<form action="makeEvalPlan.do" method="get" name="makeEvalPlan">
+                    <button class="eval_btn" type = "submit">평가하기</button>
+                </form>
         	</div> 
         </div>     
     </div>
@@ -339,15 +340,13 @@
                         </div>
                         <div class="file_time_box  flex-center-column">
                             <span class="text-data_date">${teamarticle.regDate}</span>
-       
-<!--                                 <button class="modify_section" id = "modify">수정</button> -->
+       							<button class="modify_section" id = "modify">수정</button>
                          		<form action="teamarticledelete.do" method="post" name="deleteTeamFile">                                 
                                   <div class="edit_box">
                                      <button class="board_editBtn" type = "submit">삭제</button>
                                      <input type="hidden" name="fileNo" value="${teamarticle.fileNo}">
                                   </div>              
-                                </form>
-                            
+                                </form>                            
                         </div>
                     </div>
                     </c:forEach>
@@ -392,7 +391,7 @@
         </div>    
          <div class="write_box" id="modify_board">
           <form action="teamarticlemodify.do" method="post" enctype="multipart/form-data">       
-            <input class="mod_class" type="hidden" name="fileNo" value="">
+            <input id="select_file" type="hidden" name="select_file" value="">
             <div class="w_title_box flex-center-row">
                 <input type="text" name="title" placeholder="제목">
                 <c:if test="${errors.title}">제목을 입력하세요.</c:if>
@@ -403,7 +402,7 @@
             </div>
             <div class="w_title_box flex-space-row">
                 <button type="reset" id ="modify_cancel">취소</button>
-                <button type="submit" id="mod_register">수정</button>
+                <button type="submit" id="mod_register" >수정</button>
             </div>
           </form>
         </div>   	

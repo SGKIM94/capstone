@@ -43,7 +43,9 @@ public class ModifyArticleHandler implements CommandHandler {
 	private String processForm(HttpServletRequest req, HttpServletResponse res)
 			throws IOException {
 		try {
-			String fileNo = req.getParameter("fileNo");
+			String fileNo = req.getParameter("select_file");
+			System.out.print(fileNo);
+			
 			TeamWriteData articleData = readService.getArticle(fileNo, false);
 			StudentUser authUser = (StudentUser) req.getSession().getAttribute("authStdUser");
 			if (!canModify(authUser, articleData)) {

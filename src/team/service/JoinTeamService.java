@@ -2,12 +2,10 @@ package team.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Date;
 
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 import team.dao.*;
-import member.service.DuplicateIdException;
 import team.model.*;
 
 

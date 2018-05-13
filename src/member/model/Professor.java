@@ -19,7 +19,7 @@ public class Professor {
 	      this.phoneNo = null;
 	      this.proEmail = null;
 	      this.proJoinDate = null;
-	   }
+   }
    
    public Professor(String id, String name, String password, 
          String phoneNo, String email, Date regDate) {
@@ -56,6 +56,9 @@ public class Professor {
    public String getProId() {
       return proId;
    }
+   public String getProName() {
+	      return proName;
+	   }
    public String getProname() {
       return proName;
    }

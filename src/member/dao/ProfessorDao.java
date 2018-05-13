@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import jdbc.JdbcUtil;
 import member.model.Professor;
@@ -36,6 +38,38 @@ public class ProfessorDao {
          JdbcUtil.close(pstmt);
       }
    }
+   
+   public List<Professor> selectAllTeam(Connection conn) throws SQLException {
+	  PreparedStatement pstmt = null;
+	  ResultSet rs = null;
+	  
+	  try {
+	     pstmt = conn.prepareStatement(
+	    		 "select * from professor");	
+	     rs = pstmt.executeQuery();
+	     List<Professor> result = new ArrayList<>();
+	     
+	     while (rs.next()) {
+				result.add(convertArticle(rs));
+			}
+			return result;
+	  } finally {
+	     JdbcUtil.close(rs);
+	     JdbcUtil.close(pstmt);
+	  }	      
+	}
+   
+   private Professor convertArticle(ResultSet rs) throws SQLException {
+		return new Professor(
+                rs.getString("proId"), 
+                rs.getString("proName"), 
+                rs.getString("password"),
+                rs.getInt("groupNo"),
+                rs.getString("phoneNo"),
+                rs.getString("proEmail"),
+                toDate(rs.getTimestamp("proJoinDate")));
+	}
+   
 
    private Date toDate(Timestamp date) {
       return date == null ? null : new Date(date.getTime());
@@ -65,4 +99,13 @@ public class ProfessorDao {
          pstmt.executeUpdate();
       }
    }
+   public void updateAuthority(Connection conn, String proId, int authority) throws SQLException {
+	      try (PreparedStatement pstmt = conn.prepareStatement(
+	            "update professor set groupNo = ? where proId = ?")) {
+	         pstmt.setInt(1, authority);
+	         pstmt.setString(2, proId);
+	         pstmt.executeUpdate();
+	      }
+	   }
+   
 }
