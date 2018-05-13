@@ -59,7 +59,7 @@ public class MakeTeamHandler implements CommandHandler {
 		if (!errors.isEmpty()) {
 			return FORM_VIEW;
 		}
-		System.out.println("MakeTeamHandler에서의 상태값 = " + member.getState());
+		
 		try {
 			req.getSession().setAttribute("authTeam", member);
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/index.jsp");
