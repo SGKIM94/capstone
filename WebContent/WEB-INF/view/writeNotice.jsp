@@ -25,6 +25,8 @@
         </div>
         <div class="button-area flex-center-row">
             <button class="regist-button" type="submit">작성하기</button>
+            <button class="regist-button" type="reset">재작성하기</button>
+            <a href="/Capstone/index.jsp"><button class="regist-button">메인으로</button></a>
         </div>
     </div>
   </form>

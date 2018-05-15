@@ -23,7 +23,23 @@ public class RemoveJoinService {
 			if(student == null) {
 				throw new MemberNotFoundException();
 			}
-			teamDao.delete_teamNo(conn,  student);
+			teamDao.delete_teamNo(conn,  stuId);
+			conn.commit();
+		} catch (SQLException e) {
+			JdbcUtil.rollback(conn);
+			throw new RuntimeException(e);
+		} finally {
+			JdbcUtil.close(conn);
+		}
+	}
+	
+	public void update_groupNo(String stuId) { 	//학생 테이블의 팀넘버 지우기
+		Connection conn = null;
+		try {
+			conn = ConnectionProvider.getConnection();
+			conn.setAutoCommit(false);
+			
+			teamDao.update_groupNo(conn,  stuId);
 			conn.commit();
 		} catch (SQLException e) {
 			JdbcUtil.rollback(conn);

@@ -2,12 +2,10 @@ package article.team.command;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import article.team.model.TeamContent;
 import article.team.service.ArticlePage;
 import article.team.service.ListArticleService;
-import auth.service.Member;
 import auth.service.StudentUser;
 import mvc.command.CommandHandler;
 

@@ -56,6 +56,7 @@ public class DeleteJoinHandler implements CommandHandler {
 		
 		try {
 			if(accessNo == Authority.getStuTeam()) {
+				removeJoinSvc.update_groupNo(stuId);
 				removeJoinSvc.delete_teamNo(stuId); // 현재 로그인상태의 teamNo값 불러오기
 				return "/WEB-INF/view/DeleteTeamSuccess.jsp";
 			}

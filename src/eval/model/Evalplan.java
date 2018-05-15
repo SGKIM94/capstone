@@ -3,6 +3,7 @@ package eval.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 import member.dao.ProfessorDao;
 import member.model.Professor;
@@ -68,6 +69,22 @@ public class Evalplan {
 		regDate = reg;
 		endDate = end;
 		evalState = EVAL_IS_ON_GOING;
+	}
+	
+	public void validate(Map<String, Boolean> errors) {	
+		checkEmpty(errors, dean, "dean");
+	}
+	
+	private void checkEmpty(Map<String, Boolean> errors, 
+			String value, String fieldName) {
+		if (value == null || value.isEmpty())
+			errors.put(fieldName, Boolean.TRUE);
+	}
+	/* id, group의 입력값이 0인지 아닌지 확인 */
+	private void checkEmpty(Map<String, Boolean> errors, 
+			Integer id, String fieldName) {
+		if (id == 0)
+			errors.put(fieldName, Boolean.TRUE);
 	}
 	
 	/*
