@@ -106,3 +106,16 @@ button:hover{
     background-color: #f0f0f0;
     color: #000000;
 }
+
+.jointeam{
+	color: red;
+	font-size: 11px;
+	text-align : center;
+}
+
+.maketeam{
+	color: red;
+	font-size: 15px;
+	text-align : center;
+}
+

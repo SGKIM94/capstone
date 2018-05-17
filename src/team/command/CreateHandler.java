@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import auth.service.*;
-import member.service.DuplicateIdException;
+import team.service.DuplicateTeamException;
 import team.service.*;
 import team.service.MakeTeamService;
 import mvc.command.CommandHandler;
@@ -49,23 +49,23 @@ public class CreateHandler implements CommandHandler {
       req.setAttribute("errors", errors);
       
       mtReq.validate(errors);
-      /*
+      
       if (!errors.isEmpty()) {
-         return "/index.jsp";
+         return FORM_VIEW;
       }
-      */
-     try {
+      
+      try {
          if(teamService.searchTeam(mtReq) == true){
         	 mtReq.setS_groupNo(Authority.getStuTeamMaker());
             teamService.MakeTeam(mtReq);         
             return "/WEB-INF/view/createTeamSuccess.jsp";
          }
          else{
-            errors.put("ExistTeam", Boolean.TRUE);
+            errors.put("duplicateTeam", Boolean.TRUE);
             return FORM_VIEW;
          }
-      } catch (DuplicateIdException e) {
-         errors.put("duplicateId", Boolean.TRUE);
+      } catch (DuplicateTeamException e) {
+         errors.put("duplicateTeam", Boolean.TRUE);
          return FORM_VIEW;
       }
    }

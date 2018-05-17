@@ -13,12 +13,13 @@ public class JoinTeamService {
 
    private TeamDao teamDao = new TeamDao();
    
-   public void JoinTeam(String teamNo, String stuId) {
+   public void JoinTeam(String teamNo, String stuId, int groupNo) {
       Connection conn = null;
       try {
          conn = ConnectionProvider.getConnection();
          conn.setAutoCommit(false);
          teamDao.update_team(conn, stuId, teamNo);
+         teamDao.update_team_gNo(conn, stuId, groupNo);
          conn.commit();
       } catch (SQLException e) {
          JdbcUtil.rollback(conn);

@@ -2,15 +2,13 @@ package team.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.Date;
-import java.util.ArrayList;
+import java.util.Calendar;
 
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 import team.dao.*;
-import member.dao.*;
-import member.model.Professor;
-import member.service.DuplicateIdException;
 import team.model.*;
 import team.service.MakeTeamRequest;;
 
@@ -22,13 +20,22 @@ public class MakeTeamService {
    public void MakeTeam(MakeTeamRequest mtReq) {
       Connection conn = null;
       try {
+    	 DecimalFormat df = new DecimalFormat("00"); // 연도 구하기위한 포맷 형식 지정
+     	 Calendar currentCalendar = Calendar.getInstance();
+     	 String strYear = null;
+     	 strYear = Integer.toString(currentCalendar.get(Calendar.YEAR)); 
+     	 strYear = strYear.substring(2,4);
+     	 String tNo = (strYear + "_" + mtReq.getTeamNo() + "_" + mtReq.getGroupNo()); //팀 고유 번호 구하는 방식(생성연도 + 팀조번호 + 반)  
+     	 
          conn = ConnectionProvider.getConnection();
          conn.setAutoCommit(false);
-//         Team team = teamDao.selectByteam(conn, mtReq.getTeamNo());
-//		 if (team != null) {
-//			JdbcUtil.rollback(conn);		
-//			throw new DuplicateIdException();
-//			}
+         System.out.println(tNo);
+         Team team = teamDao.selectByteam(conn, tNo);
+        
+		 if (team != null) {
+			JdbcUtil.rollback(conn);		
+			throw new DuplicateTeamException();
+		}
          /*
          ArrayList<String> students = mtReq.getStuIds();
          

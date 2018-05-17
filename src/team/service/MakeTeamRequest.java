@@ -23,7 +23,8 @@ public class MakeTeamRequest {
       for(int i = 0; i<stuIds.size();i++) {
          checkEmpty(errors, stuIds.get(i), "id");
       }*/
-      checkEmpty(errors, teamNo, "teamno");
+	  checkEmpty(errors, groupNo, "groupNo");
+      checkEmpty(errors, teamNo, "teamNo");
       checkEmpty(errors, teamName, "teamName");
       checkEmpty(errors, teamSubject, "teamSubject");
       checkEmpty(errors, advisor, "advisor");
