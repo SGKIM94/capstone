@@ -49,14 +49,12 @@
       		 	<option value=12>12조</option>
             </select>
             <c:if test="${errors.teamNo}">팀번호를 입력하세요.</c:if>
-  		    <c:if test="${errors.duplicateId}">이미 사용중인 팀번호입니다.</c:if>
+  		    
         </div>
     </div>
     <div class="join_box">
     <div class="list_box flex-center-row">
             <input type="text" name="teamName" value="${param.teamName}" maxlength="8" placeholder="팀이름 입력">
-            <c:if test="${errors.teamName}">팀이름를 입력하세요.</c:if>
-			<c:if test="${errors.ExistTeam}">이미 사용중인 팀이름입니다.</c:if>
         </div>
     </div>
     <div class="sign_box">
@@ -74,17 +72,19 @@
       		<option value=1>정지문</option>
       		<option value=2>송은지</option>
       		<option value=3>나상엽</option>
-     		<option value=4>황정희</option>
-    		<option value=5>김현철</option>
-   		    <option value=6>김정길</option>
-    		<option value=7>문송철</option>
-    		<option value=8>Matthew Oakley</option>
-   		    <option value=9>기창진</option>  
+     		<option value=4>김현철</option>
+    		<option value=5>김정길</option>
+   		    <option value=6>문송철</option>
+    		<option value=7>황정희</option>
+   		    <option value=8>기창진</option>  
        </select>    
     </div>
     <div class="button_box flex-center-column">
         <button type="submit">Create Team</button>
     </div>
+    <p class="maketeam"><c:if test="${errors.teamName}">팀이름를 입력하세요.</c:if></p>
+	<p class="maketeam"><c:if test="${errors.ExistTeam}">이미 사용중인 팀이름입니다.</c:if></p>
+	<p class="maketeam"><c:if test="${errors.duplicateTeam}">이미 사용중인 팀번호입니다.</c:if></p>
 </div>
 </div>
 </form>

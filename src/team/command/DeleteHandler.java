@@ -58,6 +58,7 @@ public class DeleteHandler implements CommandHandler {
 		
 		try {
 			if(accessNo == Authority.getStuTeamMaker()) {
+				removeTeamSvc.update_groupNo(user.getId());
 				removeTeamSvc.delete_team(curPwd, curTeam); // 현재 로그인상태의 teamNo값 불러오기
 				return "/WEB-INF/view/DeleteTeamSuccess.jsp";
 			}

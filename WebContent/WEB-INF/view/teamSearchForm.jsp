@@ -82,6 +82,9 @@
         	<c:if test="${errors.NotExistTeams}">팀을 참가할 수 없습니다.</c:if>
     	</div>
     </form>
+    	<div class="button_box flex-center-column">
+        	<a href="/index.jsp"><button>메인으로</button></a>   
+    	</div>
 </div>
 </body>
 </html>

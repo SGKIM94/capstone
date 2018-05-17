@@ -51,7 +51,7 @@ public class JoinTeamHandler implements CommandHandler {
       */
      try {
          if(jointeamService.searchTeam(teamNo) == true){
-            jointeamService.JoinTeam(teamNo, stuId);         
+            jointeamService.JoinTeam(teamNo, stuId, Authority.getStuTeam());         
             return "/WEB-INF/view/createTeamSuccess.jsp";
          }
          else{
