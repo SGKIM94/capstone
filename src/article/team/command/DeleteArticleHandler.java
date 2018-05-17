@@ -22,12 +22,12 @@ public class DeleteArticleHandler implements CommandHandler {
 			throws Exception {
 		String fileNo = req.getParameter("fileNo");
 		try {
-			
+			String allowed = "no";
 			TeamWriteData articleData = readService.getArticle(fileNo, false);
 			StudentUser authUser = (StudentUser) req.getSession().getAttribute("authStdUser");
 			if (!canDelete(authUser.getId(), articleData)) {
-				res.sendError(HttpServletResponse.SC_FORBIDDEN);
-				return null;
+				req.setAttribute("allowed", allowed);
+				return "/index.jsp";
 			}
 			
 			deleteService.deleteArticle(fileNo);

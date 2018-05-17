@@ -24,12 +24,12 @@ public class MakeTeamService {
       try {
          conn = ConnectionProvider.getConnection();
          conn.setAutoCommit(false);
-//         Team team = teamDao.selectByteam(conn, mtReq.getTeamNo());
-//		 if (team != null) {
-//			JdbcUtil.rollback(conn);		
-//			throw new DuplicateIdException();
-//			}
-         /*
+         Team team = teamDao.selectByteam(conn, mtReq.getTeamNo());
+		 if (team != null) {
+			JdbcUtil.rollback(conn);		
+			throw new DuplicateIdException();
+		}
+        /*
          ArrayList<String> students = mtReq.getStuIds();
          
          for(int i = 0 ; i < students.size() ; i++) {

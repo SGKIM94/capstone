@@ -297,7 +297,7 @@
 	                	<li><span class="txt"><a href="noticeread.do?postNo=${article.postNo}&pageNo=${articlePage.currentPage}">
 	                	<c:out value="${article.title}"/></a></span></li>
 	                	</c:forEach>
-	            		</ul>
+            		</ul>
             </div>
         </div>
         <div class="main_box">
@@ -347,10 +347,13 @@
                                      <button class="board_editBtn" type = "submit">삭제</button>
                                      <input type="hidden" name="fileNo" value="${teamarticle1.fileNo}">
                                   </div>              
-                                </form>                            
+                                </form>
                         </div>
                     </div>
                     </c:forEach>
+                    <c:if test="${allowed == 'no'}" var="result">
+						글 작성자가 아닙니다. <br>
+					</c:if>
                 </div>
             </div>   
                 <div class="btn_box flex-space-row">

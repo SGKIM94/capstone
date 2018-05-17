@@ -8,14 +8,11 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import article.team.model.TeamArticle;
-import article.team.model.TeamArticleWriter;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import member.model.*;
+import eval.service.ShowTeam;
 import jdbc.JdbcUtil;
 import team.model.Team;
 import member.dao.*;
@@ -24,54 +21,59 @@ public class TeamDao {
 	
 	private StudentDao studentDao = new StudentDao();
 	
-   public Team selectByteam(Connection conn, String teamNo) throws SQLException {
-      PreparedStatement pstmt = null;
-      ResultSet rs = null;
-      try {
-         pstmt = conn.prepareStatement(
-               "select * from team where teamNo = ?");
-         pstmt.setString(1, teamNo);
-         rs = pstmt.executeQuery();
-         Team team = null;
-         
-         if (rs.next()) {
-        	 boolean tstate = true;
-             if(rs.getString("state").equals("1"))
-            	 tstate = true;
-             else if(rs.getString("state").equals("0"))
-            	 tstate = false;
-            team = new Team(
-            	  rs.getString("teamNo"),         //이거 db int -> str 수정해야함 
-                  rs.getString("teamName"), 
-                  rs.getString("teamSubject"),
-                  rs.getString("advisor"),
-                  rs.getString("groupNo"),
-            	  tstate,                           
-                  toDate(rs.getTimestamp("TeamJoinDate")));      //db 이름을 teamRegDate로 바꿧으면함.
-            	  
-            	System.out.println("teamDao에서의 state= " + rs.getString("state"));
-            	
-       }
-         return team;
-      } finally {
-         JdbcUtil.close(rs);
-         JdbcUtil.close(pstmt);
-      }
-   }
+	 public Team selectByteam(Connection conn, String teamNo) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt = conn.prepareStatement(
+	               "select * from team where teamNo = ?");
+	         pstmt.setString(1, teamNo);
+	         rs = pstmt.executeQuery();
+	         Team team = null;
+	         
+	         if (rs.next()) {
+	        	 boolean tstate = true;
+	             if(rs.getString("state").equals("1"))
+	            	 tstate = true;
+	             else if(rs.getString("state").equals("0"))
+	            	 tstate = false;
+	            team = new Team(
+	            	  rs.getString("teamNo"),         //이거 db int -> str 수정해야함 
+	                  rs.getString("teamName"), 
+	                  rs.getString("teamSubject"),
+	                  rs.getString("advisor"),
+	                  rs.getString("groupNo"),
+	            	  tstate,                           
+	                  toDate(rs.getTimestamp("TeamJoinDate")));      //db 이름을 teamRegDate로 바꿧으면함.
+	            	  
+	            	System.out.println("teamDao에서의 state= " + rs.getString("state"));
+	            	
+	       }
+	         return team;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+	 
    /* 학과장님의 평가 시작 페이지에서 평가받아야할 팀의 이름들만 가져오는 select 함수 */
-   public List<String> selectAllTeam(Connection conn, String strYear) throws SQLException {
+   public List<ShowTeam> selectAllTeam(Connection conn, String strYear) throws SQLException {
 	      PreparedStatement pstmt = null;
 	      ResultSet rs = null;
 	      String year = "'" + strYear.substring(2,2) + "%'";
 
 	      try {
 	         pstmt = conn.prepareStatement(
-	               "select teamName from team where teamNo like "+ year);
+	               "select * from team where teamNo like "+ year);
 	         rs = pstmt.executeQuery();
-	         List<String> result = new ArrayList<>();
-	         
+	         List<ShowTeam> result = new ArrayList<ShowTeam>();
+	         ShowTeam eteam = null;
 	         while (rs.next()) {
-					result.add(rs.getString("teamName"));
+	        	 	eteam = new ShowTeam(
+	        		rs.getString("teamNo"),         //이거 db int -> str 수정해야함 
+                    rs.getString("teamName") 
+	                );   
+					result.add(eteam);
 				}
 				return result;
 	      } finally {

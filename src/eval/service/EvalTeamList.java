@@ -5,9 +5,9 @@ import java.util.List;
 public class EvalTeamList {
 
 	private int total;
-	private List<String> list;	//코드 재사용이 안됨.... 공지사항과 따로??
+	private List<ShowTeam> list;	//코드 재사용이 안됨.... 공지사항과 따로??
 
-	public EvalTeamList(int total, List<String> list) {
+	public EvalTeamList(int total, List<ShowTeam> list) {
 		this.total = total;
 		this.list = list;
 	}
@@ -20,11 +20,12 @@ public class EvalTeamList {
 		this.total = total;
 	}
 
-	public List<String> getList() {
+	public List<ShowTeam> getList() {
 		return list;
 	}
 
-	public void setList(List<String> list) {
+	public void setList(List<ShowTeam> list) {
 		this.list = list;
 	}
+	
 }
