@@ -6,7 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import article.team.service.ListTeamService;
+import eval.service.EvalTeamList;
 import member.service.DuplicateIdException;
+import team.dao.TeamDao;
 import team.model.Team;
 import mvc.command.CommandHandler;
 
@@ -18,7 +20,8 @@ public class ListTeamHandler implements CommandHandler {
    
    private static final String FORM_VIEW = "/index.jsp";
    private ListTeamService searchService = new ListTeamService();
-     
+   private TeamDao teamDao = new TeamDao();
+   
    @Override
    public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
       if (req.getMethod().equalsIgnoreCase("GET")) {
@@ -32,6 +35,12 @@ public class ListTeamHandler implements CommandHandler {
    }
 
    private String processForm(HttpServletRequest req, HttpServletResponse res) {
+	   /* 팀 목록 전체 뷰로 넘기기 위해서 만듬 */
+	   HttpSession session = req.getSession();
+	   /* db에서 모든 팀이름과 번호를 읽어와 리스트에 저장하고 그 리스트와 전체 팀수를 가지고 있는 EvalTeamList 클래스 변수에 넣기 */
+	   EvalTeamList evalteamlist = searchService.selectAllTeam();
+	   /* 뷰로 넘기기 */
+	   session.setAttribute("teamList", evalteamlist);
       return FORM_VIEW;
    }
 

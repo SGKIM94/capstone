@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import eval.service.ShowProf;
 import jdbc.JdbcUtil;
 import member.model.Professor;
 
@@ -39,7 +40,7 @@ public class ProfessorDao {
       }
    }
    
-   public List<Professor> selectAllTeam(Connection conn) throws SQLException {
+   public List<ShowProf> selectAllTeam(Connection conn) throws SQLException {
 	  PreparedStatement pstmt = null;
 	  ResultSet rs = null;
 	  
@@ -47,10 +48,11 @@ public class ProfessorDao {
 	     pstmt = conn.prepareStatement(
 	    		 "select * from professor");	
 	     rs = pstmt.executeQuery();
-	     List<Professor> result = new ArrayList<>();
-	     
+	     List<ShowProf> result = new ArrayList<>();
+	     ShowProf prof = null;
 	     while (rs.next()) {
-				result.add(convertArticle(rs));
+	    	 prof = new ShowProf(rs.getString("proId"),rs.getString("proName"));
+				result.add(prof);
 			}
 			return result;
 	  } finally {
@@ -99,11 +101,22 @@ public class ProfessorDao {
          pstmt.executeUpdate();
       }
    }
+   /* 교수 권한 변경 */
    public void updateAuthority(Connection conn, String proId, int authority) throws SQLException {
+      try (PreparedStatement pstmt = conn.prepareStatement(
+            "update professor set groupNo = ? where proId = ?")) {
+         pstmt.setInt(1, authority);
+         pstmt.setString(2, proId);
+         pstmt.executeUpdate();
+      }
+   }
+   /* 학과장 제외하고 권한 변경(메소드 오버라이딩) */
+   public void updateAuthority(Connection conn, String proId, int authority, int dean) throws SQLException {
 	      try (PreparedStatement pstmt = conn.prepareStatement(
-	            "update professor set groupNo = ? where proId = ?")) {
+	            "update professor set groupNo = ? where proId = ? and groupNo != ?")) {
 	         pstmt.setInt(1, authority);
 	         pstmt.setString(2, proId);
+	         pstmt.setInt(3, dean);
 	         pstmt.executeUpdate();
 	      }
 	   }
