@@ -27,7 +27,7 @@ public class EvalPlanList {
 	
 	public EvalTeamList getEvalTeamList() {
 		try (Connection conn = ConnectionProvider.getConnection()) {
-			List<String> content = teamDao.selectAllTeam(conn, strYear);
+			List<ShowTeam> content = teamDao.selectAllTeam(conn, strYear);
 			
 			return new EvalTeamList(content.size(),content);
 		} catch (SQLException e) {
@@ -37,7 +37,7 @@ public class EvalPlanList {
 	
 	public EvalProfList getEvalProfList() {
 		try (Connection conn = ConnectionProvider.getConnection()) {
-			List<Professor> content = null;
+			List<ShowProf> content = null;
 			content = professorDao.selectAllTeam(conn);
 			return new EvalProfList(content.size(), content);
 		} catch (SQLException e) {

@@ -36,15 +36,6 @@ public class MakeTeamService {
 			JdbcUtil.rollback(conn);		
 			throw new DuplicateTeamException();
 		}
-         /*
-         ArrayList<String> students = mtReq.getStuIds();
-         
-         for(int i = 0 ; i < students.size() ; i++) {
-            Team team = teamDao.selectByteam(conn, students.get(i));
-            if(true) {
-                	이부분은 만약 추가하려는 팀원이 이미 다른 팀에 있는 경우 오류 처리하기 위해 작성 
-            }
-         }*/
          teamDao.insert(conn, 
                new Team(
             		 mtReq.getTeamNo(), 

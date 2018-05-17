@@ -6,9 +6,9 @@ import member.model.Professor;
 
 public class EvalProfList {
 	private int total;
-	private List<Professor> list;	//코드 재사용이 안됨.... 공지사항과 따로??
+	private List<ShowProf> list;	//코드 재사용이 안됨.... 공지사항과 따로??
 
-	public EvalProfList(int total, List<Professor> list) {
+	public EvalProfList(int total, List<ShowProf> list) {
 		this.total = total;
 		this.list = list;
 	}
@@ -21,11 +21,11 @@ public class EvalProfList {
 		this.total = total;
 	}
 
-	public List<Professor> getList() {
+	public List<ShowProf> getList() {
 		return list;
 	}
 
-	public void setList(List<Professor> list) {
+	public void setList(List<ShowProf> list) {
 		this.list = list;
 	}
 }

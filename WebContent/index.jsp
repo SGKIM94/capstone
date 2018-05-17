@@ -297,7 +297,7 @@
 	                	<li><a class="txt" href="noticeread.do?postNo=${article.postNo}&pageNo=${articlePage.currentPage}">
 	                	<c:out value="${article.title}"/></a></li>
 	                	</c:forEach>
-	            		</ul>
+            		</ul>
             </div>
         </div>
         <div class="main_box">
@@ -351,10 +351,13 @@
                                      <input type="hidden" name="fileNo" value="${teamarticle1.fileNo}">
                                      <c:if test="${teamarticle1.writer.writerId}">암호를 입력하세요.</c:if> 
                                   </div>              
-                                </form>                            
+                                </form>
                         </div>
                     </div>
                     </c:forEach>
+                    <c:if test="${allowed == 'no'}" var="result">
+						글 작성자가 아닙니다. <br>
+					</c:if>
                 </div>
             </div>   
                 <div class="btn_box flex-space-row">

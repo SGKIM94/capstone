@@ -1,14 +1,16 @@
-
+<%@ page contentType="text/html; charset=utf-8"%>
+<%-- <%@ page language="java" pageEncoding="EUC-KR" %> --%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="./css/majorProcessor/major-processor.css">
     <title>MajorProfessor</title>
 </head>
+<body>
 <body class="flex-center-row">
 <div class="center_box flex-center-row">
     <div class="side_box">
@@ -60,48 +62,16 @@
                 <button class="prof_btn">로그아웃</button>
             </div>
         </div>
-        <div class="notice_box">
-            <span class="title_sub">공지사항</span>
-            <ul class="lists">
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-                <li><span class="txt">Lorem Ipsum is not simply random text.</span></li>
-            </ul>
-            <div class="noticeBtn flex-center-row">
-                <button id="noticeBtn">공지사항 등록</button>
+       <div class="notice_box">
+	                	<span class="title_sub">공지사항</span>
+	               <ul class="lists">
+	               		<c:forEach var="article" items="${articlePage.content}">
+	                	<li><span class="txt"><a href="noticeread.do?postNo=${article.postNo}&pageNo=${articlePage.currentPage}">
+	                	<c:out value="${article.title}"/></a></span></li>
+	                	</c:forEach>
+	               </ul>
+	        <div class="btn_box flex-center-row">
+	        <button class="eval_btn" onclick="location.href='noticewrite.do';">공지사항 등록</button>
             </div>
         </div>
     </div>
@@ -109,91 +79,39 @@
         <div class="team_list_box flex-space-row">
             <div class="team_left_box">
                 <h4 class="sub-tit">
-                    평가 팀 목록
+			                  평가팀 목록
                 </h4>
                 <ul class="team">
-                    <li class="board_list"><a href="#"><span class="num">01</span>김희철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">02</span>김철희</a></li>
-                    <li class="board_list"><a href="#"><span class="num">03</span>기미철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">04</span>철희김</a></li>
-                    <li class="board_list"><a href="#"><span class="num">05</span>희철킴</a></li>
-                    <li class="board_list"><a href="#"><span class="num">06</span>김호철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">07</span>김철철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">08</span>철철철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">09</span>곰희철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">10</span>금희철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">01</span>김희철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">02</span>김철희</a></li>
-                    <li class="board_list"><a href="#"><span class="num">03</span>기미철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">04</span>철희김</a></li>
-                    <li class="board_list"><a href="#"><span class="num">05</span>희철킴</a></li>
-                    <li class="board_list"><a href="#"><span class="num">06</span>김호철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">07</span>김철철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">08</span>철철철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">09</span>곰희철</a></li>
-                    <li class="board_list"><a href="#"><span class="num">10</span>금희철</a></li>
+                    <c:forEach var="team" items="${teamList.list}">
+	                <li class="board_list">${team.teamName}</li>
+	                </c:forEach>
                 </ul>
                 <div class="count-box">
-                    <span class="count">총 : <span class="num_count">7명</span></span>
+                    <span class="count">총 : <span class="num_count">${teamList.total}</span> 명</span>
                 </div>
             </div>
             <div class="team_right_box flex-center-column">
+            <form action="makeEvalPlan.do" method="post" name="makeEvalPlan">
                 <div class="right-top-box flex-space-column">
-                    <h4 class="sub-tit">
-                        평가 교수
-                    </h4>
+                 	<h4 class="sub-tit">
+                       	평가 교수
+                  	</h4>
                     <ul class="team">
-                        <!--<li class="board_list"><a href="#"><span class="num">10</span>금희철</a></li>-->
-                        <label class="container">김희철
-                            <input type="checkbox" checked="checked">
+                        <!--<li class="board_list"><a href="#"><span class="num">10</span>����ö</a></li>-->
+                        <c:forEach var="pro" items="${proList.list}" varStatus="status">
+                        <label class="container">${pro.proName}
+                            <input name="selectprof" type="checkbox" value="${pro.proId}">
                             <span class="checkmark"></span>
                         </label>
-                        <label class="container">김희철
-                            <input type="checkbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="container">김희철
-                            <input type="checkbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="container">김희철
-                            <input type="checkbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="container">김희철
-                            <input type="checkbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="container">김희철
-                            <input type="checkbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="container">김희철
-                            <input type="checkbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="container">김희철
-                            <input type="checkbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="container">김호철
-                            <input type="checkbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="container">김호호
-                           <input type="checkbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
+                        </c:forEach>
                     </ul>
                 </div>
                 <div class="right-bottom-box">
-                    <div class="count-box">
-                        <span class="count">총 : <span class="num_count">7명</span></span>
-                    </div>
                     <div class="eval-box">
-                        <button>평가시작</button>
+                        <button>평가 시작</button>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
         <div class="board_bottom flex-space-row">
@@ -208,6 +126,5 @@
             </a>
         </div>
     </div>
-</div>
 </body>
 </html>
