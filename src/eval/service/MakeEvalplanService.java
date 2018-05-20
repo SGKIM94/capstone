@@ -12,6 +12,7 @@ import jdbc.connection.ConnectionProvider;
 import member.model.Professor;
 import eval.dao.EvalProfDao;
 import eval.dao.EvalTeamDao;
+import eval.dao.EvalpaperDao;
 import eval.dao.EvalplanDao;
 import eval.model.EvalProf;
 import eval.model.EvalTeam;
@@ -25,6 +26,7 @@ public class MakeEvalplanService {
 	EvalplanDao evalplanDao = new EvalplanDao();
 	EvalTeamDao evalteamDao = new EvalTeamDao();
 	EvalProfDao evalprofDao = new EvalProfDao();
+	EvalpaperDao evalpaperDao = new EvalpaperDao();
 	
 	public void Make(MakeRequest req){
 		Connection conn = null;
@@ -34,6 +36,7 @@ public class MakeEvalplanService {
 			
 			List<String> teamlist = req.getTlist();
 			List<String> proflist = req.getPflist();
+			List<String> epaperlist = req.getEpaperlist();
 			
 			String evalNo = req.getEvalNo();
 			String finalNo = null;
@@ -54,6 +57,11 @@ public class MakeEvalplanService {
 			for(String var2 : proflist) {
 				evalprofDao.insert(conn, evalNo, var2);
 			}
+			
+			for(String var3 : epaperlist) {
+				evalpaperDao.insert(conn, var3);
+			}
+			
 			conn.commit();
 		}catch (SQLException e) {
 			JdbcUtil.rollback(conn);

@@ -30,31 +30,38 @@ public class MakeRequest {
 	private List<String> pflist; 		//평가 참여 교수 리스트
 	//private ArrayList<Eteam> eteamlist;		//평가 참여 팀 리스트 - 참여 1팀당 팀 넘버, 교수님 개인 평가지 arraylist, 최종 평가지 번호
 	private List<String> tlist;
+	private List<String> epaperlist;
+	//private List<String> efinallist;
 	
 	public MakeRequest() {
 		evalNo = null;
 		dean = null;
 		pflist = new ArrayList<String>();
 		tlist = new ArrayList<String>();
+		epaperlist = new ArrayList<String>();
+		//efinallist = new ArrayList<String>();
 	}
-	/* 멤버 변수 전부 매개변수로 받는 생성자 */
+	/* 평가 계획서, 평가 교수 리스트, 평가 팀 리스트 완성 생성자 */
 	public MakeRequest(String d, List<ShowProf> pl,
 			List<ShowTeam> tl) {
 		evalNo = MakeEvalNo();
 		dean = d;
 		pflist = getProIdList(pl);
 		tlist = getTeamList(tl);
+		epaperlist = MakeEpaperList();
+		//efinallist = MakeFinalList();
 //		regDate = new Date(date.getTime());
 //		endDate = null;
 	}
 	
-	/* 평가 계획서, 평가 교수 리스트, 평가 팀 리스트 완성 생성자 */
-	public MakeRequest(String e, String d, int pn, List<ShowProf> pl, List<ShowTeam> tl, Date reg, Date end) {		
-		evalNo = e;
-		dean = d;
-		pflist = getProIdList(pl);
-		tlist = getTeamList(tl);
-	}
+//	/* 이 생성자 굳이 필요할거 같지 않음 */
+//	public MakeRequest(String e, String d, List<ShowProf> pl, List<ShowTeam> tl) {		
+//		evalNo = e;
+//		dean = d;
+//		pflist = getProIdList(pl);
+//		tlist = getTeamList(tl);
+//	}
+//	
 	
 	public void validate(Map<String, Boolean> errors) {	
 		checkEmpty(errors, dean, "dean");
@@ -96,6 +103,34 @@ public class MakeRequest {
 		return evalNo;
 	}
 	
+	/* 최종 평가서 번호 리스트 생성 */
+	private List<String> MakeFinalList() {
+		List<String> fl = new ArrayList<String>();
+		/* 최종 평가서 번호 생성 */
+		String finalNo = null;
+		
+		for(String var : tlist) {
+			finalNo=var+"_ff";		//최종 평가서 문서 번호 : 팀번호_ff
+			fl.add(finalNo);
+		}
+		return fl;
+	}
+	
+	/* 개별 평가지 번호 리스트 생성 */
+	private List<String> MakeEpaperList() {
+		List<String> el = new ArrayList<String>();
+		/* 개별 평가지 번호 */
+		String epaperNo = null;
+		
+		for(String var1 : tlist) {
+			for(String var2 : pflist) {
+				epaperNo = var1+"_"+var2;			//개별 평가지 문서 번호 : 팀번호_교수번호
+				el.add(epaperNo);
+			}
+		}
+		return el;
+	}
+	
 	public List<String> getTlist()  {
 		/* try catch 로 바궈야하지 않을까 싶음
 		if(tlist.size() == 0) {
@@ -131,4 +166,16 @@ public class MakeRequest {
 	public void setPflist(List<String> pflist) {
 		this.pflist = pflist;
 	}
+	public List<String> getEpaperlist() {
+		return epaperlist;
+	}
+	public void setEpaperlist(List<String> epaperlist) {
+		this.epaperlist = epaperlist;
+	}
+//	public List<String> getEfinallist() {
+//		return efinallist;
+//	}
+//	public void setEfinallist(List<String> efinallist) {
+//		this.efinallist = efinallist;
+//	}
 }
