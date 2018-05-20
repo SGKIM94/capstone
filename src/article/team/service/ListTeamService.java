@@ -2,7 +2,12 @@ package article.team.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.List;
+
 import auth.service.LoginFailException;
+import eval.service.EvalTeamList;
+import eval.service.ShowTeam;
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 import team.dao.*;
@@ -11,7 +16,23 @@ import team.model.*;
 
 public class ListTeamService {
 
-private TeamDao teamDao = new TeamDao();
+	private TeamDao teamDao = new TeamDao();
+	
+	private String togetStrYear() {
+		Calendar currentCalendar = Calendar.getInstance();
+		return Integer.toString(currentCalendar.get(Calendar.YEAR));
+	}
+	
+	public EvalTeamList selectAllTeam() {
+		try (Connection conn = ConnectionProvider.getConnection()) {
+			List<ShowTeam> content = teamDao.selectAllTeam(conn, togetStrYear());
+			
+			EvalTeamList evalteamlist = new EvalTeamList(content.size(),content);
+			return evalteamlist;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}	
 	
 	public Team selectTeam(String teamNo) {
 		try (Connection conn = ConnectionProvider.getConnection()) {
@@ -48,5 +69,5 @@ private TeamDao teamDao = new TeamDao();
 		      } finally {
 		          JdbcUtil.close(conn);
 		      }
-	   }
+	}
 }

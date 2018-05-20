@@ -1,10 +1,14 @@
 package eval.service;
 
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
+import eval.model.Evalplan;
 import member.dao.ProfessorDao;
 import member.model.Professor;
 
@@ -21,54 +25,35 @@ public class MakeRequest {
 	final private int EVAL_IS_ON_GOING = 1;
 	final private int EVAL_ENDED = 2;								
 	
-	
 	private String evalNo;
-	private String dean;					//학과장님
-	private int proNum;						//평가 참여 교수 숫자
-	private int tNo;						//졸업작품 참여 팀 숫자
-	private ArrayList<String> pflist; 		//평가 참여 교수 리스트
+	private String dean;
+	private List<String> pflist; 		//평가 참여 교수 리스트
 	//private ArrayList<Eteam> eteamlist;		//평가 참여 팀 리스트 - 참여 1팀당 팀 넘버, 교수님 개인 평가지 arraylist, 최종 평가지 번호
-	private ArrayList<String> tlist;
-	private Date regDate;
-	private Date endDate;
-	private int evalState;
+	private List<String> tlist;
 	
 	public MakeRequest() {
 		evalNo = null;
 		dean = null;
-		proNum = DEFAULT_PRO_NO;
-		tNo = DEFAULT_TEAM_NO;
 		pflist = new ArrayList<String>();
 		tlist = new ArrayList<String>();
-		regDate = null;
-		endDate = null;
-		evalState = EVAL_START_YET;
 	}
-
-	public MakeRequest(String e, String d, int pn, int tn, ArrayList<String> pl,
-			ArrayList<String> tl, Date reg, Date end, int es) {
-		evalNo = e;
+	/* 멤버 변수 전부 매개변수로 받는 생성자 */
+	public MakeRequest(String d, List<ShowProf> pl,
+			List<ShowTeam> tl) {
+		evalNo = MakeEvalNo();
 		dean = d;
-		proNum = pn;
-		tNo = tn;
-		pflist = pl;
-		tlist = tl;
-		regDate = reg;
-		endDate = end;
-		evalState = es;
+		pflist = getProIdList(pl);
+		tlist = getTeamList(tl);
+//		regDate = new Date(date.getTime());
+//		endDate = null;
 	}
 	
-	/* 평가 시작버튼 누르면 생성 */
-	public MakeRequest(String e, String s, int pn, ArrayList<String> pl, Date reg, Date end) {		
+	/* 평가 계획서, 평가 교수 리스트, 평가 팀 리스트 완성 생성자 */
+	public MakeRequest(String e, String d, int pn, List<ShowProf> pl, List<ShowTeam> tl, Date reg, Date end) {		
 		evalNo = e;
-		dean = s;
-		proNum = pn;
-		tNo = 0;
-		pflist = pl;
-		tlist = null;
-		regDate = reg;
-		endDate = end;
-		evalState = EVAL_IS_ON_GOING;
+		dean = d;
+		pflist = getProIdList(pl);
+		tlist = getTeamList(tl);
 	}
 	
 	public void validate(Map<String, Boolean> errors) {	
@@ -87,23 +72,31 @@ public class MakeRequest {
 			errors.put(fieldName, Boolean.TRUE);
 	}
 	
-	/*
-	public int getIndexEteamNo(String t) {
-		int index = 0;
-		
-		if(eteamlist.size()==0) {
-			return THERE_IS_NO_TEAM;
-		}
-		
-		for(int i = 0; i<eteamlist.size();i++) {
-			if(eteamlist.get(i).getTeamNo() == t) {
-				index = i;
-			}
-        }
-		return index;
-	}*/
 	
-	public ArrayList<String> getTlist()  {
+	private List<String> getProIdList(List<ShowProf> pl){
+		List<String> templist = new ArrayList<String>();
+		for(ShowProf pro : pl) {
+			templist.add(pro.getProId());
+		}
+		return templist;
+	}
+	
+	private List<String> getTeamList(List<ShowTeam> tl){
+		List<String> templist = new ArrayList<String>();
+		for(ShowTeam team : tl) {
+			templist.add(team.getTeamNo());
+		}
+		return templist;
+	}
+	
+	private String MakeEvalNo() {
+		Calendar currentCalendar = Calendar.getInstance();
+		String strYear = Integer.toString(currentCalendar.get(Calendar.YEAR));
+		String evalNo = strYear+"-01";
+		return evalNo;
+	}
+	
+	public List<String> getTlist()  {
 		/* try catch 로 바궈야하지 않을까 싶음
 		if(tlist.size() == 0) {
 			return null;
@@ -111,7 +104,7 @@ public class MakeRequest {
 		return tlist;
 	}
 
-	public void setTlist(ArrayList<String> tlist) {
+	public void setTlist(List<String> tlist) {
 		this.tlist = tlist;
 	}
 	
@@ -131,142 +124,11 @@ public class MakeRequest {
 		this.dean = dean;
 	}
 
-	public int getProNum() {
-		return proNum;
-	}
-
-	public void setProNum(int proNum) {
-		this.proNum = proNum;
-	}
-
-	public int gettNo() {
-		return tNo;
-	}
-
-	public void settNo(int tNo) {
-		this.tNo = tNo;
-	}
-
-	public ArrayList<String> getPflist() {
+	public List<String> getPflist() {
 		return pflist;
 	}
 
-	public void setPflist(ArrayList<String> pflist) {
+	public void setPflist(List<String> pflist) {
 		this.pflist = pflist;
 	}
-	
-	
-	/*
-	public ArrayList<Eteam> getEteamlist() {
-		return eteamlist;
-	}
-	
-	public String getEteamNo(int n) {
-		return eteamlist.get(n).getTeamNo();
-	}
-	public String getEteamPfNo(int n, int pn) {
-		return eteamlist.get(n).getPfNo(pn);
-	}
-	public String getEteamFinalNo(int n) {
-		return eteamlist.get(n).getFinalNo();
-	}
-	*/
-	/* 팀번호로 개별 평가지 번호 읽어오기 */
-	/*
-	public String getEteamPfNo(int n, String t) {
-		int index = getIndexEteamNo(t);
-		if(index == THERE_IS_NO_TEAM) {
-			return null;
-		}
-		return eteamlist.get(index).getPfNo(n);
-	}
-	*/
-	/* 팀번호로 최종 평가지 번호 읽어오기 */
-	/*
-	public String getEteamFinalNo(String t) {
-		int index = getIndexEteamNo(t);
-		if(index == THERE_IS_NO_TEAM) {
-			return null;
-		}
-		return eteamlist.get(index).getFinalNo();
-	}
-	
-	public void setEteamNo(int n, String t) {
-		eteamlist.get(n).setTeamNo(t);
-	}
-	public void setEteamPfNo(int n, int pn, String p) {
-		eteamlist.get(n).setPfNo(pn, p);
-	}
-	public void setEteamFinalNo(int n, String f) {
-		eteamlist.get(n).setFinalNo(f);
-	}
-	
-	public void setEteamlist(ArrayList<Eteam> eteamlist) {
-		this.eteamlist = eteamlist;
-	}*/
-
-	public Date getRegDate() {
-		return regDate;
-	}
-
-	public void setRegDate(Date regDate) {
-		this.regDate = regDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-
-	public int getEvalState() {
-		return evalState;
-	}
-
-	public void setEvalState(int evalState) {
-		this.evalState = evalState;
-	}
 }
-
-/*
-class Eteam{
-	private String teamNo;
-	private ArrayList<String> pfNoList;
-	private String finalNo;
-	
-	public Eteam() {
-		teamNo = null;
-		pfNoList = new ArrayList<String>();
-		finalNo = null;
-	}
-	
-	public Eteam(String t, ArrayList<String> pfl, String f) {
-		teamNo = t;
-		pfNoList = pfl;
-		finalNo = f;
-	}
-	
-	public String getTeamNo() {
-		return teamNo;
-	}
-
-	public void setTeamNo(String teamNo) {
-		this.teamNo = teamNo;
-	}
-	public String getPfNo(int n) {
-		return pfNoList.get(n);
-	}
-
-	public void setPfNo(int n, String pfNo) {
-		this.pfNoList.set(n, pfNo);
-	}
-	public String getFinalNo() {
-		return finalNo;
-	}
-
-	public void setFinalNo(String finalNo) {
-		this.finalNo = finalNo;
-	}
-}*/

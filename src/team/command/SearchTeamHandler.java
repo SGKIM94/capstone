@@ -89,25 +89,23 @@ public class SearchTeamHandler implements CommandHandler {
    
    public String selectPro(String advisor)
    {
-	   if(advisor.equals("0"))
+	   if(advisor.equals("100000"))
        	  advisor = "김점구";
-         else if(advisor.equals("1"))
+         else if(advisor.equals("100001"))
        	  advisor = "정지문";      
-         else if(advisor.equals("2"))
+         else if(advisor.equals("100002"))
        	  advisor = "송은지";
-         else if(advisor.equals("3"))
+         else if(advisor.equals("100003"))
        	  advisor = "나상엽";
-         else if(advisor.equals("4"))
-       	  advisor = "황정희";
-         else if(advisor.equals("5"))
+         else if(advisor.equals("100004"))
        	  advisor = "김현철";
-         else if(advisor.equals("6"))
+         else if(advisor.equals("100005"))
        	  advisor = "김정길";
-         else if(advisor.equals("7"))
+         else if(advisor.equals("100006"))
        	  advisor = "문송철";
-         else if(advisor.equals("8"))
-       	  advisor = "Matthew Oakley";
-         else if(advisor.equals("9"))
+         else if(advisor.equals("100007"))
+       	  advisor = "황정희";
+         else if(advisor.equals("100008"))
        	  advisor = "기창진";
          else
        	  advisor = "알수 없음";
