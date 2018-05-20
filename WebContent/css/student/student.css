@@ -70,17 +70,22 @@ html, body{
     overflow-x: hidden;
 }
 .lists li{
-    margin-left: 20px;
+    margin-left: 40px;
     height: 20px;
-    line-height: 20px;
 }
 .txt{
-    width: 40px;
+    width: 100%;
+    text-overflow: ellipsis;
     font-weight: normal;
     font-size: 0.8rem;
-    white-space: normal;
+    white-space: nowrap;
+    display: inline-block;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-decoration: none;
+    color: #000000;
+}
+.txt:hover {
+	text-decoration: underline;
 }
 
 .side_box{

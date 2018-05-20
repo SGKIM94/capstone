@@ -1,5 +1,8 @@
 package article.team.command;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,6 +24,10 @@ public class DeleteArticleHandler implements CommandHandler {
 	public String process(HttpServletRequest req, HttpServletResponse res) 
 			throws Exception {
 		String fileNo = req.getParameter("fileNo");
+		Map<String, Boolean> errors = new HashMap<>();
+		
+	    req.setAttribute("errors", errors);
+	    
 		try {
 			String allowed = "no";
 			TeamWriteData articleData = readService.getArticle(fileNo, false);

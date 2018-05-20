@@ -17,7 +17,7 @@
 	<div class="center_box flex-center-column">	
     <form action="login.do" method="post">
         <div class="title_box">
-            <span class="_title">Management System</span>
+            <span class="_title">졸업작품 평가관리 시스템</span>
         </div>
         <div class="sign_box">            
             <div class="list_box flex-center-row">
@@ -214,6 +214,9 @@
         		<form action="EvalTeamList.do" method="get" name="EvalTeamList">
                     <button class="eval_btn" type = "submit">평가하기</button>
                 </form>
+                <form action="proListTeam.do" method="post" name="listTeam">
+                    <button class="eval_btn" type = "submit">팀보기</button>
+                </form>
         	</div> 
         </div>     
     </div>
@@ -296,8 +299,8 @@
 	                	<span class="title_sub">공지사항</span>
 	               <ul class="lists">
 	               		<c:forEach var="article" items="${articlePage.content}">
-	                	<li><span class="txt"><a href="noticeread.do?postNo=${article.postNo}&pageNo=${articlePage.currentPage}">
-	                	<c:out value="${article.title}"/></a></span></li>
+	                	<li><a class="txt" href="noticeread.do?postNo=${article.postNo}&pageNo=${articlePage.currentPage}">
+	                	<c:out value="${article.title}"/></a></li>
 	                	</c:forEach>
             		</ul>
             </div>
@@ -328,6 +331,9 @@
                         <li class="file_time">게시날짜</li>           
                     </ul>
                     <c:forEach var="teamarticle1" items="${articleTeamPage.content}" varStatus="status">
+                    <c:if test="${allowed == 'no'}" var="result">
+                        		글 작성자가 아닙니다. <br>
+                    </c:if>
                     <div class="board-list flex-center-row">
                         <div class="file_num_box file_base">
                      <span class="text-data">${articleTeamPage.stuName[status.index]}</span>
@@ -346,8 +352,9 @@
 <!--                                 <button class="modify_section" id = "modify">수정</button> -->
                          		<form action="teamarticledelete.do" method="post" name="deleteTeamFile">                                 
                                   <div class="edit_box">
-                                     <button class="board_editBtn" type = "submit">삭제</button>
+                                     <button class="board_editBtn" id="teamWriteDelete" type="submit">삭제</button>
                                      <input type="hidden" name="fileNo" value="${teamarticle1.fileNo}">
+                                     <c:if test="${teamarticle1.writer.writerId}">암호를 입력하세요.</c:if> 
                                   </div>              
                                 </form>
                         </div>
@@ -414,6 +421,7 @@
           </form>
         </div>   	
 	</div>
+<!-- <script src="src/dealert.js"></script> -->
 <script src="src/modify.js"></script>
 <script src="src/write.js"></script>
 <script src="src/alert.js"></script>

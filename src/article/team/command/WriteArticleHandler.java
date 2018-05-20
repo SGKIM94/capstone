@@ -54,24 +54,21 @@ public class WriteArticleHandler implements CommandHandler {
 		req.setAttribute("errors", errors);
 
 		StudentUser user = (StudentUser)req.getSession(false).getAttribute("authStdUser");
-		String filetype = req.getParameter("filetype");
 		
 		if (!errors.isEmpty()) {
 			return FORM_VIEW;
 		}
 		
-		
 		WriteRequest writeReq = createWriteRequest(user, req);
-//		if(writeReq == null || filetype == null)
-//		{
-//			errors.put("NotAllow", Boolean.TRUE);
-//			return FORM_VIEW;
-//		}
-//		else {
-			writeReq.validate(errors);	
+		if(writeReq == null)
+		{
+			errors.put("NoFileType", Boolean.TRUE);
+			return FORM_VIEW;
+		}
+		else {
 			String newFileNo = writeService.write(writeReq);
 			req.setAttribute("newArticleNo", newFileNo);
-//		}
+		}
 		
 		return FORM_VIEW;
 	}
@@ -79,6 +76,7 @@ public class WriteArticleHandler implements CommandHandler {
 	private WriteRequest createWriteRequest(StudentUser user, HttpServletRequest req) throws Exception {
 		StudentDao studentDao = new StudentDao();
 		Student student;
+		
 		
 		
 		try (Connection conn = ConnectionProvider.getConnection()) {
@@ -100,23 +98,25 @@ public class WriteArticleHandler implements CommandHandler {
 		savePath = makeDirectory(savePath, student.getTeamNo());
 		
 		try{
-		multi=new MultipartRequest(req, savePath, sizeLimit, "utf-8", new DefaultFileRenamePolicy()); 	//utf-8로 해야됨
-		}catch (Exception e) {
-			e.printStackTrace();
+			multi=new MultipartRequest(req, savePath, sizeLimit, "utf-8", new DefaultFileRenamePolicy()); 	//utf-8로 해야됨
+		}catch (Exception e) {	
+			return null;
 		}
+		
+		String fileTitle = multi.getParameter("title");
+		String fileType = multi.getParameter("filetype");
 		String file = multi.getOriginalFileName("file");
-
-//		if(file == null)
-//			return null;
 		
-		String origin_file = multi.getOriginalFileName("file");
+		if(file == null || fileTitle.equals(null)|| fileType.equals("")) {
+			return null;
+		}
 		
+		String origin_file = multi.getOriginalFileName("file");		
 		String store_file = multi.getFilesystemName("file");
 		origin_file = new String(origin_file.getBytes("euc-kr"),"KSC5601");	//인코딩 문제
 		store_file = new String(store_file.getBytes("euc-kr"),"KSC5601");
 		/*여기서의 이름과 뷰.jsp 파일에서의 이름이 같아야함.*/
 //		/* 파일 시스템상의 이름을 구하는 방법을 알아보고 코드 다시 수정해야함. */
-		System.out.println("글쓴이는 " + user.getName() + "입니다");
 		
 		return new WriteRequest(null,
 				multi.getParameter("title"),

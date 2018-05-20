@@ -9,7 +9,7 @@ public class MakeTeamRequest {
    private String groupNo;
    private String teamNo;
    private String teamName;
-   private String teamSubject;
+   private String teamSubject = null;
    private String advisor;
    private boolean state;
    private int s_groupNo;
@@ -23,11 +23,12 @@ public class MakeTeamRequest {
       for(int i = 0; i<stuIds.size();i++) {
          checkEmpty(errors, stuIds.get(i), "id");
       }*/
-      checkEmpty(errors, teamNo, "teamno");
+	  checkEmpty(errors, groupNo, "groupNo");
+      checkEmpty(errors, teamNo, "teamNo");
       checkEmpty(errors, teamName, "teamName");
-      checkEmpty(errors, teamSubject, "teamSubject");
       checkEmpty(errors, advisor, "advisor");
    }
+   
    
    private void checkEmpty(Map<String, Boolean> errors, 
          String value, String fieldName) {

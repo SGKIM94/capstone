@@ -15,47 +15,46 @@ import java.util.Calendar;
 import eval.service.ShowTeam;
 import jdbc.JdbcUtil;
 import team.model.Team;
+import team.model.TeamList;
 import member.dao.*;
 
 public class TeamDao {
 	
 	private StudentDao studentDao = new StudentDao();
 	
-	 public Team selectByteam(Connection conn, String teamNo) throws SQLException {
-	      PreparedStatement pstmt = null;
-	      ResultSet rs = null;
-	      try {
-	         pstmt = conn.prepareStatement(
-	               "select * from team where teamNo = ?");
-	         pstmt.setString(1, teamNo);
-	         rs = pstmt.executeQuery();
-	         Team team = null;
-	         
-	         if (rs.next()) {
-	        	 boolean tstate = true;
-	             if(rs.getString("state").equals("1"))
-	            	 tstate = true;
-	             else if(rs.getString("state").equals("0"))
-	            	 tstate = false;
-	            team = new Team(
-	            	  rs.getString("teamNo"),         //이거 db int -> str 수정해야함 
-	                  rs.getString("teamName"), 
-	                  rs.getString("teamSubject"),
-	                  rs.getString("advisor"),
-	                  rs.getString("groupNo"),
-	            	  tstate,                           
-	                  toDate(rs.getTimestamp("TeamJoinDate")));      //db 이름을 teamRegDate로 바꿧으면함.
-	            	  
-	            	System.out.println("teamDao에서의 state= " + rs.getString("state"));
-	            	
-	       }
-	         return team;
-	      } finally {
-	         JdbcUtil.close(rs);
-	         JdbcUtil.close(pstmt);
-	      }
-	   }
-	 
+   public Team selectByteam(Connection conn, String teamNo) throws SQLException {
+      PreparedStatement pstmt = null;
+      ResultSet rs = null;
+      try {
+         pstmt = conn.prepareStatement(
+               "select * from team where teamNo = ?");
+         pstmt.setString(1, teamNo);
+         rs = pstmt.executeQuery();
+         Team team = null;
+         
+         if (rs.next()) {
+        	 boolean tstate = true;
+             if(rs.getString("state").equals("1"))
+            	 tstate = true;
+             else if(rs.getString("state").equals("0"))
+            	 tstate = false;
+            team = new Team(
+            	  rs.getString("teamNo"),         //이거 db int -> str 수정해야함 
+                  rs.getString("teamName"), 
+                  rs.getString("teamSubject"),
+                  rs.getString("advisor"),
+                  rs.getString("groupNo"),
+            	  tstate,                           
+                  toDate(rs.getTimestamp("TeamJoinDate")));      //db 이름을 teamRegDate로 바꿧으면함.
+            	  
+            	
+       }
+         return team;
+      } finally {
+         JdbcUtil.close(rs);
+         JdbcUtil.close(pstmt);
+      }
+   }
    /* 학과장님의 평가 시작 페이지에서 평가받아야할 팀의 이름들만 가져오는 select 함수 */
    public List<ShowTeam> selectAllTeam(Connection conn, String strYear) throws SQLException {
 	      PreparedStatement pstmt = null;
@@ -81,6 +80,31 @@ public class TeamDao {
 	         JdbcUtil.close(pstmt);
 	      }	      
 	   }
+//  교수님메인 팀들 가져오기
+   public List<TeamList> selectAllTeam_pro(Connection conn, String strYear) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      String year = "'" + strYear.substring(2,2) + "%'";
+
+	      try {
+	         pstmt = conn.prepareStatement(
+	               "select * from team where teamNo like "+ year);
+	         rs = pstmt.executeQuery();
+	         List<TeamList> result = new ArrayList<TeamList>();
+	         TeamList eteam = null;
+	         while (rs.next()) {
+	        	 	eteam = new TeamList(
+	        		rs.getString("teamNo"),         //이거 db int -> str 수정해야함 
+                 rs.getString("teamName") 
+	                );   
+					result.add(eteam);
+				}
+				return result;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }	      
+	   }
 //   
 //   private Team convertArticle(ResultSet rs) throws SQLException {
 //		return new Team(
@@ -97,15 +121,17 @@ public class TeamDao {
       return date == null ? null : new Date(date.getTime());
    }
    
-   DecimalFormat df = new DecimalFormat("00"); // 연도 구하기위한 포맷 형식 지정
-   Calendar currentCalendar = Calendar.getInstance();
-   String strYear = Integer.toString(currentCalendar.get(Calendar.YEAR));
- 
+   
+   
    public void insert(Connection conn, Team team, String stu_Id, int s_groupNo) throws SQLException {
       try (PreparedStatement pstmt = 
             conn.prepareStatement("insert into team(teamNo,teamName,teamSubject"
             		+ ",advisor,groupNo,state,TeamJoinDate) values(?,?,?,?,?,?,?)")) {
-    	   
+    	
+    	 DecimalFormat df = new DecimalFormat("00"); // 연도 구하기위한 포맷 형식 지정
+    	 Calendar currentCalendar = Calendar.getInstance();
+    	 String strYear = null;
+    	 strYear = Integer.toString(currentCalendar.get(Calendar.YEAR)); 
     	 strYear = strYear.substring(2,4);
     	 String tNo = (strYear + "_" + team.getTeamNo() + "_" + team.getGroupNo()); //팀 고유 번호 구하는 방식(생성연도 + 팀조번호 + 반)       
     	 pstmt.setString(1,  tNo);
@@ -130,6 +156,15 @@ public class TeamDao {
       }
    }
    
+   public void update_team_gNo(Connection conn, String stuId, int groupNo) throws SQLException {
+	      try (PreparedStatement pstmt = conn.prepareStatement(
+	            "update student set groupNo = ? where stuId = ?")) {
+	          pstmt.setInt(1, groupNo);
+	    	  pstmt.setString(2, stuId);
+	          pstmt.executeUpdate();
+	      }
+	   }
+   
    public void delete(Connection conn, Team team) throws SQLException {
 	   try (PreparedStatement pstmt = conn.prepareStatement(
 			   "delete from team where teamNo = ?")) {
@@ -152,5 +187,57 @@ public class TeamDao {
 		   pstmt.executeUpdate();
 	   }
    }
+   
+   public Team selectByteamName(Connection conn, String teamName) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt = conn.prepareStatement(
+	               "select * from team where teamName = ?");
+	         pstmt.setString(1, teamName);
+	         rs = pstmt.executeQuery();
+	         Team team = null;
+	         
+	         if (rs.next()) {
+	        	 boolean tstate = true;
+	             if(rs.getString("state").equals("1"))
+	            	 tstate = true;
+	             else if(rs.getString("state").equals("0"))
+	            	 tstate = false;
+	            team = new Team(
+	            	  rs.getString("teamNo"),         //이거 db int -> str 수정해야함 
+	                  rs.getString("teamName"), 
+	                  rs.getString("teamSubject"),
+	                  rs.getString("advisor"),
+	                  rs.getString("groupNo"),
+	            	  tstate,                           
+	                  toDate(rs.getTimestamp("TeamJoinDate")));      //db 이름을 teamRegDate로 바꿧으면함.           	  
+	            	
+	       }
+	         return team;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+   
+   public int CountTeam(Connection conn) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	    	 int countTeam = 0;
+	         pstmt = conn.prepareStatement(
+	               "select count(*) count from team");
+	         rs = pstmt.executeQuery();
+	         
+	         rs.next();
+	         countTeam = rs.getInt("count");
+	         return countTeam;
+
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
 
 }

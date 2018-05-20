@@ -13,7 +13,7 @@
 <body class="flex-center-row">
 <div class="center_box">
     <div class="title_box">
-        <span class="_title">Management System</span>
+        <span class="_title">캡스톤디자인 평가관리 시스템</span>
     </div>
     <div class="join_box">
         <span class="delete_h2">팀을 삭제 및 탈퇴하였습니다. 로그인해주세요.</span><br>
