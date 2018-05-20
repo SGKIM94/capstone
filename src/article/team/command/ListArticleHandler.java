@@ -2,23 +2,30 @@ package article.team.command;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import article.team.model.TeamContent;
 import article.team.service.ArticlePage;
 import article.team.service.ListArticleService;
 import auth.service.StudentUser;
+import auth.service.User;
+import eval.dao.EvalplanDao;
 import mvc.command.CommandHandler;
 
 public class ListArticleHandler implements CommandHandler {
 
 	private ListArticleService listService = new ListArticleService();
-
+	private EvalplanDao evalplanDao = new EvalplanDao();			//현재 평가가 진행중인지 아닌지를 읽어오기 위한 멤버
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) 
 			throws Exception {		
+		/* 평가에 참여하는 선택된 교수 읽어오기 */	
+		User user = (User)req.getSession(false).getAttribute("authProUser");
 		
 		String filetype = req.getParameter("filetype");
 		String pageNoVal = req.getParameter("pageNo");	
+		
+		String state = req.getParameter("eval");
 		
 		int pageNo = 1;
 		if (pageNoVal != null) {
@@ -39,8 +46,11 @@ public class ListArticleHandler implements CommandHandler {
 		}
 		
 		req.setAttribute("articleTeamPage", articlePage);
-		
-		return "/index.jsp";
+		/* 평가가 진행중이고 교수님이 조회를 할 경우 */
+		if(state!=null && state.equals("false")) {
+			return "/index.jsp";	
+		}
+		return "/WEB-INF/view/EvalTeamList.jsp";
 	}
 	
 	public String getFileType(String filetype)

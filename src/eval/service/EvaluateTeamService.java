@@ -11,29 +11,53 @@ import member.service.DuplicateIdException;
 
 public class EvaluateTeamService {
 	
+	private final int EVAL_END=3;
+	
 	EvalpaperDao evalpaperdao = new EvalpaperDao();
+	
 	
 	/* 개별 교수님 평가서 번호 */
 	/* 평가 세션 값 가져와서 만들자 */
-	public String makePaperNo(String eNo, String tNo, String pId) {
-		return eNo+"-"+tNo+"-"+pId;
+	public String makePaperNo(String tNo, String pId) {
+		return tNo+"_"+pId;
 	}
+	
+	public Evalpaper SelectEvalpaper(String epaperNo) {
+		Connection conn = null;
+		try {
+			conn = ConnectionProvider.getConnection();
+			
+			Evalpaper evalpaper = evalpaperdao.selectEvalPaper(conn, epaperNo);
+			/* 평가지 못찾았을 경우 에러 처리 */
+//			if (evalpaper != null) {
+//				JdbcUtil.rollback(conn);
+//				throw new DuplicateIdException();
+//			}
+			/* 해당 팀에 대한 평가가 끝남 */
+			if(evalpaper.getState() == EVAL_END) {
+				return null;
+			}
+			return evalpaper;
+		} catch (SQLException e) {
+			JdbcUtil.rollback(conn);
+			throw new RuntimeException(e);
+		} finally {
+			JdbcUtil.close(conn);
+		}
+	}
+			
+	
 	
 	public void EvaluateTeam(EvaluateTeamRequest evalReq) {
 		Connection conn = null;
 		
-		String pfNo = makePaperNo();
+		Evalpaper evalpaper = evalReq.getEp();
 		
 		try {
 			conn = ConnectionProvider.getConnection();
 			conn.setAutoCommit(false);
 			
-			Evalpaper evalpaper = evalpaperdao.selectEvalPaper(conn, pfNo);
-			if (evalpaper != null) {
-				JdbcUtil.rollback(conn);
-				throw new DuplicateIdException();
-			}
-			evalpaperdao.insert(conn, evalpaper);
+			evalpaperdao.update(conn, evalpaper);
 			
 			conn.commit();
 		} catch (SQLException e) {

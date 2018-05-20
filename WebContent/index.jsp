@@ -164,6 +164,7 @@
     
     <form action="teamlist.do" method="post" name="findFile">
        <input type="hidden" name="team_no" value="${listTno}">
+       <input type="hidden" name="eval" value="false">
        <select class="board-select" name="filetype">
             <option value=00>전체보기</option>
             <option value=a>회의록</option>
@@ -175,7 +176,7 @@
             <option value=g>메뉴얼</option>
             <option value=h>최종보고서</option>            
             </select>
-       <button type="submit">${main_tName}</button>    
+       <button type="submit">${main_tName}</button>
        </form>
         <c:if test="${errors.listTeamNotExist}">팀이 존재하지 않습니다.</c:if>
     <form action="teamlist.do" method="post" name="findFile">
@@ -209,7 +210,8 @@
             	</div>
         	</div>
         	<div class="btn_box flex-center-row">
-        		<form action="makeEvalPlan.do" method="get" name="makeEvalPlan">
+        	<!-- <form action="makeEvalPlan.do" method="get" name="makeEvalPlan"> -->
+        		<form action="EvalTeamList.do" method="get" name="EvalTeamList">
                     <button class="eval_btn" type = "submit">평가하기</button>
                 </form>
         	</div> 

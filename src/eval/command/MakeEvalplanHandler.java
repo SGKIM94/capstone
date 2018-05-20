@@ -101,10 +101,4 @@ public class MakeEvalplanHandler implements CommandHandler {
 		}
 		return newlist;
 	}
-	
-	
-	
-	private MakeRequest createMakeEvalRequest(User user, HttpServletRequest req) throws Exception {
-		
-	}	
 }

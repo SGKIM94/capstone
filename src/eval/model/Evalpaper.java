@@ -10,71 +10,77 @@ public class Evalpaper {
 	
 	final private int DEFAULT_TOTAL = 0;
 	final private int DEFAULT_STATE = 0;
+	final private int PASS = 3;
+	final private int AGAIN = 2;
+	final private int FAIL = 1;
 	
-	private String evalNo;
-	private Questions qs;
-	private String pro;
-	private String team;
+	final private int PASS_SCORE = 44;
+	final private int AGAIN_SCORE = 34;
+	
 	private String paperNo;
-	private Date evalDate;
+	private Questions qs;					
+	private Date regDate;
+	private Date endDate;
 	private int total;
-	private int resultState;
+	private int State;
 	
 	public Evalpaper() {
-		evalNo = null;
-		qs = new Questions();
-		pro = null;
-		team = null;
 		paperNo = null;
-		evalDate = null;
+		qs = new Questions();
+		regDate = null;
+		endDate = null;
 		total = DEFAULT_TOTAL;
-		resultState = DEFAULT_STATE;
+		State = DEFAULT_STATE;
 	}
 	
-	public Evalpaper(String e, Questions q, String p, String t, Date d, int tt, int r) {
-		evalNo = e;
+	public Evalpaper(String pn, Questions q, Date reg, Date end, int tt, int r) {
+		paperNo = pn;
 		qs = q;
-		pro = p;
-		team = t;
-		paperNo = makePaperNo(e, t, p);
-		evalDate = d;
+		regDate = reg;
+		endDate = end;
 		total = tt;
-		resultState = r;
+		State = r;
 	}
 	
-	public Evalpaper(String e, Questions q, String p, String t, String pfno, Date d, int tt, int r) {
-		evalNo = e;
+	public Evalpaper(String pn, Questions q, Date reg, Date end) {
+		paperNo = pn;
 		qs = q;
-		pro = p;
-		team = t;
-		paperNo = pfno;
-		evalDate = d;
-		total = tt;
-		resultState = r;
+		regDate = reg;
+		endDate = end;
+		total = countTotal();
+		State = selectState();
 	}
 	
-	public Evalpaper(Questions q, String pno, Date d, int tt, int r) {
-		evalNo = null;
-		qs = q;
-		pro = null;
-		team = null;
-		paperNo = pno;
-		evalDate = d;
-		total = tt;
-		resultState = r;
+	private int countTotal() {
+		int total = 0;
+		for(int i = 1; i < 8 ; i++) {
+			total += qs.getQsItemScore(i);
+		}
+		return total;
+	}
+	
+	private int selectState() {
+		if(total > PASS_SCORE) {
+			return PASS;
+		}else if(total > AGAIN_SCORE) {
+			return AGAIN;
+		}
+		else {
+			return FAIL;
+		}
 	}
 	
 	/* 개별 교수님 평가서 번호 */
 	public String makePaperNo(String eNo, String tNo, String pId) {
 		return eNo+"-"+tNo+"-"+pId;
 	}
-	
-	public String getEvalNo() {
-		return evalNo;
+
+	public String getPaperNo() {
+		return paperNo;
 	}
 
-	public void setEvalNo(String evalNo) {
-		this.evalNo = evalNo;
+	public void setPaperNo(String paperNo) {
+		this.paperNo = paperNo;
 	}
 
 	public Questions getQs() {
@@ -85,28 +91,20 @@ public class Evalpaper {
 		this.qs = qs;
 	}
 
-	public String getPro() {
-		return pro;
+	public Date getRegDate() {
+		return regDate;
 	}
 
-	public void setPro(String pro) {
-		this.pro = pro;
+	public void setRegDate(Date regDate) {
+		this.regDate = regDate;
 	}
 
-	public String getTeam() {
-		return team;
+	public Date getEndDate() {
+		return endDate;
 	}
 
-	public void setTeam(String team) {
-		this.team = team;
-	}
-
-	public Date getEvalDate() {
-		return evalDate;
-	}
-
-	public void setEvalDate(Date evalDate) {
-		this.evalDate = evalDate;
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 
 	public int getTotal() {
@@ -116,22 +114,12 @@ public class Evalpaper {
 	public void setTotal(int total) {
 		this.total = total;
 	}
-	
-	public int getResultState() {
-		return resultState;
+
+	public int getState() {
+		return State;
 	}
 
-	public void setResultState(int resultState) {
-		this.resultState = resultState;
+	public void setState(int state) {
+		State = state;
 	}
-
-	public String getPaperNo() {
-		return paperNo;
-	}
-
-	public void setPaperNo(String paperNo) {
-		this.paperNo = paperNo;
-	}
-	
-	
 }

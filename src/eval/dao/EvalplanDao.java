@@ -6,11 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import article.common.ArticleNotFoundException;
 import eval.model.Evalplan;
 import jdbc.JdbcUtil;
+import jdbc.connection.ConnectionProvider;
 
 public class EvalplanDao {
 	/* pulic? */
@@ -69,7 +72,33 @@ public class EvalplanDao {
 				JdbcUtil.close(pstmt);
 	      }
 	   }		  
-	
+	   
+	   public String getEvalState() throws SQLException {
+		   Connection conn = null;
+		   PreparedStatement pstmt = null;
+		   ResultSet rs = null;
+		   DecimalFormat df = new DecimalFormat("00"); // 연도 구하기위한 포맷 형식 지정
+		   Calendar currentCalendar = Calendar.getInstance();
+		   String strYear = Integer.toString(currentCalendar.get(Calendar.YEAR));
+		      try {
+		    	 conn = ConnectionProvider.getConnection();
+		    	 String evalNo = strYear+"-01";
+		    	 pstmt = conn.prepareStatement(
+		               "select state from eplan where planNo = ?");
+		         pstmt.setString(1, evalNo);
+		         rs = pstmt.executeQuery();
+		         String state = null;
+		         if (rs.next()) {
+		        	 state = rs.getString("state");
+		        	 return state; 
+		         }
+		         return null;
+		      } finally {
+		         JdbcUtil.close(rs);
+		         JdbcUtil.close(pstmt);
+		      }
+	   }
+	   
 	   /* 평가 완료 변경 메소드 */
 	   public void update_eval_complete(Connection conn, Evalplan eval) throws SQLException {
 	      try (PreparedStatement pstmt = conn.prepareStatement(
