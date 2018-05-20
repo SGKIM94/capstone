@@ -14,7 +14,7 @@
 <form action="createTeam.do" method="post">
 <div class="center_box">
     <div class="title_box">
-        <span class="_title">Management System</span>
+        <span class="_title">졸업작품 평가관리 시스템</span>
     </div>
     <div class="sign_box">
         <div class="list_box flex-center-row">
@@ -59,24 +59,10 @@
     </div>
     <div class="sign_box">
     <div class="list_box flex-center-row">
-       <select class="custom-select" name="teamSubject">
-       		<option value='웹사이트' selected>웹사이트</option>
-       		<option value='임베디드'>임베디드</option>
-       		<option value='소프트웨어'>소프트웨어</option>
-       		<option value='하드웨어'>하드웨어</option>      
-       </select>    
-    </div>
-    <div class="list_box flex-center-row">
        <select class="custom-select" name="advisor">
-       		<option value=0 selected>김점구</option>
-      		<option value=1>정지문</option>
-      		<option value=2>송은지</option>
-      		<option value=3>나상엽</option>
-     		<option value=4>김현철</option>
-    		<option value=5>김정길</option>
-   		    <option value=6>문송철</option>
-    		<option value=7>황정희</option>
-   		    <option value=8>기창진</option>  
+       		<c:forEach var="pro" items="${proList.list}" varStatus="status">
+                 	<option value="${pro.proId}">${pro.proName}</option>
+            </c:forEach>
        </select>    
     </div>
     <div class="button_box flex-center-column">

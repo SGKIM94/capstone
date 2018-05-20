@@ -15,6 +15,7 @@ import java.util.Calendar;
 import eval.service.ShowTeam;
 import jdbc.JdbcUtil;
 import team.model.Team;
+import team.model.TeamList;
 import member.dao.*;
 
 public class TeamDao {
@@ -70,6 +71,31 @@ public class TeamDao {
 	        	 	eteam = new ShowTeam(
 	        		rs.getString("teamNo"),         //이거 db int -> str 수정해야함 
                     rs.getString("teamName") 
+	                );   
+					result.add(eteam);
+				}
+				return result;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }	      
+	   }
+//  교수님메인 팀들 가져오기
+   public List<TeamList> selectAllTeam_pro(Connection conn, String strYear) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      String year = "'" + strYear.substring(2,2) + "%'";
+
+	      try {
+	         pstmt = conn.prepareStatement(
+	               "select * from team where teamNo like "+ year);
+	         rs = pstmt.executeQuery();
+	         List<TeamList> result = new ArrayList<TeamList>();
+	         TeamList eteam = null;
+	         while (rs.next()) {
+	        	 	eteam = new TeamList(
+	        		rs.getString("teamNo"),         //이거 db int -> str 수정해야함 
+                 rs.getString("teamName") 
 	                );   
 					result.add(eteam);
 				}
@@ -189,6 +215,25 @@ public class TeamDao {
 	            	
 	       }
 	         return team;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+   
+   public int CountTeam(Connection conn) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	    	 int countTeam = 0;
+	         pstmt = conn.prepareStatement(
+	               "select count(*) count from team");
+	         rs = pstmt.executeQuery();
+	         
+	         rs.next();
+	         countTeam = rs.getInt("count");
+	         return countTeam;
+
 	      } finally {
 	         JdbcUtil.close(rs);
 	         JdbcUtil.close(pstmt);

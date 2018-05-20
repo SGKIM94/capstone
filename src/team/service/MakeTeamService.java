@@ -40,7 +40,7 @@ public class MakeTeamService {
                new Team(
             		 mtReq.getTeamNo(), 
                      mtReq.getTeamName(), 
-                     mtReq.getTeamSubject(),
+                     null,
                      mtReq.getAdvisor(),                     
                      mtReq.getGroupNo(),
                      true,

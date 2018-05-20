@@ -17,7 +17,7 @@
 	<div class="center_box flex-center-column">	
     <form action="login.do" method="post">
         <div class="title_box">
-            <span class="_title">Management System</span>
+            <span class="_title">졸업작품 평가관리 시스템</span>
         </div>
         <div class="sign_box">            
             <div class="list_box flex-center-row">
@@ -211,6 +211,9 @@
         	<div class="btn_box flex-center-row">
         		<form action="makeEvalPlan.do" method="get" name="makeEvalPlan">
                     <button class="eval_btn" type = "submit">평가하기</button>
+                </form>
+                <form action="proListTeam.do" method="post" name="listTeam">
+                    <button class="eval_btn" type = "submit">팀보기</button>
                 </form>
         	</div> 
         </div>     
