@@ -14,12 +14,17 @@ import article.team.model.TeamContent;
 import article.team.service.DownloadTeamService;
 import auth.service.Member;
 import auth.service.StudentUser;
+import auth.service.User;
+import eval.dao.EvalplanDao;
 import member.service.DuplicateIdException;
 import mvc.command.CommandHandler;
 
 public class DownloadTeamHandler implements CommandHandler {
    
    private static final String FORM_VIEW = "/index.jsp";
+   private static final String EVAL_FORM_VIEW = "/WEB-INF/view/EvalTeamList.jsp";
+   
+   private EvalplanDao evalplanDao = new EvalplanDao();
    @Override
    public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
       if (req.getMethod().equalsIgnoreCase("GET")) {
@@ -41,33 +46,41 @@ public class DownloadTeamHandler implements CommandHandler {
 	  
 	  Member member = (Member)req.getSession(false).getAttribute("authTeam"); 
 	  String filename = req.getParameter("fileNo");
-	  String teamNo = req.getParameter("teamNo");
+	  String teamNo = member.getTeamNo();
 	  String path;
+	  
+	  String state = req.getParameter("eval");
 	  
 	  TeamContent teamContent = content.selectTeam(filename);
 	  String Docname = URLEncoder.encode(filename,"UTF-8");
 	  
-	  if(member != null)	  
-		  path = req.getSession().getServletContext().getRealPath("/upload/"+member.getTeamNo());
-	  else
-		  path = req.getSession().getServletContext().getRealPath("/upload/"+ teamNo);
+	  path = req.getSession().getServletContext().getRealPath("/upload/" + teamNo);
 	  
-	  System.out.println("경로 = " + path + " file 이름 = " + teamContent.getOrigin());
 	  
-	  File file = new File(path, teamContent.getOrigin());
+	  File file = new File(path, teamContent.getStored());
+	  System.out.println(path + "/" + teamContent.getStored());
       Map<String, Boolean> errors = new HashMap<>();
       req.setAttribute("errors", errors);
 
      try {
          if(file.exists()){
-        	 DownloadUtil.download(req, res, file);
-        	 return FORM_VIEW;      
+        	DownloadUtil.download(req, res, file); 
+     		if(state!=null && state.equals("true")) {
+     			return EVAL_FORM_VIEW;
+     		}
+        	return FORM_VIEW;      
          }else{
         	errors.put("NotExistNoticeFile", Boolean.TRUE);
+        	if( state!=null && state.equals("true")) {
+     			return EVAL_FORM_VIEW;
+     		}
         	return FORM_VIEW;
          }
       } catch (DuplicateIdException e) {
          errors.put("duplicateId", Boolean.TRUE);
+         if(state!=null && state.equals("true")) {
+  			return EVAL_FORM_VIEW;
+  		}
          return FORM_VIEW;
       }
    }

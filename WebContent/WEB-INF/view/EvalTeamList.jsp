@@ -78,7 +78,7 @@
     <div class="main_box">
         <div class="search-box flex-center-row">
             <form action="teamlist.do" method="post" name="findFile">
-                <input type="hidden" name="team_no" value=""${team_no}"">
+                <input type="hidden" name="team_no" value="${team_no}">
                 <select class="board-select" name="filetype">
                     <option value=00>전체보기</option>
                     <option value=a>회의록</option>

@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="u" tagdir="/WEB-INF/tags" %>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -18,7 +20,7 @@
             <input type="text" name="noticetitle" class="notice-input-tit" placeholder="제목 입력" value="${param.title}">
         </div>
         <div class="txt-area flex-center-row">
-            <textarea type="text" name="content" class="notice-input-txt" placeholder="내용 입력">${param.content}</textarea>
+            <textarea name="content" class="notice-input-txt" placeholder="내용 입력"><u:pre value='${param.content}'/></textarea>
         </div>
         <div class="file-area flex-center-row">
             <input name="file" type="file" placeholder="파일 선택">${param.file}
