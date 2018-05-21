@@ -13,10 +13,10 @@
 <body class="flex-center-row">
 <div class="center_box">
     <div class="title_box">
-        <span class="_title">Management System</span>
+        <span class="_title">졸업작품 평가관리 시스템</span>
     </div>
     <div class="join_box">
-        <h2>글이 삭제되었습니다.</h2><br>
+        	글이 삭제되었습니다.<br>
     </div>
     <div class="button_box flex-center-column">
         <a href="${ctxPath}/Capstone/index.jsp">

@@ -176,9 +176,9 @@
             <option value=g>메뉴얼</option>
             <option value=h>최종보고서</option>            
             </select>
-       <button type="submit">${main_tName}</button>
+       <c:if test="${main_tName ne null}"><button class="btn_tname" type="submit">${main_tName}</button></c:if>
        </form>
-        <c:if test="${errors.listTeamNotExist}">팀이 존재하지 않습니다.</c:if>
+        
     <form action="teamlist.do" method="post" name="findFile">
     	<input type="hidden" name="team_no" value="${listTno}">    
     </form>    
@@ -188,10 +188,10 @@
                 <li class="file_title">제목</li>
                 <li class="file_time">게시날짜</li> 
             </ul>             
-            <c:forEach var="teamarticle_pro" items="${articleTeamPage.content}">
+            <c:forEach var="teamarticle_pro" items="${articleTeamPage.content}" varStatus="status">
             <div class="board-list flex-center-row">
             	<div class="file_num_box file_base">
-            		<span class="text-data">${teamarticle_pro.writer.writerId}</span>
+            		<span class="text-data">${articleTeamPage.stuName[status.index]}</span>
             	</div>
             	<div class="file_title_box file_base">
                             <form action="downloadTeamFile.do" method="post" name="downTeamFile">
@@ -207,17 +207,16 @@
                 </div>
                 </div>
 				</c:forEach>
+				<c:if test="${errors.listTeamNotExist}">팀이 존재하지 않습니다.</c:if>
             	</div>
         	</div>
-        	<div class="btn_box flex-center-row">
+        	
         	<!-- <form action="makeEvalPlan.do" method="get" name="makeEvalPlan"> -->
-        		<form action="EvalTeamList.do" method="get" name="EvalTeamList">
-                    <button class="eval_btn" type = "submit">평가하기</button>
-                </form>
-                <form action="proListTeam.do" method="post" name="listTeam">
-                    <button class="eval_btn" type = "submit">팀보기</button>
-                </form>
-        	</div> 
+        	<form action="EvalTeamList.do" method="get" name="EvalTeamList">
+        		<div class="btn_box flex-center-row">
+                    <button class="eval_btn" type="submit">전체 팀 보기</button>
+             	</div>
+            </form> 
         </div>     
     </div>
 </body>
@@ -367,6 +366,7 @@
             </div>   
                 <div class="btn_box flex-space-row">
                     <a href="#"><button class="writing" id="write">글쓰기</button></a>
+                    <a href="#"><button class="writing" id="resultView">결과보기</button></a>
                 </div>
         	</div>
         <div class="write_box" id="write_board">

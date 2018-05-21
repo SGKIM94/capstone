@@ -157,7 +157,7 @@ html, body{
 }
 
 h4{text-align: center;}
-/****** 게시판 *******/
+/****** 寃뚯떆�뙋 *******/
 .board{
     margin: 0 auto;
     width: 500px;
@@ -251,6 +251,21 @@ button{
     color: #2a2a2a;
     font-weight: lighter;
     font-size: 0.7rem;
+}
+
+a.button {
+  	-webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+  	}
+  	
+input.submitLink_pro {
+    background-color: transparent;
+    text-decoration: none;
+    border: none;
+	width: 300px;
+	height: 30px;
+    cursor: pointer;
 }
 
 .board_bottom a{color: #2a2a2a;text-decoration: none;}

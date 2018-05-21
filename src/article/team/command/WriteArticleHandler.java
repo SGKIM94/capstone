@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mysql.jdbc.Util;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
@@ -77,7 +78,14 @@ public class WriteArticleHandler implements CommandHandler {
 		StudentDao studentDao = new StudentDao();
 		Student student;
 		
+		DecimalFormat df = new DecimalFormat("00"); // 연도 구하기위한 포맷 형식 지정
+		Calendar currentCalendar = Calendar.getInstance();
+		String strYear = Integer.toString(currentCalendar.get(Calendar.YEAR));
+		String strMin = Integer.toString(currentCalendar.get(Calendar.MINUTE));
+		String strSecd = Integer.toString(currentCalendar.get(Calendar.SECOND));
+		String strDate = strYear + strMin + strSecd;
 		
+		strDate = strDate.substring(2,7);
 		
 		try (Connection conn = ConnectionProvider.getConnection()) {
 			student = studentDao.selectById(conn, user.getId());
@@ -111,17 +119,50 @@ public class WriteArticleHandler implements CommandHandler {
 			return null;
 		}
 		
-		String origin_file = multi.getOriginalFileName("file");		
+		
+		
+		
+		String origin_file = multi.getOriginalFileName("file");
 		String store_file = multi.getFilesystemName("file");
 		origin_file = new String(origin_file.getBytes("euc-kr"),"KSC5601");	//인코딩 문제
-		store_file = new String(store_file.getBytes("euc-kr"),"KSC5601");
+		store_file = new String(store_file.getBytes("euc-kr"),"KSC5601");	//인코딩 문제
+//		store_file = new String(store_file.getBytes("euc-kr"),"KSC5601");
+//		System.out.println(new String(origin_file.getBytes("KSC5601"), "utf-8"));
+//		System.out.println(new String(origin_file.getBytes("utf-8"), "KSC5601"));
+//		System.out.println(new String(origin_file.getBytes("KSC5601"), "euc-kr"));
+//		System.out.println(new String(origin_file.getBytes("euc-kr"), "KSC5601"));
+//		System.out.println(new String(origin_file.getBytes("8859_1"), "KSC5601"));
+//		System.out.println(new String(origin_file.getBytes("8859_1"), "euc-kr"));
+//		System.out.println(new String(origin_file.getBytes("8859_1"), "utf-8"));
+//		System.out.println(new String(origin_file.getBytes("utf-8"), "8859_1"));
+
+//		store_file = new String(store_file.getBytes("euc-kr"),"KSC5601");
 		/*여기서의 이름과 뷰.jsp 파일에서의 이름이 같아야함.*/
 //		/* 파일 시스템상의 이름을 구하는 방법을 알아보고 코드 다시 수정해야함. */
+		int i = -1;
+		
+		i = store_file.lastIndexOf(".");
+		String realName = strDate + store_file.substring(i, store_file.length());
+		
+		File oldFile = new File(savePath + "/" + store_file);
+		File newFile = new File(savePath + "/" + realName);
+		
+		oldFile.renameTo(newFile);
+		
+		if(oldFile.renameTo(newFile)){
+
+		      System.out.print("이름변경성공");
+
+		    }else{
+
+		       System.out.print("이름변경실패");
+
+		   }
 		
 		return new WriteRequest(null,
 				multi.getParameter("title"),
 				origin_file,
-				store_file,
+				realName,
 				new TeamArticleWriter(user.getTeamNo(), user.getId()),	//분,초 + 문서번호
 				multi.getFile("file").length(),
 				multi.getContentType("file"),
