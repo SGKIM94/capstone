@@ -46,7 +46,7 @@ public class DownloadTeamHandler implements CommandHandler {
 	  
 	  Member member = (Member)req.getSession(false).getAttribute("authTeam"); 
 	  String filename = req.getParameter("fileNo");
-	  String teamNo = req.getParameter("teamNo");
+	  String teamNo = member.getTeamNo();
 	  String path;
 	  
 	  String state = req.getParameter("eval");
@@ -54,14 +54,11 @@ public class DownloadTeamHandler implements CommandHandler {
 	  TeamContent teamContent = content.selectTeam(filename);
 	  String Docname = URLEncoder.encode(filename,"UTF-8");
 	  
-	  if(member != null)	  
-		  path = req.getSession().getServletContext().getRealPath("/upload/"+member.getTeamNo());
-	  else
-		  path = req.getSession().getServletContext().getRealPath("/upload/"+ teamNo);
+	  path = req.getSession().getServletContext().getRealPath("/upload/" + teamNo);
 	  
-	  System.out.println("경로 = " + path + " file 이름 = " + teamContent.getOrigin());
 	  
-	  File file = new File(path, teamContent.getOrigin());
+	  File file = new File(path, teamContent.getStored());
+	  System.out.println(path + "/" + teamContent.getStored());
       Map<String, Boolean> errors = new HashMap<>();
       req.setAttribute("errors", errors);
 

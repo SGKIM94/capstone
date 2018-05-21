@@ -5,10 +5,12 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
 
+import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 import member.dao.ProfessorDao;
 import member.model.Professor;
 import team.dao.TeamDao;
+import team.model.Team;
 
 public class EvalPlanList {
 
@@ -44,4 +46,23 @@ public class EvalPlanList {
 			throw new RuntimeException(e);
 		}
 	}
+	public Team searchTeam(String teamNo) {
+		   Connection conn = null;
+		      try {
+		         conn = ConnectionProvider.getConnection();
+		         conn.setAutoCommit(false);
+		         Team team = teamDao.selectByteam(conn, teamNo);
+				 if (team == null) {				
+					JdbcUtil.rollback(conn);
+					return null;
+				 }else {
+						return team;
+					}	         
+		      } catch (SQLException e) {
+		          JdbcUtil.rollback(conn);
+		          throw new RuntimeException(e);
+		      } finally {
+		          JdbcUtil.close(conn);
+		      }
+	   }
 }

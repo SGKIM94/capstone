@@ -55,7 +55,7 @@ public class ModifyArticleHandler implements CommandHandler {
 			ModifyRequest modReq = new ModifyRequest(no, noticeData.getNotice().getWriter(), noticeData.getNotice().getTitle(),
 					noticeData.getContent(), noticeData.getOrigin(), noticeData.getStored(), 
 					noticeData.getFileSize(), noticeData.getFileType());
-
+//			System.out.println(noticeData.getContent() + "Content입니다.");
 			session.setAttribute("modReq", modReq);
 			return FORM_VIEW;
 		} catch (ArticleNotFoundException e) {

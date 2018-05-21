@@ -1,16 +1,17 @@
-<%@ page contentType="text/html; charset=utf-8"%>
-<%-- <%@ page language="java" pageEncoding="EUC-KR" %> --%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!doctype html>
+<%@ page contentType="text/html; charset=euc-kr"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="./css/majorProcessor/major-processor.css">
-    <title>MajorProfessor</title>
+    <link rel="stylesheet" href="./css/professor/professor_main.css">
+    <link rel="stylesheet" href="./css/student/student_main.css">
+    <link rel="stylesheet" href="./css/professor-eval/professor-eval.css">
+    <title>Professor</title>
 </head>
-<body>
 <body class="flex-center-row">
 <div class="center_box flex-center-row">
     <div class="side_box">
@@ -52,79 +53,93 @@
 	l-0.248,0.283V39.8c0,1.612,0.896,3.062,2.338,3.782l8.467,4.233c0.054,0.027,0.107,0.055,0.16,0.083
 	C42.677,47.979,42.567,48.054,42.459,48.132z"/>
                     </svg>
-                </div>
+                </div>                
                 <div class="profile_desc">
-                    <span class="desc">학과장님 반갑습니다.</span>
+                    <span class="desc">${authProUser.name}교수님 반갑습니다.</span>
                 </div>
             </div>
             <div class="button_box flex-space-row">
-                <button class="prof_btn">마이페이지</button>
-                <button class="prof_btn">로그아웃</button>
+                <a href="changePwd.do"><button class="prof_btn">패스워드변경</button></a>
+                <a href="logout.do"><button class="prof_btn">로그아웃</button></a>
             </div>
         </div>
-       <div class="notice_box">
-	                	<span class="title_sub">공지사항</span>
-	               <ul class="lists">
-	               		<c:forEach var="article" items="${articlePage.content}">
-	                	<li><span class="txt"><a href="noticeread.do?postNo=${article.postNo}&pageNo=${articlePage.currentPage}">
-	                	<c:out value="${article.title}"/></a></span></li>
+        <div class="notice_box">
+	                	<span class="title_sub">평가팀 목록</span>
+	               <ul class="lists">	              
+	               		<c:forEach var="team" items="${teamList.list}">	               		
+	               		<form action="EvalTeamList.do" method="Post" name="EvalTeamList">	                	
+	                	<span class="txt-data">	                	
+	                	<input class="submitLink_pro" type="submit" name="teamtitle" value='${team.teamName}'>	                	
+	                	<input type="hidden" name="teamNo" value="${team.teamNo}">	                	
+	                	</span>
+	                	</form> 	                	
 	                	</c:forEach>
-	               </ul>
-	        <div class="btn_box flex-center-row">
-	        <button class="eval_btn" onclick="location.href='noticewrite.do';">공지사항 등록</button>
-            </div>
+	               </ul>	               
         </div>
     </div>
-    <div class="main_box">
-        <div class="team_list_box flex-space-row">
-            <div class="team_left_box">
-                <h4 class="sub-tit">
-			                  평가팀 목록
-                </h4>
-                <ul class="team">
-                    <c:forEach var="team" items="${ListTeamPage}">
-	                <li class="board_list">${team.TeamList.teamName}</li>
-	                </c:forEach>
-                </ul>
-                <div class="count-box">
-                    <span class="count">총 : <span class="num_count">${teamList.total}</span> 명</span>
+    <div class="main_box">    
+    <form action="teamlist.do" method="post" name="findFile">
+       <input type="hidden" name="team_no" value="${team_no}">
+       <select class="board-select" name="filetype">
+            <option value=00>전체보기</option>
+            <option value=a>회의록</option>
+            <option value=b>제안서</option>
+            <option value=c>요구분석서</option>
+            <option value=d>설계서</option>
+            <option value=e>구현서</option>
+            <option value=f>형상관리서</option>
+            <option value=g>메뉴얼</option>
+            <option value=h>최종보고서</option>            
+            </select>
+       <button type="submit" value="${team_no}">조회</button>
+       <input type="hidden" name="eval" value="true">
+       </form>
+        <c:if test="${errors.listTeamNotExist}">팀이 존재하지 않습니다.</c:if>
+        <form action="teamlist.do" method="post" name="findFile">
+    	<input type="hidden" name="team_no" value="${team_no}">    
+    	</form> 
+        
+        	 <form action="EvaluateTeam.do" method="post" name="evalteam">
+        	 <div class="option-box">
+             	<button class="option-button">평가</button>
+             	<input type="hidden" name="team_no" value="${team_no}">
+             	<input type="hidden" name="eval" value="true">
+             	</div>            	
+             </form>
+             <div class="option-box">
+        		<button class="option-button">결과</button>
+        	 </div>  
+        <div class="board-list-box">               
+            <ul class="board-info">
+            	<li class="file_num">작성자</li>
+                <li class="file_title">제목</li>
+                <li class="file_time">게시날짜</li> 
+            </ul>             
+            <c:forEach var="teamarticle_pro" items="${articleTeamPage.content}" varStatus="status">
+            <div class="board-list flex-center-row">
+            	<div class="file_num_box file_base">
+            		<span class="text-data">${articleTeamPage.stuName[status.index]}</span>
+            	</div>
+            	<div class="file_title_box file_base">
+                            <form action="downloadTeamFile.do" method="post" name="downTeamFile">
+                            	<span class="text-data">
+                            	<input class="submitLink" type="submit" name="filtitle" value='${teamarticle_pro.title}'>
+                            	<input type="hidden" name="fileNo" value="${teamarticle_pro.fileNo}">
+                            	<input type="hidden" name="teamNo" value="${listTno}">
+                            	<input type="hidden" name="eval" value="true">
+    							</span>
+    						</form>
                 </div>
-            </div>
-            <div class="team_right_box flex-center-column">
-            <form action="makeEvalPlan.do" method="post" name="makeEvalPlan">
-                <div class="right-top-box flex-space-column">
-                 	<h4 class="sub-tit">
-                       	평가 교수
-                  	</h4>
-                    <ul class="team">
-                        <!--<li class="board_list"><a href="#"><span class="num">10</span>����ö</a></li>-->
-                        <c:forEach var="pro" items="${proList.list}" varStatus="status">
-                        <label class="container">${pro.proName}
-                            <input name="selectprof" type="checkbox" value="${pro.proId}">
-                            <span class="checkmark"></span>
-                        </label>
-                        </c:forEach>
-                    </ul>
+                <div class="file_time_box  flex-center-column">
+                            <span class="text-data">${teamarticle_pro.regDate}</span>
                 </div>
-                <div class="right-bottom-box">
-                    <div class="eval-box">
-                        <button>평가 시작</button>
-                    </div>
                 </div>
-                </form>
-            </div>
-        </div>
-        <div class="board_bottom flex-space-row">
-            <a href="#">
-                <div class="goToDisplay_box flex-space-row">
-                    <svg x="0px" y="0px" width="15px" height="15px" viewBox="0 0 511.626 511.627" >
-                        <path d="M506.206,179.012L360.025,32.834c-3.617-3.617-7.898-5.426-12.847-5.426s-9.233,1.809-12.847,5.426   c-3.617,3.619-5.428,7.902-5.428,12.85v73.089h-63.953c-135.716,0-218.984,38.354-249.823,115.06C5.042,259.335,0,291.03,0,328.907   c0,31.594,12.087,74.514,36.259,128.762c0.57,1.335,1.566,3.614,2.996,6.849c1.429,3.233,2.712,6.088,3.854,8.565   c1.146,2.471,2.384,4.565,3.715,6.276c2.28,3.237,4.948,4.859,7.994,4.859c2.855,0,5.092-0.951,6.711-2.854   c1.615-1.902,2.424-4.284,2.424-7.132c0-1.718-0.238-4.236-0.715-7.569c-0.476-3.333-0.715-5.564-0.715-6.708   c-0.953-12.938-1.429-24.653-1.429-35.114c0-19.223,1.668-36.449,4.996-51.675c3.333-15.229,7.948-28.407,13.85-39.543   c5.901-11.14,13.512-20.745,22.841-28.835c9.325-8.09,19.364-14.702,30.118-19.842c10.756-5.141,23.413-9.186,37.974-12.135   c14.56-2.95,29.215-4.997,43.968-6.14s31.455-1.711,50.109-1.711h63.953v73.091c0,4.948,1.807,9.232,5.421,12.847   c3.62,3.613,7.901,5.424,12.847,5.424c4.948,0,9.232-1.811,12.854-5.424l146.178-146.183c3.617-3.617,5.424-7.898,5.424-12.847   C511.626,186.92,509.82,182.636,506.206,179.012z" fill="#595959"/>
-
-                    </svg>
-                    <span class="goToDisplay">평가결과보기</span>
-                </div>
-            </a>
-        </div>
-    </div>
+				</c:forEach>
+            	</div>
+            	<div class="btn_box flex-center-row">
+            	 	<button class="eval_btn" onclick="location.href='/Capstone/index.jsp';">초기화면</button>
+            	</div>
+        	</div> 
+        	</div>
 </body>
 </html>

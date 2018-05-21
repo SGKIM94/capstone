@@ -50,6 +50,11 @@ public class ListArticleHandler implements CommandHandler {
 		if(state!=null && state.equals("false")) {
 			return "/index.jsp";	
 		}
+		if(state == null)
+			return "/index.jsp";
+		if(state != null & state.equals("true"))
+			return "/WEB-INF/view/EvalTeamList.jsp";
+		
 		return "/WEB-INF/view/EvalTeamList.jsp";
 	}
 	
