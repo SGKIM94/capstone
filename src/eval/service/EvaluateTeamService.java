@@ -13,8 +13,7 @@ import member.service.DuplicateIdException;
 
 public class EvaluateTeamService {
 	
-	private final int EVAL_END=3;
-	
+
 	private EvalpaperDao evalpaperdao = new EvalpaperDao();
 	private StudentDao studentDao = new StudentDao();
 	
@@ -36,7 +35,8 @@ public class EvaluateTeamService {
 //				throw new DuplicateIdException();
 //			}
 			/* 해당 팀에 대한 평가가 끝남 */
-			if(evalpaper.getState() == EVAL_END) {
+			
+			if(evalpaper.getState() == AllEvalStatusValue.getEpaperEvalEnded()) {
 				return null;
 			}
 			return evalpaper;
@@ -123,7 +123,9 @@ public class EvaluateTeamService {
 		try {
 			conn = ConnectionProvider.getConnection();
 			int state = evalpaperdao.selectState(conn, paperNo);
-			if(state == EVAL_END) {
+
+			if(state == AllEvalStatusValue.getEpaperEvalEnded()) {
+
 				return true; 
 			}
 			else {

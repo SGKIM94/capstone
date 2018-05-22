@@ -90,8 +90,8 @@ public class WriteArticleHandler implements CommandHandler {
        }catch (Exception e) {
     	   e.printStackTrace();
        } 
-       String file = multi.getOriginalFileName("file");
-       
+       String file = multi.getOriginalFileName("file");   
+
        if(file == null) {
     	   return new WriteRequest(defaut_PostId,
     		          new Writer(professor.getProId(), professor.getProname()),

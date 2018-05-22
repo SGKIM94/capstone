@@ -13,8 +13,6 @@ import jdbc.connection.ConnectionProvider;
 public class EvalpaperListService {
 	
 	
-	private final int EVAL_END = 3;
-	
 	EvalpaperDao evalpaperDao = new EvalpaperDao();
 	EvalplanDao evalPlanDao = new EvalplanDao();
 	
@@ -50,7 +48,9 @@ public class EvalpaperListService {
 		try {
 			conn = ConnectionProvider.getConnection();
 			state = Integer.parseInt(evalPlanDao.getEvalState());
-			if(state == EVAL_END) {
+
+			if(state == AllEvalStatusValue.getEpaperEvalEnded()) {
+
 				return true; 
 			}
 			else{

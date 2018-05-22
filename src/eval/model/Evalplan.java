@@ -3,12 +3,12 @@ package eval.model;
 import java.util.Date;
 import java.util.Map;
 
+import eval.service.AllEvalStatusValue;
+
 /* 평가 계획서 */
 public class Evalplan {
 	
 	//final private String DEFAULT_EVAL_NO= "2018-01";			//2018년 5월 20일 4학년
-	final private int EVAL_START_YET = 0;						//쓸모 있는지 모르겠음 밑에 3개
-	final private int EVAL_IS_ON_GOING = 1;							
 	
 	private String evalNo;
 	private String dean;					//학과장님
@@ -21,7 +21,7 @@ public class Evalplan {
 		dean = null;
 		regDate = null;
 		endDate = null;
-		evalState = EVAL_START_YET;
+		evalState = AllEvalStatusValue.getDefaultEvalPlanState();
 	}
 
 	public Evalplan(String e, String d, Date reg, Date end, int es) {
@@ -38,7 +38,7 @@ public class Evalplan {
 		dean = s;
 		regDate = reg;
 		endDate = end;
-		evalState = EVAL_IS_ON_GOING;
+		evalState = AllEvalStatusValue.getEvalPlanStarted();
 	}
 	
 	public void validate(Map<String, Boolean> errors) {	

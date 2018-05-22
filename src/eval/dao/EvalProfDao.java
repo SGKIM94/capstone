@@ -6,12 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import eval.model.EvalTeam;
 import eval.model.Evalplan;
+import eval.service.ShowProf;
 import jdbc.JdbcUtil;
 
 public class EvalProfDao {
@@ -51,8 +54,6 @@ public class EvalProfDao {
 		         JdbcUtil.close(pstmt);
 		      }
 	   }
-	
-	
 	/* 평가 참여 교수 숫자 읽어오기  */
 	   public int selectPfCount(Connection conn, String e) throws SQLException {
 		   	PreparedStatement pstmt = null;		//Statement와 캐시 기능의 차이

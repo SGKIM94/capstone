@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import article.team.command.ListArticleHandler;
+import auth.service.Authority;
 import auth.service.User;
 import eval.dao.EvalplanDao;
 import eval.service.EvalPlanList;
@@ -15,8 +16,6 @@ import eval.service.EvalProfList;
 import eval.service.EvalTeamList;
 import eval.service.ListEvalTeamService;
 import eval.service.MakeEvalplanService;
-import eval.service.MakeRequest;
-import eval.service.ShowProf;
 import eval.service.ShowTeam;
 import mvc.command.CommandHandler;
 
@@ -30,15 +29,25 @@ public class ListEvalTeamHandler implements CommandHandler {
 	
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		
-		/* 아무 팀도 안선택한 세션값 설정 */
-		req.setAttribute("noselected", "No");
-		
-		/* 평가가 시작되지 않음 -> 초기화면 */
-		String state = evalplanDao.getEvalState();
-		if(state == null) {
-			return "/index";
+		HttpSession session = req.getSession();
+
+		User user = (User)req.getSession(false).getAttribute("authProUser");
+		if(user.getAccess()==Authority.getProDean()) {
+			req.setAttribute("dean", "yes");
+		}else {
+			req.setAttribute("dean", "no");
+
 		}
+		
+		/*이거 여기서 필요한건지 잘 모르겠음.*/
+//		/* 아무 팀도 안선택한 세션값 설정 */
+//		req.setAttribute("noselected", "No");
+//		
+//		/* 평가가 시작되지 않음 -> 초기화면 */
+//		String state = evalplanDao.getEvalState();
+//		if(state == null) {
+//			return "/index";
+//		}
 		
 		if (req.getMethod().equalsIgnoreCase("GET")) {
 			return processForm(req, res);

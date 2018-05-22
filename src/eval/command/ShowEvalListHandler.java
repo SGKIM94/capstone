@@ -9,16 +9,17 @@ import javax.servlet.http.HttpSession;
 import auth.service.Member;
 import auth.service.StudentUser;
 import auth.service.User;
-import eval.model.Evalpaper;
-import eval.model.Questions;
+import eval.service.EpaperResult;
 import eval.service.EvalPaperList;
 import eval.service.EvalpaperListService;
-import eval.service.EvaluateTeamService;
-import eval.service.ShowTeamMember;
+import eval.service.ShowResultListService;
+
 import mvc.command.CommandHandler;
 
 public class ShowEvalListHandler implements CommandHandler {
 	
+	ShowResultListService showResultListService = new ShowResultListService();
+
 	EvalpaperListService evalpaperListService = new EvalpaperListService();
 	
 	private static final String EVAL_TEAM_VIEW = "/WEB-INF/view/EvalTeamList.jsp";
@@ -34,9 +35,11 @@ public class ShowEvalListHandler implements CommandHandler {
 		/* 학생 결과 */
 		if(user == null) {
 			return process_stu(req,res);
-		}else if(stu == null) {	//교수 결과
-			return process_dean(req,res);
 		}
+//		else if(stu == null) {	//교수 결과
+//			return process_dean(req,res);
+//		}
+
 		return null;
 	}
 	
@@ -58,15 +61,18 @@ public class ShowEvalListHandler implements CommandHandler {
 		
 		EvalPaperList el = evalpaperListService.getEvalPaperList(team.getTeamNo());
 		
-		if(el==null) {
-			/* 평가가 시작되지 않음을 프론트로 넘겨주기 위함. */
-			req.setAttribute("notstarted", "ddd");
-			return STU_MAIN_VIEW;
-		}else {
-			req.setAttribute("notstarted", "eeeee");
-		}
+		List<EpaperResult> eprl = showResultListService.MakeResultList(el.getList());
 		
-		session.setAttribute("EvalList", el.getList());
+//		if(el==null) {
+//			/* 평가가 시작되지 않음을 프론트로 넘겨주기 위함. */
+//			req.setAttribute("notstarted", "ddd");
+//			return STU_MAIN_VIEW;
+//		}else {
+//			req.setAttribute("notstarted", "eeeee");
+//		}
+		
+		session.setAttribute("EvalList", eprl);
+
 		
 //		String confirm = (String)req.getSession(false).getAttribute("confirm");
 //		if((confirm!=null) && confirm.equals("confirmed")) {
@@ -76,8 +82,5 @@ public class ShowEvalListHandler implements CommandHandler {
 //		}
 
 		return STU_RESULT_VIEW;
-	}
-	public String process_dean(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		
 	}
 }

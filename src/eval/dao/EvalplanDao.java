@@ -12,13 +12,11 @@ import java.util.Date;
 
 import article.common.ArticleNotFoundException;
 import eval.model.Evalplan;
+import eval.service.AllEvalStatusValue;
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 
 public class EvalplanDao {
-	/* pulic? */
-	final private int EVAL_IS_ON_GOING = 1;
-	final private int EVAL_ENDED = 2;
 			/* 평가계획서 평가번호로 읽어오기 */
 	   public Evalplan selectByEvalNo(Connection conn, String evalNo) throws SQLException {
 	      PreparedStatement pstmt = null;
@@ -103,7 +101,7 @@ public class EvalplanDao {
 	   public void update_eval_complete(Connection conn, Evalplan eval) throws SQLException {
 	      try (PreparedStatement pstmt = conn.prepareStatement(
 	    		  "update evalplan set state = ?, endDate = ? where evalNo = ?")) {
-	         pstmt.setInt(1, EVAL_ENDED);
+	         pstmt.setInt(1, AllEvalStatusValue.getEvalPlanEnded());
 	         pstmt.setTimestamp(2, new Timestamp(eval.getEndDate().getTime()));
 	         pstmt.setString(3, eval.getEvalNo());
 	         pstmt.executeUpdate();
@@ -113,7 +111,7 @@ public class EvalplanDao {
 	   public void update_eval_ongoing(Connection conn, Evalplan eval) throws SQLException {
 		      try (PreparedStatement pstmt = conn.prepareStatement(
 		    		  "update evalplan set state = ? where evalNo = ?")) {
-		         pstmt.setInt(1, EVAL_IS_ON_GOING);
+		         pstmt.setInt(1, AllEvalStatusValue.getEvalPlanStarted());
 		         pstmt.setString(2, eval.getEvalNo());
 		         pstmt.executeUpdate();
 		      }

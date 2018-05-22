@@ -20,9 +20,6 @@ import eval.model.Evalplan;
 
 public class MakeEvalplanService {
 	
-	final private int DEFAULT_STATE = 0;
-	final private String DEFAULT_FINAL = "ff";
-	
 	EvalplanDao evalplanDao = new EvalplanDao();
 	EvalTeamDao evalteamDao = new EvalTeamDao();
 	EvalProfDao evalprofDao = new EvalProfDao();
@@ -75,7 +72,7 @@ public class MakeEvalplanService {
 	}
 	private Evalplan toEvalplan(MakeRequest req, String evalno) {
 		Date now = new Date();
-		return new Evalplan(toGetEvalNo(), req.getDean(), now, now, DEFAULT_STATE);
+		return new Evalplan(toGetEvalNo(), req.getDean(), now, now, AllEvalStatusValue.getDefaultEvalPlanState());
 	}
 	
 	private String toGetEvalNo() {
@@ -87,7 +84,7 @@ public class MakeEvalplanService {
 	/*각 팀당 최종 평가지 번호 생성 코드 = 년도 + 팀번호 + 디폴트 최종 평가지 문서번호*/
 	private String toGetFinalNo(String teamNo) {
 		Calendar c = Calendar.getInstance();
-		String evalNo = Integer.toString(c.get(Calendar.YEAR))+teamNo+"-"+DEFAULT_FINAL;
+		String evalNo = Integer.toString(c.get(Calendar.YEAR))+teamNo+"-"+AllEvalStatusValue.getDefaultFinal();
 		return evalNo;
 	}
 }

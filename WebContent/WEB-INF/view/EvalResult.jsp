@@ -13,6 +13,7 @@
 </head>
 <body class="flex-center-row">
 <div class="center_box">
+
 	<form action="EvaluateTeam.do" method="post" name="evalteam">
     <div class="title_box">
         <span class="_title">졸업작품 심사 결과서</span>
@@ -28,10 +29,11 @@
                     <span>${team_name}</span>
                 </li>
                 <c:forEach var="stu" items="${memberList}">
-                	<li class="right_li">
-                		<span>${stu.id}&nbsp;&nbsp;&nbsp;&nbsp;${stu.name}</span>
-                	</li>
-	            </c:forEach>
+                   <li class="right_li">
+                      <span>${stu.id}&nbsp;&nbsp;&nbsp;&nbsp;${stu.name}</span>
+                   </li>
+               </c:forEach>
+
             </ul>
         </div>
         <div class="check_box">
@@ -121,17 +123,18 @@
             </div>
         </div>
     </div>
+    <span class="result_txt">평가</span><span id="result"><</span>
     </form>
     <div class="result_box">
         <div class="lastEval_box">
-        	<form action="showResult.do" method="post" name="resultConfirm">
-            <span class="result_txt">평가</span><span id="result">0점</span>
+           <form action="showResult.do" method="post" name="resultConfirm">
+            <span class="result_txt">평가</span><span id="result">${val_total}</span>
+            <span class="result_txt">결과</span><span id="result">${pass_result}</span>
+
             <button class="option-button" name="confirm" value="confirmed">확인</button>
             </form>
         </div>
     </div>
 </div>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-<script type="text/javascript" src="src/select_sum.js"></script>
 </body>
 </html>
