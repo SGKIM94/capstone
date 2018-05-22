@@ -1,6 +1,7 @@
 package eval.command;
 
 
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,10 +11,14 @@ import article.team.command.ListArticleHandler;
 import auth.service.User;
 import eval.dao.EvalplanDao;
 import eval.service.EvalPlanList;
+import eval.service.EvalProfList;
 import eval.service.EvalTeamList;
+import eval.service.ListEvalTeamService;
 import eval.service.MakeEvalplanService;
+import eval.service.MakeRequest;
+import eval.service.ShowProf;
+import eval.service.ShowTeam;
 import mvc.command.CommandHandler;
-import team.model.Team;
 
 public class ListEvalTeamHandler implements CommandHandler {
 
@@ -25,6 +30,9 @@ public class ListEvalTeamHandler implements CommandHandler {
 	
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		
+		/* 아무 팀도 안선택한 세션값 설정 */
+		req.setAttribute("noselected", "No");
 		
 		/* 평가가 시작되지 않음 -> 초기화면 */
 		String state = evalplanDao.getEvalState();
@@ -56,20 +64,20 @@ public class ListEvalTeamHandler implements CommandHandler {
 		HttpSession session = req.getSession();
 		/* 평가에 참여하는 선택된 교수 읽어오기 */
 		String teamNo = req.getParameter("teamNo");	
+		String teamName = req.getParameter("teamtitle");	
 		User user = (User)req.getSession(false).getAttribute("authProUser");
 		EvalTeamList tl = (EvalTeamList)req.getSession(false).getAttribute("teamList");
-		Team team = new Team();
-		
-		team = evalplanlist.searchTeam(teamNo);
 		
 		/* 팀선택하면 해당 팀의 최종 평가지 문서 번호와 개별 교수 평가지 문서번호 생성 */
 		String finalNo = teamNo+"_ff";				//이 값은 학과장만 사용하는 것?
 		String epaperNo = teamNo+"_"+user.getId();	//이 값은 프론트로 넘겨줘야함.
 		
-		session.setAttribute("team_name", team.getTeamName());
+		List<ShowTeam> sl = tl.getList();
+		
 		session.setAttribute("epaperNo", epaperNo);	//개별 평가지 번호 프론트로 넘기기
 		session.setAttribute("team_no", teamNo);
-		
+		session.setAttribute("team_name", teamName);
+	
 		return FORM_VIEW;
 	}
 }

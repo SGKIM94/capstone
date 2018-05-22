@@ -53,7 +53,7 @@ public class Evalpaper {
 	
 	private int countTotal() {
 		int total = 0;
-		for(int i = 1; i < 8 ; i++) {
+		for(int i = 0; i < 7 ; i++) {
 			total += qs.getQsItemScore(i);
 		}
 		return total;
