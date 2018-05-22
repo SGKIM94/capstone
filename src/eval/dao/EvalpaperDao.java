@@ -21,6 +21,7 @@ public class EvalpaperDao {
 	private final int DEFAULT_STATE = 0;
 	private final int DEFAULT_TOTAL = 0;
 	private final int DEFAULT_SCORE = 0;
+	private final int COMPLETE_STATE = 3;
 	private final String DEFAULT_COMMENT = null;
 	
 	/* 개별 교수님 평가서 번호 */
@@ -38,17 +39,40 @@ public class EvalpaperDao {
 	         rs = pstmt.executeQuery();
 	         Evalpaper evalpaper = null;
 	         
-	         evalpaper = new Evalpaper(paperNo, selectQuestions(conn, paperNo),
-	        		 toDate(rs.getTimestamp("regDate")),
-        			 toDate(rs.getTimestamp("endDate")),
-        			 rs.getInt("total"),
-        			 rs.getInt("state"));
+	         if(rs.next()) {
+	        	 evalpaper = new Evalpaper(paperNo, selectQuestions(conn, paperNo),
+		        		 toDate(rs.getTimestamp("regDate")),
+	        			 toDate(rs.getTimestamp("endDate")),
+	        			 rs.getInt("total"),
+	        			 rs.getInt("state")); 
+	         }
 	         return evalpaper;
 	      } finally {
 	         JdbcUtil.close(rs);
 	         JdbcUtil.close(pstmt);
 	      }
 	   }
+	
+	public int selectState(Connection conn, String paperNo) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt = conn.prepareStatement(
+	               "select state from epaper where paperNo = ?");
+	         pstmt.setString(1, paperNo);
+	         rs = pstmt.executeQuery();
+	         
+	         int state = 50;			//아무값
+	         
+	         if(rs.next()) {
+	        	 state = rs.getInt("state");
+	         }
+	         return state;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	}
 	
 	public List<Evalpaper> selectEvalTeamAllPaper(Connection conn, String teamNo) throws SQLException {
 	      PreparedStatement pstmt = null;
@@ -64,7 +88,7 @@ public class EvalpaperDao {
 	         String paperNo = null;
 	         
 	         while(rs.next()) {
-	        	 paperNo = rs.getString("paperId");
+	        	 paperNo = rs.getString("paperNo");
 	        	 evalpaper = new Evalpaper(paperNo, selectQuestions(conn, paperNo),
 		        		 toDate(rs.getTimestamp("regDate")),
 	        			 toDate(rs.getTimestamp("endDate")),
@@ -99,12 +123,9 @@ public class EvalpaperDao {
 	   	         pstmt.setString(1, paperNo);
 	   	         pstmt.setInt(2, i+1);
 	   	         rs = pstmt.executeQuery();
-	   	         
-	   	         qlist.setQsItemScore(i, rs.getInt("score"));
-	   	         if(rs.getString("comment")==null) {
-	   	        	qlist.setQsItemComment(i, null);
-	   	         }else {
-	   	        	qlist.setQsItemComment(i, rs.getString("comment"));	 
+	   	         if(rs.next()) {
+	   	        	qlist.setQsItemScore(i, rs.getInt("score"));
+	   	        	qlist.setQsItemComment(i, rs.getString("comment"));
 	   	         }
 	    	  }
 	         return qlist;
@@ -175,6 +196,7 @@ public class EvalpaperDao {
 		     }
 		  }
 	   }
+	   
 	   /* 평가 변경 메소드 */
 	   public void update(Connection conn, Evalpaper eval) throws SQLException {
 		   update_evalitem(conn, eval.getQs(), eval.getPaperNo());
@@ -187,17 +209,28 @@ public class EvalpaperDao {
 	         pstmt.executeUpdate();
 	      }
 	   }
+	   
+	   /* 평가 완료 메소드 */
+	   public void update_complete(Connection conn, String paperNo) throws SQLException {
+		   try (PreparedStatement pstmt = conn.prepareStatement(
+	    		  "update epaper set state = ? where paperNo = ?")) {
+	         pstmt.setInt(1, COMPLETE_STATE);
+	         pstmt.setString(2, paperNo);
+	         pstmt.executeUpdate();
+	      }
+	   }
+	   
 	   /* 평가 항목 변경 메소드 */
 	   public void update_evalitem(Connection conn, Questions qs, String paperNo) throws SQLException {
 		   String paperno = paperNo;
 		   /* 이게 될지 안될지 모르겠네 */
 		   try (PreparedStatement pstmt = conn.prepareStatement(
 		    		  "update epf set score = ?, comment = ? where paperNo = ? and qNo = ?")) {
-		       for(int i = 1 ; i < 8 ; i ++) {
+		       for(int i = 0 ; i < 7 ; i ++) {
 		    	   pstmt.setInt(1, qs.getQsItemScore(i));
 			         pstmt.setString(2, qs.getQsItemComment(i));
 			         pstmt.setString(3, paperno);
-			         pstmt.setInt(4, i);
+			         pstmt.setInt(4, i+1);
 			         pstmt.executeUpdate();   
 		       }
 		   }

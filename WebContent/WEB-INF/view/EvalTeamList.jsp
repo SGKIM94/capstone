@@ -53,7 +53,7 @@
                     </svg>
                 </div>
                 <div class="profile_desc">
-                    <span class="desc">김점구교수님 반갑습니다.</span>
+                    <span class="desc">${authProUser.name}교수님 반갑습니다.</span>
                 </div>
             </div>
             <div class="button_box flex-space-row">
@@ -94,19 +94,23 @@
                 <input type="hidden" name="eval" value="true">
               </form>
               <c:if test="${errors.listTeamNotExist}">팀이 존재하지 않습니다.</c:if>
-                <form action="teamlist.do" method="post" name="findFile">
-    				<input type="hidden" name="team_no" value="${team_no}">    
-    			</form> 
                 <form action="EvaluateTeam.do" method="post" name="evalteam">
         	 		<div class="option-box">
              			<button class="option-button">평가하기</button>
+             			<c:if test="${noselected eq 'yes' }"><script>alert('평가 팀을 선택해주세요.');</script></c:if>
+             			<c:if test="${finished eq 'yes' }"><script>alert('이미 평가를 하셨습니다.');</script></c:if>
              			<input type="hidden" name="team_no" value="${team_no}">
              			<input type="hidden" name="eval" value="true">
-             		</div>            	
+             		</div>   
              	</form>
-                <div class="option-box">
-                    <button class="option-button">결과보기</button>
-                </div>
+             	 <form action="showResult.do" method="post" name="showResult">
+             	<div class="option-box">
+                    	<button class="option-button" name="result" value="resultview">결과보기</button>
+                    	<c:if test="${noselected2 eq 'yes' }"><script>alert('평가 팀을 선택해주세요.');</script></c:if>
+						<input type="hidden" name="team_no" value="${team_no}">
+						<input type="hidden" name="resultv" value="resultview">
+				</div>                    	
+               	</form> 
            </div>
         <div class="select-team-con flex-center-row">
             <span class="selected-team">

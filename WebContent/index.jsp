@@ -178,10 +178,7 @@
             </select>
        <c:if test="${main_tName ne null}"><button class="btn_tname" type="submit">${main_tName}</button></c:if>
        </form>
-        
-    <form action="teamlist.do" method="post" name="findFile">
-    	<input type="hidden" name="team_no" value="${listTno}">    
-    </form>    
+
         <div class="board-list-box">               
             <ul class="board-info">
             	<li class="file_num">작성자</li>
@@ -366,7 +363,11 @@
             </div>   
                 <div class="btn_box flex-space-row">
                     <a href="#"><button class="writing" id="write">글쓰기</button></a>
-                    <a href="#"><button class="writing" id="resultView">결과보기</button></a>
+                    <form action="showResultList.do" method="post" name="showResultList">
+                    <button class="writing" id="resultlist">결과보기</button>
+                    <c:if test = "${evalstate eq 'aaaa' }"><script>alert('평가가 종료되지 않았습니다.');</script></c:if>
+                    <c:if test = "${notstarted eq 'ddd' }"><script>alert('평가가 시작되지 않았습니다.');</script></c:if>
+                    </form>
                 </div>
         	</div>
         <div class="write_box" id="write_board">
@@ -448,7 +449,6 @@
             	팀참가
         </button>
         </a>
-      
     </div>
     <div class="center_box flex-center-row">
         <div class="side_box">
