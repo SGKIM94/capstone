@@ -40,7 +40,7 @@ public class ProfessorDao {
       }
    }
    
-   public List<ShowProf> selectAllTeam(Connection conn) throws SQLException {
+   public List<ShowProf> selectAllProfessor(Connection conn) throws SQLException {
 	  PreparedStatement pstmt = null;
 	  ResultSet rs = null;
 	  

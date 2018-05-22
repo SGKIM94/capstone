@@ -15,7 +15,7 @@
 <div class="center_box">
    <form action="EvaluateTeam.do" method="post" name="evalteam">
     <div class="title_box">
-        <span class="_title">졸업작품 심사서</span>
+        <span class="_title">졸업작품 심사 결과서</span>
     </div>
     <div class="evalForm_box">
         <div class="classInfo_box flex-space-row">
@@ -45,7 +45,7 @@
                     <li class="radio_txt"><input type="radio" name="val_1" value="2"<c:if test = "${ '2' eq v1}">checked</c:if>>매우불량</li>
                 </ul>
                 <span class="opinion">의견작성</span>
-                <textarea cols="30" rows="3" name="comment1">${c1}</textarea>
+                <span cols="30" rows="3" name="comment1">${c1}</span>
             </div>
             <div class="question_box">
                 <span class="question_txt">2.작품의 내용이 독창적인가?</span>
@@ -57,7 +57,7 @@
                     <li class="radio_txt"><input type="radio" name="val_2" value="2"<c:if test = "${ '2' eq v2}">checked</c:if>>매우불량</li>
                 </ul>
                 <span class="opinion">의견작성</span>
-                <textarea cols="30" rows="3" name="comment2">${c2}</textarea>
+                <span cols="30" rows="3" name="comment2">${c2}</span>
             </div>
             <div class="question_box">
                 <span class="question_txt">3.작품의 구성은 적절한가(목표설정, 요구분석, 설계, 구현 등)?</span>
@@ -69,7 +69,7 @@
                     <li class="radio_txt"><input type="radio" name="val_3" value="2"<c:if test = "${ '2' eq v3}">checked</c:if>>매우불량</li>
                 </ul>
                 <span class="opinion">의견작성</span>
-                <textarea cols="30" rows="3" name="comment3">${c3}</textarea>
+                <span cols="30" rows="3" name="comment3">${c3}</span>
             </div>
             <div class="question_box">
                 <span class="question_txt">4.작품의 완성도는?</span>
@@ -81,7 +81,7 @@
                     <li class="radio_txt"><input type="radio" name="val_4" value="2"<c:if test = "${ '2' eq v4}">checked</c:if>>매우불량</li>
                 </ul>
                 <span class="opinion">의견작성</span>
-                <textarea cols="30" rows="3" name="comment4">${c4}</textarea>
+                <span cols="30" rows="3" name="comment4">${c4}</span>
             </div>
             <div class="question_box">
                 <span class="question_txt">5.작품에 대한 문서유지와 논문 구성은 적절한가?</span>
@@ -93,7 +93,7 @@
                     <li class="radio_txt"><input type="radio" name="val_5" value="2"<c:if test = "${ '2' eq v5}">checked</c:if>>매우불량</li>
                 </ul>
                 <span class="opinion">의견작성</span>
-                <textarea cols="30" rows="3" name="comment5">${c5}</textarea>
+                <span cols="30" rows="3" name="comment5">${c5}</span>
             </div>
             <div class="question_box">
                 <span class="question_txt">6.작품에 대한 소개문서는 적절한가?</span>
@@ -105,7 +105,7 @@
                     <li class="radio_txt"><input type="radio" name="val_6" value="2"<c:if test = "${ '2' eq v6}">checked</c:if>>매우불량</li>
                 </ul>
                 <span class="opinion">의견작성</span>
-                <textarea cols="30" rows="3" name="comment6">${c6}</textarea>
+                <span cols="30" rows="3" name="comment6">${c6}</span>
             </div>
             <div class="question_box">
                 <span class="question_txt">7.팀원간의 협력이 잘 이루어졌는가?</span>
@@ -117,23 +117,21 @@
                     <li class="radio_txt"><input type="radio" name="val_7" value="2"<c:if test = "${ '2' eq v7}">checked</c:if>>매우불량</li>
                 </ul>
                 <span class="opinion">의견작성</span>
-                <textarea cols="30" rows="3" name="comment7">${c7}</textarea>
+                <span cols="30" rows="3" name="comment7">${c7}</span>
             </div>
         </div>
     </div>
+    <span class="result_txt">평가</span><span id="result"><</span>
+    </form>
     <div class="result_box">
         <div class="lastEval_box">
-            <span class="result_txt">평가</span><span id="result">0점</span>
-            <ul class="btn_box flex-space-row">
-                <li class="radio_txt">
-                <button class="option-button" name="select" value="save">저장</button>
-                <input type="hidden" name="team_no" value="${team_no}">
-                </li>
-                <li class="radio_txt"><button class="option-button" name="select" value="complete" >완료</button></li>
-            </ul>
+           <form action="showResult.do" method="post" name="resultConfirm">
+            <span class="result_txt">평가</span><span id="result">${val_total}</span>
+            <span class="result_txt">결과</span><span id="result">${pass_result}</span>
+            <button class="option-button" name="confirm" value="confirmed">확인</button>
+            </form>
         </div>
     </div>
-    </form>
 </div>
 </body>
 </html>

@@ -2,19 +2,19 @@ package eval.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import eval.dao.EvalpaperDao;
 import eval.model.Evalpaper;
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
+import member.dao.StudentDao;
 import member.service.DuplicateIdException;
 
 public class EvaluateTeamService {
 	
-	private final int EVAL_END=3;
-	
-	EvalpaperDao evalpaperdao = new EvalpaperDao();
-	
+	private EvalpaperDao evalpaperdao = new EvalpaperDao();
+	private StudentDao studentDao = new StudentDao();
 	
 	/* 개별 교수님 평가서 번호 */
 	/* 평가 세션 값 가져와서 만들자 */
@@ -34,7 +34,8 @@ public class EvaluateTeamService {
 //				throw new DuplicateIdException();
 //			}
 			/* 해당 팀에 대한 평가가 끝남 */
-			if(evalpaper.getState() == EVAL_END) {
+			
+			if(evalpaper.getState() == AllEvalStatusValue.getEpaperEvalEnded()) {
 				return null;
 			}
 			return evalpaper;
@@ -46,7 +47,25 @@ public class EvaluateTeamService {
 		}
 	}
 			
-	
+	public Evalpaper SelectEvalResult(String epaperNo) {
+		Connection conn = null;
+		try {
+			conn = ConnectionProvider.getConnection();
+			
+			Evalpaper evalpaper = evalpaperdao.selectEvalPaper(conn, epaperNo);
+			/* 평가지 못찾았을 경우 에러 처리 */
+//			if (evalpaper != null) {
+//				JdbcUtil.rollback(conn);
+//				throw new DuplicateIdException();
+//			}
+			return evalpaper;
+		} catch (SQLException e) {
+			JdbcUtil.rollback(conn);
+			throw new RuntimeException(e);
+		} finally {
+			JdbcUtil.close(conn);
+		}
+	}
 	
 	public void EvaluateTeam(EvaluateTeamRequest evalReq) {
 		Connection conn = null;
@@ -60,6 +79,55 @@ public class EvaluateTeamService {
 			evalpaperdao.update(conn, evalpaper);
 			
 			conn.commit();
+		} catch (SQLException e) {
+			JdbcUtil.rollback(conn);
+			throw new RuntimeException(e);
+		} finally {
+			JdbcUtil.close(conn);
+		}
+	}
+	
+	public List<ShowTeamMember> SelectTeamMembers(String teamNo){
+		Connection conn = null;
+		
+		List<ShowTeamMember> sl = null;
+		try {
+			conn = ConnectionProvider.getConnection();
+			
+			sl = studentDao.selectByTeamNo(conn, teamNo);
+			return sl;
+		} catch (SQLException e) {
+			JdbcUtil.rollback(conn);
+			throw new RuntimeException(e);
+		} finally {
+			JdbcUtil.close(conn);
+		}
+	}
+	
+	public void CompleteEval(String epaperNo) {
+		Connection conn = null;
+		try {
+			conn = ConnectionProvider.getConnection();
+			evalpaperdao.update_complete(conn, epaperNo);
+		} catch (SQLException e) {
+			JdbcUtil.rollback(conn);
+			throw new RuntimeException(e);
+		} finally {
+			JdbcUtil.close(conn);
+		}
+	}
+	
+	public boolean IsEvalCompleted(String paperNo) {
+		Connection conn = null;
+		try {
+			conn = ConnectionProvider.getConnection();
+			int state = evalpaperdao.selectState(conn, paperNo);
+			if(state == AllEvalStatusValue.getEpaperEvalEnded()) {
+				return true; 
+			}
+			else {
+				return false;
+			}
 		} catch (SQLException e) {
 			JdbcUtil.rollback(conn);
 			throw new RuntimeException(e);

@@ -2,35 +2,25 @@ package eval.model;
 
 import java.util.Date;
 
-import member.model.Professor;
-import team.model.Team;
+import eval.service.AllEvalStatusValue;
 
 /* 팀별 개별 교수님 평가서 */
 public class Evalpaper {
-	
-	final private int DEFAULT_TOTAL = 0;
-	final private int DEFAULT_STATE = 0;
-	final private int PASS = 3;
-	final private int AGAIN = 2;
-	final private int FAIL = 1;
-	
-	final private int PASS_SCORE = 44;
-	final private int AGAIN_SCORE = 34;
-	
+
 	private String paperNo;
 	private Questions qs;					
 	private Date regDate;
 	private Date endDate;
 	private int total;
-	private int State;
+	private int State;		//평가 미시작, 시작, 완료에 대한 상태 변수
 	
 	public Evalpaper() {
 		paperNo = null;
 		qs = new Questions();
 		regDate = null;
 		endDate = null;
-		total = DEFAULT_TOTAL;
-		State = DEFAULT_STATE;
+		total = 0;
+		State = AllEvalStatusValue.getDefaultEpaperState();
 	}
 	
 	public Evalpaper(String pn, Questions q, Date reg, Date end, int tt, int r) {
@@ -42,32 +32,21 @@ public class Evalpaper {
 		State = r;
 	}
 	
-	public Evalpaper(String pn, Questions q, Date reg, Date end) {
+	public Evalpaper(String pn, Questions q, Date reg, Date end, int st) {
 		paperNo = pn;
 		qs = q;
 		regDate = reg;
 		endDate = end;
 		total = countTotal();
-		State = selectState();
+		State = st;
 	}
 	
 	private int countTotal() {
 		int total = 0;
-		for(int i = 1; i < 8 ; i++) {
+		for(int i = 0; i < 7 ; i++) {
 			total += qs.getQsItemScore(i);
 		}
 		return total;
-	}
-	
-	private int selectState() {
-		if(total > PASS_SCORE) {
-			return PASS;
-		}else if(total > AGAIN_SCORE) {
-			return AGAIN;
-		}
-		else {
-			return FAIL;
-		}
 	}
 	
 	/* 개별 교수님 평가서 번호 */

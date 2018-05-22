@@ -53,7 +53,7 @@
                     </svg>
                 </div>
                 <div class="profile_desc">
-                    <span class="desc">김점구교수님 반갑습니다.</span>
+                    <span class="desc">${authProUser.name}교수님 반갑습니다.</span>
                 </div>
             </div>
             <div class="button_box flex-space-row">
@@ -73,6 +73,11 @@
                   </li> 
                </c:forEach> 
             </ul>
+                  <c:if test="${dean eq 'yes' }">
+        <form action="makeEvalPlan.do" method="Get" name="EvalTeamList">
+        <button class="option-button">평가 계획서</button>
+        </form>
+        </c:if>
         </div>
     </div>
     <div class="main_box">
@@ -94,19 +99,23 @@
                 <input type="hidden" name="eval" value="true">
               </form>
               <c:if test="${errors.listTeamNotExist}">팀이 존재하지 않습니다.</c:if>
-                <form action="teamlist.do" method="post" name="findFile">
-    				<input type="hidden" name="team_no" value="${team_no}">    
-    			</form> 
                 <form action="EvaluateTeam.do" method="post" name="evalteam">
-        	 		<div class="option-box">
-             			<button class="option-button">평가하기</button>
-             			<input type="hidden" name="team_no" value="${team_no}">
-             			<input type="hidden" name="eval" value="true">
-             		</div>            	
-             	</form>
-                <div class="option-box">
-                    <button class="option-button">결과보기</button>
-                </div>
+                  <div class="option-box">
+                      <button class="option-button">평가하기</button>
+                      <c:if test="${noselected eq 'yes' }"><script>alert('평가 팀을 선택해주세요.');</script></c:if>
+                      <c:if test="${finished eq 'yes' }"><script>alert('이미 평가를 하셨습니다.');</script></c:if>
+                      <input type="hidden" name="teamNo" value="${team_no}">
+                      <input type="hidden" name="eval" value="true">
+                   </div>                    
+                </form>
+                <form action="showResult.do" method="post" name="showResult">
+                	<div class="option-box">
+                        <button class="option-button" name="result" value="resultview">결과보기</button>
+                        <c:if test="${noselected2 eq 'yes' }"><script>alert('평가 팀을 선택해주세요.');</script></c:if>
+                  		<input type="hidden" name="team_no" value="${team_no}">
+                  		<input type="hidden" name="resultv" value="resultview">
+           		 </div>                       
+              </form> 
            </div>
         <div class="select-team-con flex-center-row">
             <span class="selected-team">
@@ -121,24 +130,24 @@
             </ul>
             <c:forEach var="teamarticle_pro" items="${articleTeamPage.content}" varStatus="status">
             <div class="board-list flex-center-row">
-            	<div class="file_num_box file_base">
-            		<span class="text-data">${articleTeamPage.stuName[status.index]}</span>
-            	</div>
-            	<div class="file_title_box file_base">
+               <div class="file_num_box file_base">
+                  <span class="text-data">${articleTeamPage.stuName[status.index]}</span>
+               </div>
+               <div class="file_title_box file_base">
                             <form action="downloadTeamFile.do" method="post" name="downTeamFile">
-                            	<span class="text-data">
-                            	<input class="submitLink" type="submit" name="filtitle" value='${teamarticle_pro.title}'>
-                            	<input type="hidden" name="fileNo" value="${teamarticle_pro.fileNo}">
-                            	<input type="hidden" name="teamNo" value="${listTno}">
-                            	<input type="hidden" name="eval" value="true">
-    							</span>
-    						</form>
+                               <span class="text-data">
+                               <input class="submitLink" type="submit" name="filtitle" value='${teamarticle_pro.title}'>
+                               <input type="hidden" name="fileNo" value="${teamarticle_pro.fileNo}">
+                               <input type="hidden" name="team_no" value="${team_no}">
+                               <input type="hidden" name="eval" value="true">
+                         </span>
+                      </form>
                 </div>
                 <div class="file_time_box  flex-center-column">
                             <span class="text-data">${teamarticle_pro.regDate}</span>
                 </div>
                 </div>
-				</c:forEach>
+            </c:forEach>
         </div>
         <div class="btn_box flex-center-row">
             <button class="eval_btn" onclick="location.href='/Capstone/index.jsp';">초기화면</button>

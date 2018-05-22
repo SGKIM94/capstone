@@ -7,6 +7,7 @@ import jdbc.connection.ConnectionProvider;
 import member.dao.*;
 import member.model.*;
 import member.service.ClassifyMember;
+import member.service.EncryptPassword;
 
 public class LoginService {
 	
@@ -17,14 +18,19 @@ public class LoginService {
 	
 	public User ProfessorLogin(String id, String password, int grade) {
 		try (Connection conn = ConnectionProvider.getConnection()) {
-			if(grade == ClassifyMember.getPro()){
+			if(grade == ClassifyMember.getPro()){				
 				Professor professor = professorDao.selectById(conn, id);
 				if (professor == null) {
 					throw new LoginFailException();
-				}
+				}				
+//				String dbPwd = professor.getPassword();
+//				String inputPwd = password;
+//				String newPwd = EncryptPassword.getEncrypt(inputPwd, dbPwd);
+				
 				if (!professor.matchPassword(password)) {
 					throw new LoginFailException();
 				}
+				
 				return new User(professor.getProId(), professor.getProname(), 
 						professor.getGroupNo());
 			}
@@ -41,7 +47,11 @@ public class LoginService {
 				Student student = studentDao.selectById(conn, id);
 				if(student == null) {
 					throw new LoginFailException();
-				}
+				}				
+//				String dbPwd = student.getPassword();
+//				String inputPwd = password;
+//				String newPwd = EncryptPassword.getEncrypt(inputPwd, dbPwd);
+				
 				if(!student.matchPassword(password)) {
 					throw new LoginFailException();
 				}
