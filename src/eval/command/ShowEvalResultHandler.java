@@ -33,12 +33,13 @@ public class ShowEvalResultHandler implements CommandHandler {
 			/* 평가가 끝났는지 안끝났는지 점검할 필요 있음 */
 			String ep = (String)req.getSession(false).getAttribute("epaperNo");
 			
-			String confirm = (String)req.getSession(false).getAttribute("confirm");
-			if((confirm!=null) && confirm.equals("confirmed")) {
-				return EVAL_VIEW;
-			}else {
-				req.setAttribute("confirm", "no");
-			}
+//			
+//			String confirm = (String)req.getSession(false).getAttribute("confirm");
+//			if((confirm!=null) && confirm.equals("confirmed")) {
+//				return EVAL_VIEW;
+//			}else {
+//				req.setAttribute("confirm", "no");
+//			}
 			
 			if(ep==null) {
 				req.setAttribute("noselected2", "yes");
@@ -49,7 +50,9 @@ public class ShowEvalResultHandler implements CommandHandler {
 			
 			if(!evaluateTeamService.IsEvalCompleted(ep)) {
 				req.setAttribute("finished", "no");
-				return "/WEB-INF/view/EvalTeamList.jsp";
+				return EVAL_VIEW;
+			}else {
+				req.setAttribute("finished", "yes");
 			}
 			
 			
@@ -59,8 +62,6 @@ public class ShowEvalResultHandler implements CommandHandler {
 			List<ShowTeamMember> sl = evaluateTeamService.SelectTeamMembers(teamNo);
 			
 			if(evalpaper == null) {
-				System.out.println(ep);
-				System.out.println("not found");
 				req.setAttribute("notstarted", "yes");
 				return EVAL_VIEW;
 			}
@@ -70,7 +71,6 @@ public class ShowEvalResultHandler implements CommandHandler {
 			
 			session.setAttribute("memberList", sl);
 			String result = req.getParameter("result");
-			System.out.println(result);
 			if((result!=null) && (result.equals("resultview"))) {
 				return RESULT_VIEW;
 			}

@@ -43,30 +43,31 @@ public class StudentDao {
 
    
    public List<ShowTeamMember> selectByTeamNo(Connection conn, String teamNo) throws SQLException {
-         PreparedStatement pstmt = null;
-         ResultSet rs = null;
-         try {
-            pstmt = conn.prepareStatement(
-                  "select * from student where teamNo = ?");
-            pstmt.setString(1, teamNo);
-            rs = pstmt.executeQuery();
-            
-            List<ShowTeamMember> sl = new ArrayList<ShowTeamMember>();
-            
-            ShowTeamMember student = null;
-            
-            while (rs.next()) {
-               student = new ShowTeamMember(
-                     rs.getString("stuId"), 
-                     rs.getString("stuName"));
-               sl.add(student);
-            }
-            return sl;
-         } finally {
-            JdbcUtil.close(rs);
-            JdbcUtil.close(pstmt);
-         }
-      }
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt = conn.prepareStatement(
+	               "select * from student where teamNo = ?");
+	         pstmt.setString(1, teamNo);
+	         rs = pstmt.executeQuery();
+	         
+	         List<ShowTeamMember> sl = new ArrayList<ShowTeamMember>();
+	         
+	         ShowTeamMember student = null;
+	         
+	         while (rs.next()) {
+	            student = new ShowTeamMember(
+	                  rs.getString("stuId"), 
+	                  rs.getString("stuName"));
+	            sl.add(student);
+	         }
+	         return sl;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+
    
    private Date toDate(Timestamp date) {
       return date == null ? null : new Date(date.getTime());

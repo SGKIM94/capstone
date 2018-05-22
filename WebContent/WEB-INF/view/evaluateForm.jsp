@@ -13,7 +13,7 @@
 </head>
 <body class="flex-center-row">
 <div class="center_box">
-   <form action="EvaluateTeam.do" method="post" name="evalteam">
+	<form action="EvaluateTeam.do" method="post" name="evalteam">
     <div class="title_box">
         <span class="_title">졸업작품 심사서</span>
     </div>
@@ -28,10 +28,10 @@
                     <span>${team_name}</span>
                 </li>
                 <c:forEach var="stu" items="${memberList}">
-                   <li class="right_li">
-                      <span>${stu.id}&nbsp;&nbsp;&nbsp;&nbsp;${stu.name}</span>
-                   </li>
-               </c:forEach>
+                	<li class="right_li">
+                		<span>${stu.id}&nbsp;&nbsp;&nbsp;&nbsp;${stu.name}</span>
+                	</li>
+	            </c:forEach>
             </ul>
         </div>
         <div class="check_box">
@@ -126,9 +126,9 @@
             <span class="result_txt">평가</span><span id="result">0점</span>
             <ul class="btn_box flex-space-row">
                 <li class="radio_txt">
-                <button class="option-button" name="select" value="save">저장</button>
-                <input type="hidden" name="team_no" value="${team_no}">
-                </li>
+             	<button class="option-button" name="select" value="save">저장</button>
+             	<input type="hidden" name="team_no" value="${team_no}">
+             	</li>
                 <li class="radio_txt"><button class="option-button" name="select" value="complete" >완료</button></li>
             </ul>
         </div>

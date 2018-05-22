@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import auth.service.LoginFailException;
+import auth.service.User;
 import eval.model.Evalpaper;
 import eval.model.Questions;
 import eval.service.EvalTeamList;
@@ -30,22 +31,32 @@ public class EvaluateTeamHandler implements CommandHandler {
 	final public static int DEFAULT_LIST_NO = 7;	
 	
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		User user = (User)req.getSession(false).getAttribute("authProUser");
+		/* 평가할 수 있는 교수인지 아닌지 체크해야함 */
+		if(!evaluateTeamService.IsPossibleToEval(user.getId())){
+			req.setAttribute("noeval", "yes");
+			return EVAL_VIEW;
+		}else {
+			req.setAttribute("noeval", "no");
+		}
+	
+		
 		/* 평가가 끝났는지 안끝났는지 점검할 필요 있음 */
 		String ep = (String)req.getSession(false).getAttribute("epaperNo");
 		
 		if(ep==null) {
 			req.setAttribute("noselected", "yes");
-			return "/WEB-INF/view/EvalTeamList.jsp";
+			return EVAL_VIEW;
 		}
 		else {
 			req.setAttribute("noselected", "no");
 		}
 		
 		if(evaluateTeamService.IsEvalCompleted(ep)) {
-			req.setAttribute("finished", "yes");
-			return "/WEB-INF/view/EvalTeamList.jsp";
+			req.setAttribute("completed", "yes");
+			return EVAL_VIEW;
 		}else {
-			req.setAttribute("finished", "no");
+			req.setAttribute("completed", "no");
 		}
 		
 		String eval = req.getParameter("eval");
@@ -85,15 +96,8 @@ public class EvaluateTeamHandler implements CommandHandler {
 		
 		String select = req.getParameter("select");
 		
-		
-		System.out.print(select);
-		
 		String epaperNo = (String)req.getSession(false).getAttribute("epaperNo");
 		String team_Name = (String)req.getSession(false).getAttribute("team_name");
-
-		if(select.equals("complete")) {
-			evaluateTeamService.CompleteEval(epaperNo);
-		}
 		
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);
@@ -107,6 +111,10 @@ public class EvaluateTeamHandler implements CommandHandler {
 		}
 	
 		evaluateTeamService.EvaluateTeam(evalReq);
+		if(select.equals("complete")) {
+			evaluateTeamService.CompleteEval(epaperNo);
+		}
+		
 		return EVAL_VIEW;
 		
 //		try {
