@@ -28,7 +28,6 @@ public class ListEvalTeamHandler implements CommandHandler {
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		HttpSession session = req.getSession();
-		
 		User user = (User)req.getSession(false).getAttribute("authProUser");
 		if(user.getAccess()==Authority.getProDean()) {
 			req.setAttribute("dean", "yes");
