@@ -12,20 +12,8 @@ import jdbc.connection.ConnectionProvider;
 
 public class EvalpaperListService {
 	
-	
 	EvalpaperDao evalpaperDao = new EvalpaperDao();
 	EvalplanDao evalPlanDao = new EvalplanDao();
-	
-	private EvalPaperList elist;
-	//private List<Evalpaper> eplist;
-	//private EvalFinal  efinal;
-	
-	public EvalpaperListService() {
-		elist = new EvalPaperList();
-	}
-	public EvalpaperListService(String teamNo) {
-		elist = new EvalPaperList();
-	}
 	
 	public EvalPaperList getEvalPaperList(String teamNo) {
 		Connection conn = null;

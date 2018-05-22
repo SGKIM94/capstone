@@ -46,6 +46,29 @@ public class EvalplanDao {
 	      }
 	   }
 	   
+	   public boolean DoesEvalPlanExist(Connection conn, String evalNo) throws SQLException {
+		      PreparedStatement pstmt = null;
+		      ResultSet rs = null;
+		      
+		      try {
+		         pstmt = conn.prepareStatement(
+		               "select * from eplan where planNo = ?");
+		         pstmt.setString(1, evalNo);
+		         rs = pstmt.executeQuery();
+		        
+		         //rs가 null일 때, 해당 계획서 존재하지 않음.
+		         //rs.next가 null일 때, 해당 계획서 존재하지 않음.
+		         if(rs==null||(!rs.next())) {
+		        	 return false;
+		         }
+		         
+		         return true;
+		      } finally {
+		         JdbcUtil.close(rs);
+		         JdbcUtil.close(pstmt);
+		      }
+		   }
+	   
 	   private Date toDate(Timestamp date) {
 		      return date == null ? null : new Date(date.getTime());
 		   }

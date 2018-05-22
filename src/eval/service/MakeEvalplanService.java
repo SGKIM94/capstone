@@ -70,6 +70,27 @@ public class MakeEvalplanService {
 			JdbcUtil.close(conn);
 		}
 	}
+	
+	public boolean DoesEvalPlanExist(String planNo) {
+		Connection conn = null;
+		try {
+			conn = ConnectionProvider.getConnection();
+			if(evalplanDao.DoesEvalPlanExist(conn, planNo)) {
+				return true;
+			}
+			return false;
+		}catch (SQLException e) {
+			JdbcUtil.rollback(conn);
+			throw new RuntimeException(e);
+		} catch (RuntimeException e) {
+			JdbcUtil.rollback(conn);
+			throw e;
+		} finally {
+			JdbcUtil.close(conn);
+		}
+		
+	}
+	
 	private Evalplan toEvalplan(MakeRequest req, String evalno) {
 		Date now = new Date();
 		return new Evalplan(toGetEvalNo(), req.getDean(), now, now, AllEvalStatusValue.getDefaultEvalPlanState());
@@ -86,5 +107,5 @@ public class MakeEvalplanService {
 		Calendar c = Calendar.getInstance();
 		String evalNo = Integer.toString(c.get(Calendar.YEAR))+teamNo+"-"+AllEvalStatusValue.getDefaultFinal();
 		return evalNo;
-	}
+	}	
 }

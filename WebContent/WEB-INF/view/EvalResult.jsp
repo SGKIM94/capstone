@@ -13,7 +13,7 @@
 </head>
 <body class="flex-center-row">
 <div class="center_box">
-   <form action="EvaluateTeam.do" method="post" name="evalteam">
+	<form action="EvaluateTeam.do" method="post" name="evalteam">
     <div class="title_box">
         <span class="_title">졸업작품 심사 결과서</span>
     </div>
@@ -28,10 +28,10 @@
                     <span>${team_name}</span>
                 </li>
                 <c:forEach var="stu" items="${memberList}">
-                   <li class="right_li">
-                      <span>${stu.id}&nbsp;&nbsp;&nbsp;&nbsp;${stu.name}</span>
-                   </li>
-               </c:forEach>
+                	<li class="right_li">
+                		<span>${stu.id}&nbsp;&nbsp;&nbsp;&nbsp;${stu.name}</span>
+                	</li>
+	            </c:forEach>
             </ul>
         </div>
         <div class="check_box">

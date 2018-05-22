@@ -74,6 +74,30 @@ public class EvalProfDao {
 			}
 		}
 	   
+	   /* */
+	   public boolean IsPossibleToEval(Connection conn, String planNo, String proId) throws SQLException {
+		      PreparedStatement pstmt = null;
+		      ResultSet rs = null;
+		      try {
+		         pstmt = conn.prepareStatement(
+		               "select * from epflist where evalNo = ? and proId = ?");
+		         pstmt.setString(1, planNo);
+		         pstmt.setString(1, proId);
+		         rs = pstmt.executeQuery();
+		         
+		         if ((rs.next())) {	      
+		        	 return true;
+		         }
+		         return false;
+		      }catch(SQLException e)  {
+		    	  return false;
+		      }
+		      finally {
+		         JdbcUtil.close(rs);
+		         JdbcUtil.close(pstmt);
+		      }
+	   }
+	   
 
 	   /* 평가 참여 교수 아이디 전부 가져오기 */
 	   public ArrayList<String> selectByEvalNoFromEprof(Connection conn, String e) throws SQLException {

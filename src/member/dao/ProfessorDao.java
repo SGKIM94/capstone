@@ -59,7 +59,29 @@ public class ProfessorDao {
 	     JdbcUtil.close(rs);
 	     JdbcUtil.close(pstmt);
 	  }	      
-	}
+	}   
+   
+   public ShowProf selectAsShowProf(Connection conn, String id) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      
+	      try {
+	         pstmt = conn.prepareStatement(
+	               "select proId, proName from professor where proId = ?");
+	         pstmt.setString(1, id);
+	         rs = pstmt.executeQuery();
+	         ShowProf professor = null;
+	         if (rs.next()) {
+	            professor = new ShowProf(
+	                  rs.getString("proId"), 
+	                  rs.getString("proName"));
+	         }
+	         return professor;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
    
    private Professor convertArticle(ResultSet rs) throws SQLException {
 		return new Professor(
@@ -112,13 +134,13 @@ public class ProfessorDao {
    }
    /* 학과장 제외하고 권한 변경(메소드 오버라이딩) */
    public void updateAuthority(Connection conn, String proId, int authority, int dean) throws SQLException {
-	      try (PreparedStatement pstmt = conn.prepareStatement(
+	   try (PreparedStatement pstmt = conn.prepareStatement(
 	            "update professor set groupNo = ? where proId = ? and groupNo != ?")) {
 	         pstmt.setInt(1, authority);
 	         pstmt.setString(2, proId);
 	         pstmt.setInt(3, dean);
 	         pstmt.executeUpdate();
-	      }
 	   }
+   }
    
 }
