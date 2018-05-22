@@ -38,7 +38,7 @@ public class EvalPlanList {
 	public EvalProfList getEvalProfList() {
 		try (Connection conn = ConnectionProvider.getConnection()) {
 			List<ShowProf> content = null;
-			content = professorDao.selectAllTeam(conn);
+			content = professorDao.selectAllProfessor(conn);
 			return new EvalProfList(content.size(), content);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

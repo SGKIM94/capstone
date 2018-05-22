@@ -8,8 +8,6 @@ import eval.model.Evalpaper;
 /* 개별 평가지 7개 */
 public class EvalPaperList {
 	
-	private final int EVAL_END = 3;				//;평가 종료 상태 값
-	
 	private List<Evalpaper> list;
 	private int totalscore;
 	private double avg;
@@ -29,7 +27,7 @@ public class EvalPaperList {
 	private void countTotalAndAverage() {
 		int cnt = 0;
 		for(Evalpaper var:list) {
-			if(var.getState()==EVAL_END) {
+			if(var.getState()==AllEvalStatusValue.getEpaperEvalEnded()) {
 				totalscore += var.getTotal();
 				cnt++;
 			}

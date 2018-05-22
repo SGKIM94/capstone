@@ -1,7 +1,5 @@
-<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%-- <%@ page language="java" pageEncoding="EUC-KR" %> --%>
+<%@ page language="java" contentType="text/html; charset=euc-kr" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="u" tagdir="/WEB-INF/tags" %>
 <head lang="en">
     <meta charset="utf-8">
     <meta name="viewport"
@@ -88,43 +86,29 @@
             <div class="board">
                 <div class="board-list-box">
                     <ul class="board-info">
-                        <li class="file_num">날짜</li>
+                        <li class="file_num">진행상태</li>
                         <li class="file_title">평가교수</li>
-                        <li class="file_time">상태</li>           
+                        <li class="file_time">결과</li>           
                     </ul>
-                    <c:forEach var="teamarticle1" items="${articleTeamPage.content}" varStatus="status">
-                    <c:if test="${allowed == 'no'}" var="result">
-                        		글 작성자가 아닙니다. <br>
-                    </c:if>
+                    <c:forEach var="List" items="${EvalList}" varStatus="status">
                     <div class="board-list flex-center-row">
                         <div class="file_num_box file_base">
-                     <span class="text-data">${articleTeamPage.stuName[status.index]}</span>
+                     <span class="text-data">${List.evalstatus}</span>
                         </div>
                         <div class="file_title_box file_base">
-                            <form action="downloadTeamFile.do" method="post" name="downTeamFile">
+                            <form action="showResult.do" method="post" name="downTeamFile">
                                <span class="text-data">
-                               	<input class="submitLink" type="submit" name="filtitle" value='${teamarticle1.title}'>
-                               		<input class = "mod_file_class" type="hidden" name="fileNo" value="${teamarticle1.fileNo}">           
+                               	<input class="submitLink" type="submit" name="proname" value='${List.proName}'>
+                               	<input class = "mod_file_class" type="hidden" name="epaperno" value="${List.epaperNo}">
+                               	<input class = "mod_file_class" type="hidden" name="student" value="yaa">
                          	   </span>
                       		</form>
                         </div>
                         <div class="file_time_box  flex-center-column">
-                            <span class="text-data_date">${teamarticle1.regDate}</span>
-       
-<!--                                 <button class="modify_section" id = "modify">수정</button> -->
-                         		<form action="teamarticledelete.do" method="post" name="deleteTeamFile">                                 
-                                  <div class="edit_box">
-                                     <button class="board_editBtn" id="teamWriteDelete" type="submit">삭제</button>
-                                     <input type="hidden" name="fileNo" value="${teamarticle1.fileNo}">
-                                     <c:if test="${teamarticle1.writer.writerId}">암호를 입력하세요.</c:if> 
-                                  </div>              
-                                </form>
+                            <span class="text-data_date">${List.result}</span>
                         </div>
                     </div>
                     </c:forEach>
-                    <c:if test="${allowed == 'no'}" var="result">
-						글 작성자가 아닙니다. <br>
-					</c:if>
                 </div>
             </div>   
                 <div class="btn_box flex-space-row">
@@ -132,10 +116,5 @@
                 </div>
         	</div>            	
 	</div>
-<!-- <script src="src/dealert.js"></script> -->
-<script src="src/modify.js"></script>
-<script src="src/write.js"></script>
-<script src="src/alert.js"></script>
-<script src="src/mod_alert.js"></script>
 </body>
 </html>

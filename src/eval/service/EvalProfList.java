@@ -2,8 +2,6 @@ package eval.service;
 
 import java.util.List;
 
-import member.model.Professor;
-
 public class EvalProfList {
 	private int total;
 	private List<ShowProf> list;	//코드 재사용이 안됨.... 공지사항과 따로??

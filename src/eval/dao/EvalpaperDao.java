@@ -14,15 +14,10 @@ import article.common.ArticleNotFoundException;
 import eval.model.Evalpaper;
 import jdbc.JdbcUtil;
 import eval.model.Questions;
+import eval.service.AllEvalStatusValue;
 //import java.util.StringTokenizer;
 
 public class EvalpaperDao {
-	
-	private final int DEFAULT_STATE = 0;
-	private final int DEFAULT_TOTAL = 0;
-	private final int DEFAULT_SCORE = 0;
-	private final int COMPLETE_STATE = 3;
-	private final String DEFAULT_COMMENT = null;
 	
 	/* 개별 교수님 평가서 번호 */
 	public String makePaperNo(String eNo, String tNo, String pId) {
@@ -150,9 +145,9 @@ public class EvalpaperDao {
 	    	 PreparedStatement pstmt = 
 	         	conn.prepareStatement("insert into epaper(paperNo, state, regDate, endDate, total) values(?,?,?,null,?)")){ 
 	         pstmt.setString(1,  paperNo);
-	         pstmt.setInt(2,  DEFAULT_STATE);
+	         pstmt.setInt(2,  AllEvalStatusValue.getDefaultEpaperState());
 	         pstmt.setTimestamp(3,  toTimestamp(date));
-	         pstmt.setInt(4,  DEFAULT_TOTAL);
+	         pstmt.setInt(4,  0);
 	         pstmt.executeUpdate();
 	      }	
 		   insertToEvalitem(conn,paperNo);
@@ -178,7 +173,7 @@ public class EvalpaperDao {
 		    		  conn.prepareStatement("insert into epf(paperNo, qNo, score, comment) values(?,?,?,null)")) {
 		        	 pstmt.setString(1, paperNo);
 		        	 pstmt.setInt(2, i+1);
-			         pstmt.setInt(3, DEFAULT_SCORE);
+			         pstmt.setInt(3, 0);
 			         pstmt.executeUpdate();	 
 		     }
 		  }
@@ -214,7 +209,7 @@ public class EvalpaperDao {
 	   public void update_complete(Connection conn, String paperNo) throws SQLException {
 		   try (PreparedStatement pstmt = conn.prepareStatement(
 	    		  "update epaper set state = ? where paperNo = ?")) {
-	         pstmt.setInt(1, COMPLETE_STATE);
+	         pstmt.setInt(1, AllEvalStatusValue.getEpaperEvalEnded());
 	         pstmt.setString(2, paperNo);
 	         pstmt.executeUpdate();
 	      }

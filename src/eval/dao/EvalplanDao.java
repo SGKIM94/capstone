@@ -12,13 +12,11 @@ import java.util.Date;
 
 import article.common.ArticleNotFoundException;
 import eval.model.Evalplan;
+import eval.service.AllEvalStatusValue;
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 
 public class EvalplanDao {
-	/* pulic? */
-	final private int EVAL_IS_ON_GOING = 1;
-	final private int EVAL_ENDED = 2;
 			/* 평가계획서 평가번호로 읽어오기 */
 	   public Evalplan selectByEvalNo(Connection conn, String evalNo) throws SQLException {
 	      PreparedStatement pstmt = null;
@@ -47,6 +45,29 @@ public class EvalplanDao {
 	         JdbcUtil.close(pstmt);
 	      }
 	   }
+	   
+	   public boolean DoesEvalPlanExist(Connection conn, String evalNo) throws SQLException {
+		      PreparedStatement pstmt = null;
+		      ResultSet rs = null;
+		      
+		      try {
+		         pstmt = conn.prepareStatement(
+		               "select * from eplan where planNo = ?");
+		         pstmt.setString(1, evalNo);
+		         rs = pstmt.executeQuery();
+		        
+		         //rs가 null일 때, 해당 계획서 존재하지 않음.
+		         //rs.next가 null일 때, 해당 계획서 존재하지 않음.
+		         if(rs==null||(!rs.next())) {
+		        	 return false;
+		         }
+		         
+		         return true;
+		      } finally {
+		         JdbcUtil.close(rs);
+		         JdbcUtil.close(pstmt);
+		      }
+		   }
 	   
 	   private Date toDate(Timestamp date) {
 		      return date == null ? null : new Date(date.getTime());
@@ -103,7 +124,7 @@ public class EvalplanDao {
 	   public void update_eval_complete(Connection conn, Evalplan eval) throws SQLException {
 	      try (PreparedStatement pstmt = conn.prepareStatement(
 	    		  "update evalplan set state = ?, endDate = ? where evalNo = ?")) {
-	         pstmt.setInt(1, EVAL_ENDED);
+	         pstmt.setInt(1, AllEvalStatusValue.getEvalPlanEnded());
 	         pstmt.setTimestamp(2, new Timestamp(eval.getEndDate().getTime()));
 	         pstmt.setString(3, eval.getEvalNo());
 	         pstmt.executeUpdate();
@@ -113,7 +134,7 @@ public class EvalplanDao {
 	   public void update_eval_ongoing(Connection conn, Evalplan eval) throws SQLException {
 		      try (PreparedStatement pstmt = conn.prepareStatement(
 		    		  "update evalplan set state = ? where evalNo = ?")) {
-		         pstmt.setInt(1, EVAL_IS_ON_GOING);
+		         pstmt.setInt(1, AllEvalStatusValue.getEvalPlanStarted());
 		         pstmt.setString(2, eval.getEvalNo());
 		         pstmt.executeUpdate();
 		      }

@@ -8,12 +8,10 @@ import eval.model.Questions;
 
 public class EvaluateTeamRequest {
 	
-		final private int DEFAULT_QUESTION_NO = 7;
-		
 		private Evalpaper ep;
 		
 		public EvaluateTeamRequest(String pn, Questions q, Date reg, Date end) {
-			ep = new Evalpaper(pn, q, reg, end);
+			ep = new Evalpaper(pn, q, reg, end, AllEvalStatusValue.getEpaperEvalStarted());
 		}
 		
 		public EvaluateTeamRequest(Evalpaper e) {
@@ -26,7 +24,7 @@ public class EvaluateTeamRequest {
 			
 			Questions qs = ep.getQs();
 			
-			for(int i = 0; i < DEFAULT_QUESTION_NO; i++) {
+			for(int i = 0; i < AllEvalStatusValue.getDefaultQuestionNo(); i++) {
 				temps = "score" + ((Integer)(i+1)).toString();
 				tempc = "comment" + ((Integer)(i+1)).toString();
 				

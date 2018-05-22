@@ -150,7 +150,6 @@ public class EvalTeamDao {
 	      PreparedStatement pstmt = null;
 	      ResultSet rs = null;
 	      
-	     
 	      try {
 	         pstmt = conn.prepareStatement("select * from eteam " +
 	               "where teamNo like "+countYear()+"%"+

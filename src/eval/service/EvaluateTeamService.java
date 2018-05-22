@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import eval.dao.EvalProfDao;
 import eval.dao.EvalpaperDao;
 import eval.model.Evalpaper;
 import jdbc.JdbcUtil;
@@ -13,11 +14,9 @@ import member.service.DuplicateIdException;
 
 public class EvaluateTeamService {
 	
-	private final int EVAL_END=3;
-	
 	private EvalpaperDao evalpaperdao = new EvalpaperDao();
 	private StudentDao studentDao = new StudentDao();
-	
+	private EvalProfDao evalprofdao = new EvalProfDao();
 	/* 개별 교수님 평가서 번호 */
 	/* 평가 세션 값 가져와서 만들자 */
 	public String makePaperNo(String tNo, String pId) {
@@ -28,7 +27,7 @@ public class EvaluateTeamService {
 		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getConnection();
-			
+			System.out.println(epaperNo);
 			Evalpaper evalpaper = evalpaperdao.selectEvalPaper(conn, epaperNo);
 			/* 평가지 못찾았을 경우 에러 처리 */
 //			if (evalpaper != null) {
@@ -36,7 +35,8 @@ public class EvaluateTeamService {
 //				throw new DuplicateIdException();
 //			}
 			/* 해당 팀에 대한 평가가 끝남 */
-			if(evalpaper.getState() == EVAL_END) {
+			
+			if(evalpaper.getState() == AllEvalStatusValue.getEpaperEvalEnded()) {
 				return null;
 			}
 			return evalpaper;
@@ -123,12 +123,30 @@ public class EvaluateTeamService {
 		try {
 			conn = ConnectionProvider.getConnection();
 			int state = evalpaperdao.selectState(conn, paperNo);
-			if(state == EVAL_END) {
+			
+			if(state == AllEvalStatusValue.getEpaperEvalEnded()) {
 				return true; 
 			}
 			else {
 				return false;
 			}
+		} catch (SQLException e) {
+			JdbcUtil.rollback(conn);
+			throw new RuntimeException(e);
+		} finally {
+			JdbcUtil.close(conn);
+		}
+	}
+	
+	public boolean IsPossibleToEval(String proId) {
+		Connection conn = null;
+		String planNo = AllEvalStatusValue.togetStrYear() + AllEvalStatusValue.getEvalPlanDocuNo();
+		try {
+			conn = ConnectionProvider.getConnection();
+			if(evalprofdao.IsPossibleToEval(conn, planNo, proId)) {
+				return true;
+			}
+			return false;
 		} catch (SQLException e) {
 			JdbcUtil.rollback(conn);
 			throw new RuntimeException(e);

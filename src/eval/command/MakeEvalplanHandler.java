@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import eval.service.AllEvalStatusValue;
 import eval.service.EvalPlanList;
 import eval.service.EvalProfList;
 import eval.service.EvalTeamList;
@@ -23,22 +24,33 @@ import mvc.command.CommandHandler;
 
 public class MakeEvalplanHandler implements CommandHandler {
 	private static final String FORM_VIEW = "/WEB-INF/view/makeEvalPlanForm.jsp";	//수정과 같은 뷰면 될듯
+	private static final String PRESENET_VIEW = "/WEB-INF/view/EvalTeamList.jsp";
 	private MakeEvalplanService makeService = new MakeEvalplanService();
 	private EvalPlanList evalplanlist = new EvalPlanList();
 	
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		if (req.getMethod().equalsIgnoreCase("GET")) {
+		
+		String plan = (String)req.getParameter("plan");
+		
+		if (plan.equals("make")) {
 			return processForm(req, res);
-		} else if (req.getMethod().equalsIgnoreCase("POST")) {
-			return processSubmit(req, res);
 		} else {
-			res.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-			return null;
+			return processSubmit(req, res);
 		}
 	}
 
 	private String processForm(HttpServletRequest req, HttpServletResponse res) {
+		
+		String planNo = AllEvalStatusValue.togetStrYear()+AllEvalStatusValue.getEvalPlanDocuNo();
+		
+		/*평가가 이미 시작된 경우*/
+		if(makeService.DoesEvalPlanExist(planNo)) {
+			req.setAttribute("already", "yyyyyyyy");
+			//평가가 이미 시작되었습니다를 알려주는 경고창이 있어야하는데...
+			return PRESENET_VIEW;
+		}
+		
 		HttpSession session = req.getSession();
 		
 		EvalTeamList evalteamlist = evalplanlist.getEvalTeamList();
@@ -47,6 +59,8 @@ public class MakeEvalplanHandler implements CommandHandler {
 		session.setAttribute("teamList", evalteamlist);
 		session.setAttribute("proList", evalproflist);
 		
+		
+		req.setAttribute("already", "nooo");
 		return FORM_VIEW;
 	}
 	
