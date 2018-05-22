@@ -12,7 +12,9 @@ import auth.service.Authority;
 import auth.service.User;
 import eval.dao.EvalplanDao;
 import eval.service.EvalPlanList;
+import eval.service.EvalProfList;
 import eval.service.EvalTeamList;
+import eval.service.ListEvalTeamService;
 import eval.service.MakeEvalplanService;
 import eval.service.ShowTeam;
 import mvc.command.CommandHandler;
@@ -28,12 +30,13 @@ public class ListEvalTeamHandler implements CommandHandler {
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		HttpSession session = req.getSession();
-		
+
 		User user = (User)req.getSession(false).getAttribute("authProUser");
 		if(user.getAccess()==Authority.getProDean()) {
 			req.setAttribute("dean", "yes");
 		}else {
 			req.setAttribute("dean", "no");
+
 		}
 		
 		/*이거 여기서 필요한건지 잘 모르겠음.*/

@@ -209,7 +209,9 @@ public class EvalpaperDao {
 	   public void update_complete(Connection conn, String paperNo) throws SQLException {
 		   try (PreparedStatement pstmt = conn.prepareStatement(
 	    		  "update epaper set state = ? where paperNo = ?")) {
+
 	         pstmt.setInt(1, AllEvalStatusValue.getEpaperEvalEnded());
+
 	         pstmt.setString(2, paperNo);
 	         pstmt.executeUpdate();
 	      }

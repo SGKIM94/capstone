@@ -13,11 +13,13 @@ import eval.service.EpaperResult;
 import eval.service.EvalPaperList;
 import eval.service.EvalpaperListService;
 import eval.service.ShowResultListService;
+
 import mvc.command.CommandHandler;
 
 public class ShowEvalListHandler implements CommandHandler {
 	
 	ShowResultListService showResultListService = new ShowResultListService();
+
 	EvalpaperListService evalpaperListService = new EvalpaperListService();
 	
 	private static final String EVAL_TEAM_VIEW = "/WEB-INF/view/EvalTeamList.jsp";
@@ -37,6 +39,7 @@ public class ShowEvalListHandler implements CommandHandler {
 //		else if(stu == null) {	//교수 결과
 //			return process_dean(req,res);
 //		}
+
 		return null;
 	}
 	
@@ -56,7 +59,6 @@ public class ShowEvalListHandler implements CommandHandler {
 			req.setAttribute("evalstate", "cccc");
 		}
 		
-		
 		EvalPaperList el = evalpaperListService.getEvalPaperList(team.getTeamNo());
 		
 		List<EpaperResult> eprl = showResultListService.MakeResultList(el.getList());
@@ -70,6 +72,7 @@ public class ShowEvalListHandler implements CommandHandler {
 //		}
 		
 		session.setAttribute("EvalList", eprl);
+
 		
 //		String confirm = (String)req.getSession(false).getAttribute("confirm");
 //		if((confirm!=null) && confirm.equals("confirmed")) {

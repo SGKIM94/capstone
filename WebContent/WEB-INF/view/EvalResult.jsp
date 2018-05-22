@@ -13,7 +13,8 @@
 </head>
 <body class="flex-center-row">
 <div class="center_box">
-   <form action="EvaluateTeam.do" method="post" name="evalteam">
+
+	<form action="EvaluateTeam.do" method="post" name="evalteam">
     <div class="title_box">
         <span class="_title">졸업작품 심사 결과서</span>
     </div>
@@ -32,6 +33,7 @@
                       <span>${stu.id}&nbsp;&nbsp;&nbsp;&nbsp;${stu.name}</span>
                    </li>
                </c:forEach>
+
             </ul>
         </div>
         <div class="check_box">
@@ -128,6 +130,7 @@
            <form action="showResult.do" method="post" name="resultConfirm">
             <span class="result_txt">평가</span><span id="result">${val_total}</span>
             <span class="result_txt">결과</span><span id="result">${pass_result}</span>
+
             <button class="option-button" name="confirm" value="confirmed">확인</button>
             </form>
         </div>

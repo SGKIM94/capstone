@@ -43,6 +43,7 @@ public class StudentDao {
 
    
    public List<ShowTeamMember> selectByTeamNo(Connection conn, String teamNo) throws SQLException {
+
          PreparedStatement pstmt = null;
          ResultSet rs = null;
          try {
@@ -67,6 +68,7 @@ public class StudentDao {
             JdbcUtil.close(pstmt);
          }
       }
+
    
    private Date toDate(Timestamp date) {
       return date == null ? null : new Date(date.getTime());

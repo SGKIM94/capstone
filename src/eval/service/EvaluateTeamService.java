@@ -13,6 +13,7 @@ import member.service.DuplicateIdException;
 
 public class EvaluateTeamService {
 	
+
 	private EvalpaperDao evalpaperdao = new EvalpaperDao();
 	private StudentDao studentDao = new StudentDao();
 	
@@ -122,7 +123,9 @@ public class EvaluateTeamService {
 		try {
 			conn = ConnectionProvider.getConnection();
 			int state = evalpaperdao.selectState(conn, paperNo);
+
 			if(state == AllEvalStatusValue.getEpaperEvalEnded()) {
+
 				return true; 
 			}
 			else {

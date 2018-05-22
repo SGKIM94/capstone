@@ -48,7 +48,9 @@ public class EvalpaperListService {
 		try {
 			conn = ConnectionProvider.getConnection();
 			state = Integer.parseInt(evalPlanDao.getEvalState());
+
 			if(state == AllEvalStatusValue.getEpaperEvalEnded()) {
+
 				return true; 
 			}
 			else{
