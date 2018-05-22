@@ -35,7 +35,9 @@ public class DeleteArticleHandler implements CommandHandler {
 			deleteService.deleteArticle(postNo);
 			//TeamWriteData articleData = deleteService.deleteArticle(fileNo);
 			//req.setAttribute("articleData", articleData);
-			return "/WEB-INF/view/deleteNoticeSuccess.jsp";
+			RequestDispatcher dispatcher = req.getRequestDispatcher("noticelist.do");
+      	  	dispatcher.forward(req,res);
+      	  	return null;
 		} catch (ArticleNotFoundException | ArticleContentNotFoundException e) {
 			req.getServletContext().log("no article", e);
 			res.sendError(HttpServletResponse.SC_NOT_FOUND);

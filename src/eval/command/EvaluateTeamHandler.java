@@ -2,32 +2,55 @@ package eval.command;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import auth.service.LoginFailException;
 import eval.model.Evalpaper;
 import eval.model.Questions;
+import eval.service.EvalTeamList;
 import eval.service.EvaluateTeamRequest;
 import eval.service.EvaluateTeamService;
+import eval.service.ShowTeamMember;
+import member.dao.StudentDao;
 import mvc.command.CommandHandler;
 
 
 public class EvaluateTeamHandler implements CommandHandler {
-	private static final String FORM_VIEW = "/WEB-INF/view/evaluateTeam.jsp";
+	private static final String FORM_VIEW = "/WEB-INF/view/evaluateForm.jsp";
 	private static final String EVAL_VIEW = "/WEB-INF/view/EvalTeamList.jsp";
+	private static final String RESULT_VIEW = "/WEB-INF/view/EvalResult.jsp";
 	private EvaluateTeamService evaluateTeamService = new EvaluateTeamService();
+	
 	
 	final public static int DEFAULT_LIST_NO = 7;	
 	
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		/* 평가가 끝났는지 안끝났는지 점검할 필요 있음 */
+		String ep = (String)req.getSession(false).getAttribute("epaperNo");
+		
+		if(ep==null) {
+			req.setAttribute("noselected", "yes");
+			return "/WEB-INF/view/EvalTeamList.jsp";
+		}
+		else {
+			req.setAttribute("noselected", "no");
+		}
+		
+		if(evaluateTeamService.IsEvalCompleted(ep)) {
+			req.setAttribute("finished", "yes");
+			return "/WEB-INF/view/EvalTeamList.jsp";
+		}else {
+			req.setAttribute("finished", "no");
+		}
 		
 		String eval = req.getParameter("eval");
 		
-		if(eval.equals("true")) {
+		if(eval!=null && eval.equals("true")) {
 			return processForm(req,res);
 		}else {
 			return processSubmit(req, res);
@@ -35,10 +58,15 @@ public class EvaluateTeamHandler implements CommandHandler {
 	}
 
 	private String processForm(HttpServletRequest req, HttpServletResponse res) {
+		HttpSession session = req.getSession();		
 		
+		String teamNo = req.getParameter("team_no");
 		String ep = (String)req.getSession(false).getAttribute("epaperNo");
+		String team_Name = (String)req.getSession(false).getAttribute("epaperNo");
 		
 		Evalpaper evalpaper = evaluateTeamService.SelectEvalpaper(ep);
+		List<ShowTeamMember> sl = evaluateTeamService.SelectTeamMembers(teamNo);
+		
 		if(evalpaper == null) {
 			return EVAL_VIEW;
 		}
@@ -46,6 +74,8 @@ public class EvaluateTeamHandler implements CommandHandler {
 		
 		SetItems(req,res,qs);
 		
+		session.setAttribute("memberList", sl);
+	
 		return FORM_VIEW;
 	}
 	/* 평가 세션을 만들어야할 듯 한데 */
@@ -53,7 +83,17 @@ public class EvaluateTeamHandler implements CommandHandler {
 		
 		Questions qs = GetItems(req,res);
 		
+		String select = req.getParameter("select");
+		
+		
+		System.out.print(select);
+		
 		String epaperNo = (String)req.getSession(false).getAttribute("epaperNo");
+		String team_Name = (String)req.getSession(false).getAttribute("team_name");
+
+		if(select.equals("complete")) {
+			evaluateTeamService.CompleteEval(epaperNo);
+		}
 		
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);
@@ -81,25 +121,25 @@ public class EvaluateTeamHandler implements CommandHandler {
 	//필요있네
 	private int parseint(String str) {
 		String temp = str;
-	try{
-		return Integer.parseInt(temp);
-	} catch(NumberFormatException nfe){
-		System.err.println(nfe);
-		//점수 미선택 오류 지정
-		throw new LoginFailException(); 
-	}
+		try{
+			return Integer.parseInt(temp);
+		} catch(NumberFormatException nfe){
+			System.err.println(nfe);
+			//점수 미선택 오류 지정
+			throw new LoginFailException(); 
+		}
 	}
 	
 	private void SetItems(HttpServletRequest req, HttpServletResponse res, Questions qs) {
-		String comment = "comment";
-		String point = "val";
+		String comment = "c";
+		String point = "v";
 		
 		String setvalue1 = null;
 		String setvalue2 = null;
 		
-		for(int i=1;i<8;i++) {
-			setvalue1 = comment + Integer.toString(i);
-			setvalue2 = point + Integer.toString(i);
+		for(int i=0;i<7;i++) {
+			setvalue1 = comment + Integer.toString(i+1);
+			setvalue2 = point + Integer.toString(i+1);
 			req.setAttribute(setvalue1, qs.getQsItemComment(i));
 			req.setAttribute(setvalue2, qs.getQsItemScore(i));
 		}
@@ -107,21 +147,25 @@ public class EvaluateTeamHandler implements CommandHandler {
 	
 	private Questions GetItems(HttpServletRequest req, HttpServletResponse res) {
 		String comment = "comment";
-		String point = "val";
+		String point = "val_";
 		Questions qs = new Questions();
 		String getvalue1 = null;
 		String getvalue2 = null;
 		
-		for(int i=1;i<8;i++) {
-			getvalue1 = comment + Integer.toString(i);
-			getvalue2 = point + Integer.toString(i);
+		int value = 0;
+		
+		for(int i=0;i<7;i++) {
+			getvalue1 = comment + Integer.toString(i+1);
+			getvalue2 = point + Integer.toString(i+1);
 			
-			qs.setQsItemScore(i, Integer.parseInt(req.getParameter(getvalue2)));
+			if(req.getParameter(getvalue2) == null) {
+				qs.setQsItemScore(i, value);
+			}else {
+				qs.setQsItemScore(i, Integer.parseInt(req.getParameter(getvalue2)));
+			}
 			qs.setQsItemComment(i, req.getParameter(getvalue1));
 		}
 		return qs;
 	}
 }
-
-
 

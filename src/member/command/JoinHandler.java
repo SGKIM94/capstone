@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import auth.service.Authority;
 import auth.service.LoginFailException;
 import member.service.DuplicateIdException;
+import member.service.EncryptPassword;
 import member.service.JoinRequest;
 import member.service.JoinService;
 import mvc.command.CommandHandler;
@@ -38,6 +39,11 @@ public class JoinHandler implements CommandHandler {
 
 	private String processSubmit(HttpServletRequest req, HttpServletResponse res) {
 		JoinRequest joinReq = new JoinRequest();
+
+//		String salt = EncryptPassword.generateSalt();		
+//		String newPwd = EncryptPassword.getEncrypt(req.getParameter("password"), salt);
+//		String newConPwd = EncryptPassword.getEncrypt(req.getParameter("confirmPassword"), salt);
+		
 		joinReq.setId(req.getParameter("id"));
 		joinReq.setName(req.getParameter("name"));
 		joinReq.setPassword(req.getParameter("password"));

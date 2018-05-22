@@ -13,6 +13,7 @@ import auth.service.LoginService;
 import auth.service.*;
 import mvc.command.CommandHandler;
 import member.service.ClassifyMember;
+import member.service.EncryptPassword;
 
 public class LoginHandler implements CommandHandler {
 
@@ -40,7 +41,6 @@ public class LoginHandler implements CommandHandler {
 		String id = trim(req.getParameter("id"));
 		String password = trim(req.getParameter("password"));
 		String group = trim(req.getParameter("groupnumber"));
-		
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);
 
