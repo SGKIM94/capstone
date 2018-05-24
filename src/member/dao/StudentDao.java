@@ -67,6 +67,7 @@ public class StudentDao {
 	         JdbcUtil.close(pstmt);
 	      }
 	   }
+
    
    private Date toDate(Timestamp date) {
       return date == null ? null : new Date(date.getTime());
@@ -98,42 +99,42 @@ public class StudentDao {
    }
    
    public void update_tNo(Connection conn, String teamNo, String id, int groupNo) throws SQLException {
-	   try (PreparedStatement pstmt = conn.prepareStatement(
-			   "update student set teamNo = ?, groupNo = ? where stuId = ?")){
-		   pstmt.setString(1, teamNo);
-		   pstmt.setInt(2, groupNo);
-		   pstmt.setString(3,  id);
-		   pstmt.executeUpdate();
-	   }
+      try (PreparedStatement pstmt = conn.prepareStatement(
+            "update student set teamNo = ?, groupNo = ? where stuId = ?")){
+         pstmt.setString(1, teamNo);
+         pstmt.setInt(2, groupNo);
+         pstmt.setString(3,  id);
+         pstmt.executeUpdate();
+      }
    }
    
    public void update_team(Connection conn, Student member) throws SQLException {
-	   try (PreparedStatement pstmt = conn.prepareStatement(
-			   "update student set teamNo = ? where stuId = ?")){
-		   pstmt.setString(1, member.getTeamNo());
-		   pstmt.setString(2, member.getStuId());
-		   pstmt.executeUpdate();
-	   }	   	
+      try (PreparedStatement pstmt = conn.prepareStatement(
+            "update student set teamNo = ? where stuId = ?")){
+         pstmt.setString(1, member.getTeamNo());
+         pstmt.setString(2, member.getStuId());
+         pstmt.executeUpdate();
+      }         
    }
    
    public String selectNamebyTeamNo(Connection conn, String teamNo) throws SQLException {
-	   PreparedStatement pstmt = null;
-	   ResultSet rs = null;	   
-	   try {
-		   pstmt = conn.prepareStatement(
-			   "select stuName from student where teamNo = ?");
-		   pstmt.setString(1, teamNo);
-		   rs = pstmt.executeQuery();
-		   String stName = null;
-		   if(rs.next()) {
-			   stName = rs.getString("stuName");			   
-		   }
-		   return stName;
-	   } finally {
-	         JdbcUtil.close(rs);
-	         JdbcUtil.close(pstmt);
-	     }
-	  }			   
+      PreparedStatement pstmt = null;
+      ResultSet rs = null;      
+      try {
+         pstmt = conn.prepareStatement(
+            "select stuName from student where teamNo = ?");
+         pstmt.setString(1, teamNo);
+         rs = pstmt.executeQuery();
+         String stName = null;
+         if(rs.next()) {
+            stName = rs.getString("stuName");            
+         }
+         return stName;
+      } finally {
+            JdbcUtil.close(rs);
+            JdbcUtil.close(pstmt);
+        }
+     }            
    }   
   
    

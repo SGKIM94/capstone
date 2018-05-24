@@ -54,7 +54,6 @@ public class EvalProfDao {
 		         JdbcUtil.close(pstmt);
 		      }
 	   }
-	   
 	/* 평가 참여 교수 숫자 읽어오기  */
 	   public int selectPfCount(Connection conn, String e) throws SQLException {
 		   	PreparedStatement pstmt = null;		//Statement와 캐시 기능의 차이

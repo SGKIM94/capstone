@@ -159,7 +159,7 @@
 				<option value=2019>2019</option>
 				<option value=2020>2020</option>
             </select> 
-        <button type="submit" id="search">Search</button>  
+        <button type="submit" id="search" class="prof_btn">Search</button>  
     </form>
     
     <form action="teamlist.do" method="post" name="findFile">
@@ -195,7 +195,7 @@
                             	<span class="text-data">
                             	<input class="submitLink" type="submit" name="filtitle" value='${teamarticle_pro.title}'>
                             	<input type="hidden" name="fileNo" value="${teamarticle_pro.fileNo}">
-                            	<input type="hidden" name="teamNo" value="${listTno}">      		
+                            	<input type="hidden" name="team_no" value="${listTno}">      		
     							</span>
     						</form>
                 </div>

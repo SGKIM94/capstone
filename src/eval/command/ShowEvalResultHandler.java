@@ -24,7 +24,6 @@ public class ShowEvalResultHandler implements CommandHandler {
 		private static final String EVAL_VIEW = "/WEB-INF/view/EvalTeamList.jsp";
 		private static final String RESULT_VIEW = "/WEB-INF/view/EvalResult.jsp";
 		private EvaluateTeamService evaluateTeamService = new EvaluateTeamService();
-		
 		public String process(HttpServletRequest req, HttpServletResponse res) throws Exception{
 			HttpSession session = req.getSession();		
 			
@@ -32,6 +31,7 @@ public class ShowEvalResultHandler implements CommandHandler {
 			
 			/* 평가가 끝났는지 안끝났는지 점검할 필요 있음 */
 			String ep = (String)req.getSession(false).getAttribute("epaperNo");
+			
 //			
 //			String confirm = (String)req.getSession(false).getAttribute("confirm");
 //			if((confirm!=null) && confirm.equals("confirmed")) {
@@ -61,7 +61,6 @@ public class ShowEvalResultHandler implements CommandHandler {
 			List<ShowTeamMember> sl = evaluateTeamService.SelectTeamMembers(teamNo);
 			
 			if(evalpaper == null) {
-				System.out.println(ep);
 				req.setAttribute("notstarted", "yes");
 				return EVAL_VIEW;
 			}
