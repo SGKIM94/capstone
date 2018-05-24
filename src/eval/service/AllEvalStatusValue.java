@@ -14,13 +14,19 @@ public class AllEvalStatusValue {
 	private final static int EPAPER_EVAL_STARTED = 1;
 	private final static int EPAPER_EVAL_ENDED = 2;
 	
+	/* 최종 평가서 관련  --위와 같긴하지만 어덯게 될지 모르니까 다르게 만들어놈 */
+	private final static int DEFAULT_EFINAL_STATE = 0;
+	private final static int EFINAL_EVAL_STARTED = 1;
+	private final static int EFINAL_EVAL_ENDED = 2;
+	
+	
 	/* 합격, 재심사, 불합격 기준 */
 	/* 이 값을 초과해야함 */
 	private final static int PASS = 44;
 	private final static int RE_TEST = 34;
 	
 	/* 최종 평가서 문서 번호 디폴트 값 */
-	final private static String DEFAULT_FINAL = "ff";
+	final private static String DEFAULT_FINAL_DOCU = "ff";
 	
 	/* 평가 문항 숫자 = 7 */
 	final private static int DEFAULT_QUESTION_NO = 7;
@@ -58,8 +64,8 @@ public class AllEvalStatusValue {
 	public static int getReTest() {
 		return RE_TEST;
 	}
-	public static String getDefaultFinal() {
-		return DEFAULT_FINAL;
+	public static String getDefaultFinalDocu() {
+		return DEFAULT_FINAL_DOCU;
 	}
 	public static int getDefaultQuestionNo() {
 		return DEFAULT_QUESTION_NO;
@@ -83,6 +89,31 @@ public class AllEvalStatusValue {
 	public static String togetStrYear() {
 		Calendar currentCalendar = Calendar.getInstance();
 		return Integer.toString(currentCalendar.get(Calendar.YEAR));
+	}
+	
+	public static String togetTwoDigitYear() {
+		String year = null;
+		String return_var = null;
+		
+		/* 상구 말이, substring은 에러가 날 수도 있다고 해서 이렇게 함. */
+		while(true) {
+			year = togetStrYear();
+			return_var = year.substring(2, 2);
+			if(return_var!=null) {
+				break;
+			}
+		}
+		return return_var;
+	}
+	
+	public static int getDefaultEfinalState() {
+		return DEFAULT_EFINAL_STATE;
+	}
+	public static int getEfinalEvalStarted() {
+		return EFINAL_EVAL_STARTED;
+	}
+	public static int getEfinalEvalEnded() {
+		return EFINAL_EVAL_ENDED;
 	}
 	
 }

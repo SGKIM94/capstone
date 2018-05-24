@@ -20,8 +20,8 @@ import eval.service.AllEvalStatusValue;
 public class EvalpaperDao {
 	
 	/* 개별 교수님 평가서 번호 */
-	public String makePaperNo(String eNo, String tNo, String pId) {
-		return eNo+"-"+tNo+"-"+pId;
+	public String makeEpaperNo(String tNo, String pId) {
+		return tNo+"_"+pId;
 	}
 	
 	public Evalpaper selectEvalPaper(Connection conn, String paperNo) throws SQLException {

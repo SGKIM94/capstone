@@ -111,17 +111,17 @@
              			<c:if test="${noeval eq 'yes' }"><script>alert('평가할 수 없습니다.');history.go(-1);</script></c:if>
              			<c:if test="${noselected eq 'yes' }"><script>alert('평가 팀을 선택해주세요.');history.go(-1);</script></c:if>
              			<c:if test="${completed eq 'yes' }"><script>alert('이미 평가를 하셨습니다.');history.go(-1);</script></c:if>
-             			<input type="hidden" name="team_no" value="${team_no}">
+             			<input type="hidden" name="team_No" value="${team_no}">
              			<input type="hidden" name="eval" value="true">
              		</div>   
              	</form>
-             	 <form action="showResult.do" method="post" name="showResult">
+             	<form action="showResult.do" method="post" name="showResult">
              	<div class="option-box">
                     	<button class="option-button" name="result" value="resultview">결과보기</button>
                     	<c:if test="${noselected2 eq 'yes' }"><script>alert('평가 팀을 선택해주세요.');history.go(-1);</script></c:if>
                     	<c:if test="${finished eq 'no' }"><script>alert('평가가 종료되지 않았습니다.');history.go(-1);</script></c:if>
 						<input type="hidden" name="team_no" value="${team_no}">
-						<input type="hidden" name="resultv" value="resultview">
+					<input type="hidden" name="resultv" value="resultview">
 				</div>                    	
                	</form> 
            </div>

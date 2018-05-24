@@ -24,7 +24,7 @@ public class MakeRequest {
 	//private ArrayList<Eteam> eteamlist;		//평가 참여 팀 리스트 - 참여 1팀당 팀 넘버, 교수님 개인 평가지 arraylist, 최종 평가지 번호
 	private List<String> tlist;
 	private List<String> epaperlist;
-	//private List<String> efinallist;
+	private List<String> efinallist;
 	
 	public MakeRequest() {
 		evalNo = null;
@@ -32,7 +32,7 @@ public class MakeRequest {
 		pflist = new ArrayList<String>();
 		tlist = new ArrayList<String>();
 		epaperlist = new ArrayList<String>();
-		//efinallist = new ArrayList<String>();
+		efinallist = new ArrayList<String>();
 	}
 	/* 평가 계획서, 평가 교수 리스트, 평가 팀 리스트 완성 생성자 */
 	public MakeRequest(String d, List<ShowProf> pl,
@@ -42,7 +42,7 @@ public class MakeRequest {
 		pflist = getProIdList(pl);
 		tlist = getTeamList(tl);
 		epaperlist = MakeEpaperList();
-		//efinallist = MakeFinalList();
+		efinallist = MakeFinalList();
 //		regDate = new Date(date.getTime());
 //		endDate = null;
 	}
@@ -103,7 +103,7 @@ public class MakeRequest {
 		String finalNo = null;
 		
 		for(String var : tlist) {
-			finalNo=var+"_ff";		//최종 평가서 문서 번호 : 팀번호_ff
+			finalNo=var+"_"+AllEvalStatusValue.getDefaultFinalDocu();		//최종 평가서 문서 번호 : 팀번호_ff
 			fl.add(finalNo);
 		}
 		return fl;
@@ -165,10 +165,10 @@ public class MakeRequest {
 	public void setEpaperlist(List<String> epaperlist) {
 		this.epaperlist = epaperlist;
 	}
-//	public List<String> getEfinallist() {
-//		return efinallist;
-//	}
-//	public void setEfinallist(List<String> efinallist) {
-//		this.efinallist = efinallist;
-//	}
+	public List<String> getEfinallist() {
+		return efinallist;
+	}
+	public void setEfinallist(List<String> efinallist) {
+		this.efinallist = efinallist;
+	}
 }

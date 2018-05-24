@@ -91,20 +91,20 @@ public class EvalTeamDao {
 		      }
 	   }
 	
-	   /* 평가 팀 목록 DB insert */
-	   public void insertToEvalteam(Connection conn, Evalplan eval) throws SQLException {
-		      try (PreparedStatement pstmt =		         
-		    		  conn.prepareStatement("insert into eteam(planNo,teamNo,finalNo) values(?,?)")) {
-		         final String evalno = eval.getEvalNo();
-		         ArrayList<String> tl = eval.getTlist();
-		    	  for(int i = 0; i<eval.gettNo();i++) {
-		        	 pstmt.setString(1, evalno);
-			         pstmt.setString(2, tl.get(i));
-			         pstmt.executeUpdate();	 
-		         }
-		      }
-		   }
-	   
+//	   /* 평가 팀 목록 DB insert */
+//	   public void insertToEvalteam(Connection conn, Evalplan eval) throws SQLException {
+//		      try (PreparedStatement pstmt =		         
+//		    		  conn.prepareStatement("insert into eteam(planNo,teamNo,finalNo) values(?,?)")) {
+//		         final String evalno = eval.getEvalNo();
+//		         ArrayList<String> tl = eval.getTlist();
+//		    	  for(int i = 0; i<eval.gettNo();i++) {
+//		        	 pstmt.setString(1, evalno);
+//			         pstmt.setString(2, tl.get(i));
+//			         pstmt.executeUpdate();	 
+//		         }
+//		      }
+//		   }
+//	   
 	   /* 평가 팀 전부 삭제 메소드 */
 	   public ArrayList<String> deleteEvalTeam(Connection conn, Evalplan e) throws SQLException {
 		   PreparedStatement pstmt = null;

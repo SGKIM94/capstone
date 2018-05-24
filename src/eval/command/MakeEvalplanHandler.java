@@ -33,7 +33,7 @@ public class MakeEvalplanHandler implements CommandHandler {
 		
 		String plan = (String)req.getParameter("plan");
 		
-		if (plan.equals("make")) {
+		if ((plan!=null)&&(plan.equals("make"))) {
 			return processForm(req, res);
 		} else {
 			return processSubmit(req, res);
@@ -85,7 +85,7 @@ public class MakeEvalplanHandler implements CommandHandler {
 		/* 평가 참여 교수 권한 변경 */
 		changeProfAuthority(value);
 		//이 부분 평가 화면으로 넘겨야함.
-		return "/index.jsp";
+		return FORM_VIEW;
 	}
 	
 	/* 평가 참여 교수 권한 변경 */
