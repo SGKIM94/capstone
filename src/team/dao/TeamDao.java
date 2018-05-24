@@ -55,6 +55,29 @@ public class TeamDao {
          JdbcUtil.close(pstmt);
       }
    }
+   
+   /* 한 팀의 번호, 이름 가져오기 */
+   public ShowTeam selectShowTeam(Connection conn, String teamNo) throws SQLException {
+	   PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt = conn.prepareStatement(
+	               "select * from team where teamNo = ?");
+	         pstmt.setString(1, teamNo);
+	         rs = pstmt.executeQuery();
+	         ShowTeam team = null;
+	         
+	         if (rs.next()) {	        	 
+	            team = new ShowTeam(
+	            	  rs.getString("teamNo"),         //이거 db int -> str 수정해야함 
+	                  rs.getString("teamName"));      //db 이름을 teamRegDate로 바꿧으면함.
+	       }
+	         return team;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
    /* 학과장님의 평가 시작 페이지에서 평가받아야할 팀의 이름들만 가져오는 select 함수 */
    public List<ShowTeam> selectAllTeam(Connection conn, String strYear) throws SQLException {
 	      PreparedStatement pstmt = null;

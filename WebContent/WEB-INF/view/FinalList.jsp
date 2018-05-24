@@ -66,9 +66,10 @@
             <ul class="lists">
                <c:forEach var="team" items="${teamList.list}"> 
                  <li>
-                    <form action="EvalTeamList.do" method="Post" name="EvalTeamList">
+                    <form action="showResultList.do" method="post" name="showResultList">
                       <input class="submitLink_pro" type="submit" name="teamtitle" value='${team.teamName}'>
                       <input type="hidden" name="teamNo" value="${team.teamNo}">
+                      <input type="hidden" name="who" value="pro">
                     </form>                  
                   </li> 
                </c:forEach> 
@@ -76,7 +77,25 @@
         </div>
     </div>
     <div class="main_box">
-            <span class="title_sub">평가 결과</span>
+            <span class="title_sub">팀별 심사서 리스트</span>
+            <form action="EvaluateFinal.do" method="post" name="evalteam">
+        	 		<div class="option-box">
+             			<button class="option-button" name="finalbtn" value="show">최종평가</button>
+             				<c:if test="${noselected3 eq 'yes' }"><script>alert('평가 팀을 선택해주세요.');history.go(-1);</script></c:if>
+             				<c:if test="${completed1 eq 'yes' }"><script>alert('최종 평가가 완료되었습니다.');history.go(-1);</script></c:if>
+             			<input type="hidden" name="team_Noo" value="${tteamNo}">
+             			<input type="hidden" name="eval" value="true">
+             		</div>  
+             	</form>
+             	<form action="showResult.do" method="post" name="showResult">
+             	<div class="option-box">
+                    	<button class="option-button" name="result" value="resultview">결과보기</button>
+                    	<c:if test="${noselected4 eq 'yes' }"><script>alert('평가 팀을 선택해주세요.');history.go(-1);</script></c:if>
+                    	<c:if test="${finished2 eq 'no' }"><script>alert('평가가 종료되지 않았습니다.');history.go(-1);</script></c:if>
+						<input type="hidden" name="team_no1" value="${tteamNo}">
+					<input type="hidden" name="resultv" value="resultview">
+				</div>                    	
+               	</form> 
             <div class="board">
                 <div class="board-list-box">
                     <ul class="board-info">
@@ -84,7 +103,7 @@
                         <li class="file_title">평가교수</li>
                         <li class="file_time">결과</li>           
                     </ul>
-                    <c:forEach var="List" items="${EvalList}" varStatus="status">
+                    <c:forEach var="List" items="${SelectEvalList}" varStatus="status">
                     <div class="board-list flex-center-row">
                         <div class="file_num_box file_base">
                      <span class="text-data">${List.evalstatus}</span>
@@ -104,14 +123,14 @@
                     </div>
                     </c:forEach>
                 </div>
-            </div>   
                 <div class="btn_box flex-space-row">
                     <a href="#"><button class="writing" id="firstview">이전화면</button></a>
                 </div>
                 <div class="btn_box flex-space-row">
                     <a href="#"><button class="writing" id="firstview">평가종료</button></a>
                 </div>
-        	</div>            	
+            </div>   
+        </div>            	
     </div>
 </body>
 </html>

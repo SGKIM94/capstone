@@ -71,12 +71,12 @@ public class EvaluateTeamHandler implements CommandHandler {
 	private String processForm(HttpServletRequest req, HttpServletResponse res) {
 		HttpSession session = req.getSession();		
 		
-		String teamNo = req.getParameter("team_no");
+		String team_No = req.getParameter("team_No");
 		String ep = (String)req.getSession(false).getAttribute("epaperNo");
 		String team_Name = (String)req.getSession(false).getAttribute("epaperNo");
 		
 		Evalpaper evalpaper = evaluateTeamService.SelectEvalpaper(ep);
-		List<ShowTeamMember> sl = evaluateTeamService.SelectTeamMembers(teamNo);
+		List<ShowTeamMember> sl = evaluateTeamService.SelectTeamMembers(team_No);
 		
 		if(evalpaper == null) {
 			return EVAL_VIEW;
@@ -99,8 +99,6 @@ public class EvaluateTeamHandler implements CommandHandler {
 		String epaperNo = (String)req.getSession(false).getAttribute("epaperNo");
 		String team_Name = (String)req.getSession(false).getAttribute("team_name");
 
-		
-		
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);
 		Date now = new Date();
