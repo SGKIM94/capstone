@@ -85,8 +85,14 @@
             <span class="title_sub">평가 결과</span>
             <div class="board">
               <div class="btn_box flex-space-row">
-                    <a href="#"><button class="writing" id="firstview">최종 결과</button></a>
-                    
+                    <form action="showFinalResult.do" method="post" name="showFinalResult">
+	             			<div class="option-box">
+		                    	<button class="option-button" name="finalbtn" value="result">최종결과</button>
+		                    	<c:if test="${final_finished eq 'no' }"><script>alert('평가가 종료되지 않았습니다.');history.go(-1);</script></c:if>
+								<input type="hidden" name="team_no" value="${tteamNo}">
+							<input type="hidden" name="resultv" value="resultview">
+						</div>
+					</form>
                 </div>
                 <div class="board-list-box">
                     <ul class="board-info">

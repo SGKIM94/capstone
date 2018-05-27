@@ -107,19 +107,20 @@ public String process_dean(HttpServletRequest req, HttpServletResponse res) thro
 		
 		return DEAN_RESULT_VIEW;
 	}
+
 public String process_pro(HttpServletRequest req, HttpServletResponse res) throws Exception {
 	
-	HttpSession session = req.getSession();		
-	
-	String teamNo = req.getParameter("teamNo");
-	EvalPaperList el = evalpaperListService.getEvalPaperList(teamNo);
-	
-	List<EpaperResult> eprl = showResultListService.MakeResultList(el.getList());
-	
-	session.setAttribute("team_No", teamNo);
-	session.setAttribute("SelectEvalList", eprl);
-	session.setAttribute("tteamNo", teamNo);
-	
-	return PRO_RESULT_VIEW;
-}
+		HttpSession session = req.getSession();		
+		
+		String teamNo = req.getParameter("teamNo");
+		EvalPaperList el = evalpaperListService.getEvalPaperList(teamNo);
+		
+		List<EpaperResult> eprl = showResultListService.MakeResultList(el.getList());
+		
+		session.setAttribute("team_No", teamNo);
+		session.setAttribute("SelectEvalList", eprl);
+		session.setAttribute("tteamNo", teamNo);
+		
+		return PRO_RESULT_VIEW;
+	}
 }
