@@ -29,7 +29,7 @@ public class ListEvalTeamHandler implements CommandHandler {
 	
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		
+
 		User user = (User)req.getSession(false).getAttribute("authProUser");
 		/* 학과장님일 때, 뷰에 평가계획서, 최종평가 버튼을 나타나게하는 부분 */
 		if(user.getAccess()==Authority.getProDean()) {

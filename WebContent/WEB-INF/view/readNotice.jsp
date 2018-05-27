@@ -1,6 +1,13 @@
-<%@ page contentType="text/html; charset=utf-8"%>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="u" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<%
+	pageContext.setAttribute("br", "<br>");
+	pageContext.setAttribute("cn", "\n");
+%>
+
 <!doctype html>
 <html lang="en">
 <u:student>
@@ -22,7 +29,7 @@
     </div>
     <div class="txt-area flex-center-row">
         <span class="notice-input-txt" >
-            <c:out value='${noticeData.content}'/>
+            ${fn:replace(noticeData.content, cn, br)}
         </span>
     </div>
     <div class="file-area flex-center-row">
@@ -57,7 +64,7 @@
     </div>
     <div class="txt-area flex-center-row">
         <span class="notice-input-txt" >
-           	<c:out value='${noticeData.content}'/>
+           	${fn:replace(noticeData.content, cn, br)}
         </span>
     </div>
     <div class="file-area flex-center-row">
@@ -70,12 +77,13 @@
     <div class="button-area flex-center-row">
         <a href="/index.jsp"><button class="back-button">뒤로가기</button></a>
         <a href="noticemodify.do?no=${noticeData.notice.postNo}"><button class="back-button">게시글수정</button></a>
-		<a href="noticedelete.do?no=${noticeData.notice.postNo}"><button class="back-button">게시글삭제</button></a>
+		<a href="noticedelete.do?no=${noticeData.notice.postNo}"><button id=deleteNotice class="back-button">게시글삭제</button></a>
 		<c:if test="${errors.NotExistNoticeFile}">파일이 존재하지 않습니다.</c:if>
 		<c:if test="${authUser.id == noticeData.notice.writer.id}">
 		</c:if>
     </div>
 </div>
+<script src="src/notice_aleart.js"></script>
 </body>
 </u:professor>
 </html>

@@ -7,6 +7,7 @@ public class JoinRequest {
 	private String id;
 	private String name;
 	private String password;
+	private String salt;
 	private String confirmPassword;
 	private int groupNo;
 	private String phoneNo;
@@ -106,6 +107,14 @@ public class JoinRequest {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getSalt() {
+		return salt;
+	}
+	
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 
 }

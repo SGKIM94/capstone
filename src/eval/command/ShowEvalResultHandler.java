@@ -23,6 +23,7 @@ import eval.service.ShowTeamMember;
 import mvc.command.CommandHandler;
 
 public class ShowEvalResultHandler implements CommandHandler {
+
    
       private static final String EVAL_VIEW = "/WEB-INF/view/EvalTeamList.jsp";
       private static final String RESULT_VIEW = "/WEB-INF/view/EvalResult.jsp";
@@ -92,6 +93,7 @@ public class ShowEvalResultHandler implements CommandHandler {
     	  Member team = (Member)req.getSession(false).getAttribute("authTeam");
     	  
     	  HttpSession session = req.getSession();      
+
 
           String teamNo = team.getTeamNo();
           String amgstu = req.getParameter("amongstulist");

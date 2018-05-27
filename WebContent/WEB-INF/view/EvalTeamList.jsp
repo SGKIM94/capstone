@@ -140,24 +140,24 @@
             </ul>
             <c:forEach var="teamarticle_pro" items="${articleTeamPage.content}" varStatus="status">
             <div class="board-list flex-center-row">
-            	<div class="file_num_box file_base">
-            		<span class="text-data">${articleTeamPage.stuName[status.index]}</span>
-            	</div>
-            	<div class="file_title_box file_base">
+               <div class="file_num_box file_base">
+                  <span class="text-data">${articleTeamPage.stuName[status.index]}</span>
+               </div>
+               <div class="file_title_box file_base">
                             <form action="downloadTeamFile.do" method="post" name="downTeamFile">
-                            	<span class="text-data">
-                            	<input class="submitLink" type="submit" name="filtitle" value='${teamarticle_pro.title}'>
-                            	<input type="hidden" name="fileNo" value="${teamarticle_pro.fileNo}">
-                            	<input type="hidden" name="teamNo" value="${listTno}">
-                            	<input type="hidden" name="eval" value="true">
-    							</span>
-    						</form>
+                               <span class="text-data">
+                               <input class="submitLink" type="submit" name="filtitle" value='${teamarticle_pro.title}'>
+                               <input type="hidden" name="fileNo" value="${teamarticle_pro.fileNo}">
+                               <input type="hidden" name="team_no" value="${team_no}">
+                               <input type="hidden" name="eval" value="true">
+                         </span>
+                      </form>
                 </div>
                 <div class="file_time_box  flex-center-column">
                             <span class="text-data">${teamarticle_pro.regDate}</span>
                 </div>
                 </div>
-				</c:forEach>
+            </c:forEach>
         </div>
         <div class="btn_box flex-center-row">
             <button class="eval_btn" onclick="location.href='/Capstone/index.jsp';">초기화면</button>

@@ -17,6 +17,9 @@ public class EvaluateTeamService {
 	
 	private EvalpaperDao evalpaperdao = new EvalpaperDao();
 	private StudentDao studentDao = new StudentDao();
+
+	
+
 	private EvalProfDao evalprofdao = new EvalProfDao();
 	private TeamDao teamDao = new TeamDao();
 	/* 개별 교수님 평가서 번호 */
@@ -124,7 +127,6 @@ public class EvaluateTeamService {
 		try {
 			conn = ConnectionProvider.getConnection();
 			int state = evalpaperdao.selectState(conn, paperNo);
-			
 			if(state == AllEvalStatusValue.getEpaperEvalEnded()) {
 				return true; 
 			}
