@@ -73,7 +73,7 @@
                   </li> 
                </c:forEach> 
             </ul>
-          	<div class="search1-box flex-center-row">
+            <div class="button_box flex-center-row">
 	            <c:if test="${dean eq 'yes' }">
 	        		<form class="teamList-form" action="makeEvalPlan.do" method="Post" name="EvalTeamList">
 	        			<button class="option-button" name="plan" value="make">평가 계획서</button>	        	
@@ -85,13 +85,13 @@
 	        			<button class="option-button" name="final" value="finallist">최종 평가</button>	        	
 	        		</form>
 	        </c:if>
-	       </div>
+	        </div>
         </div>
     </div>
     <div class="main_box">
         <div class="search-box flex-center-row">
             <form action="teamlist.do" method="post" name="findFile">
-                <input type="hidden" name="team_no" value="${team_no}">
+                <input type="hidden" name="team_no" value="${team_No}">
                 <select class="board-select" name="filetype">
                     <option value=00>전체보기</option>
                     <option value=a>회의록</option>
@@ -103,7 +103,7 @@
                     <option value=g>메뉴얼</option>
                     <option value=h>최종보고서</option>
                 </select>
-                <button class="search_btn" type="submit" value="${team_no}">조회</button>
+                <button class="search_btn" type="submit" value="${team_No}">조회</button>
                 <input type="hidden" name="eval" value="true">
               </form>
               <c:if test="${errors.listTeamNotExist}">팀이 존재하지 않습니다.</c:if>
@@ -113,17 +113,17 @@
              			<c:if test="${noeval eq 'yes' }"><script>alert('평가할 수 없습니다.');history.go(-1);</script></c:if>
              			<c:if test="${noselected eq 'yes' }"><script>alert('평가 팀을 선택해주세요.');history.go(-1);</script></c:if>
              			<c:if test="${completed eq 'yes' }"><script>alert('이미 평가를 하셨습니다.');history.go(-1);</script></c:if>
-             			<input type="hidden" name="team_no" value="${team_no}">
+             			<input type="hidden" name="team_no" value="${team_No}">
              			<input type="hidden" name="eval" value="true">
              		</div>   
              	</form>
-             	 <form action="showResult.do" method="post" name="showResult">
+             	<form action="showResult.do" method="post" name="showResult">
              	<div class="option-box">
                     	<button class="option-button" name="result" value="resultview">결과보기</button>
                     	<c:if test="${noselected2 eq 'yes' }"><script>alert('평가 팀을 선택해주세요.');history.go(-1);</script></c:if>
                     	<c:if test="${finished eq 'no' }"><script>alert('평가가 종료되지 않았습니다.');history.go(-1);</script></c:if>
-						<input type="hidden" name="team_no" value="${team_no}">
-						<input type="hidden" name="resultv" value="resultview">
+						<input type="hidden" name="team_no" value="${team_No}">
+					<input type="hidden" name="resultv" value="resultview">
 				</div>                    	
                	</form> 
            </div>
@@ -161,6 +161,9 @@
         </div>
         <div class="btn_box flex-center-row">
             <button class="eval_btn" onclick="location.href='/Capstone/index.jsp';">초기화면</button>
+            <form action="showevalresult.do" method="post" name="teamresultlist">
+            	<button class="eval_btn" name="entire" value="result">전체 결과보기</button>
+            </form>
         </div>
     </div>
 </div>

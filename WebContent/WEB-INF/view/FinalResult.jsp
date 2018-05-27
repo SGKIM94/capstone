@@ -10,10 +10,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/lastEvalForm/lastEvalForm.css">
     <title>최종 심사서</title>
+    <script>
+	function goBack() {
+	    history.go(-1);
+	}
+	</script>
 </head>
 <body class="flex-center-row">
 <div class="center_box">
-	<form action="EvaluateFinal.do" method="post" name="evalfinal">
+	<form action="showFinalResult.do" method="post" name="finalresult">
     <div class="title_box">
         <span class="_title">졸업작품 최종 심사서</span>
     </div>
@@ -40,31 +45,27 @@
                 <c:forEach var="List" items="${EvalResultList}" varStatus="status">
                 	<span>${List.proName}&nbsp;&nbsp;${List.total}&nbsp;&nbsp;${List.result}</span><br>
                 </c:forEach><br>
-                <span class="question_txt">교수 평가 평균 점수 : <span>${efinal.avg}</span></span><br><br>
+                <span class="question_txt">교수 평가 평균 점수 : <span>${evalfinal.avg}</span></span><br><br>
                 <span class="opinion">▶최종 평가◀</span>
-                <textarea cols="30" rows="3" name="comment1">${efinal.comment}</textarea>
+                <span>${evalfinal.comment}</span>
                 <ul class="btn_box flex-space-row">
-                    <li class="radio_txt"><input type="radio" name="rs_val" value="1" >합격(>44)</li>
-                    <li class="radio_txt"><input type="radio" name="rs_val" value="2" >재심사(>34)</li>
-                    <li class="radio_txt"><input type="radio" name="rs_val" value="3" >불합격</li>
+                    <li class="radio_txt"><input type="radio" name="val_1" value="1"<c:if test = "${ '1' eq evalfinal.result}">checked</c:if>>합격(>44)</li>
+                    <li class="radio_txt"><input type="radio" name="val_1" value="2"<c:if test = "${ '2' eq evalfinal.result}">checked</c:if>>재심사(>34)</li>
+                    <li class="radio_txt"><input type="radio" name="val_1" value="3"<c:if test = "${ '3' eq evalfinal.result}">checked</c:if>>불합격</li>
                 </ul>
             </div>
     	</div>
     </div>
-    <div class="result_box">
-        <div class="lastEval_box">
-            <ul class="btn_box flex-space-row">
-                <li class="radio_txt">
-             	<button class="option-button" name="final_select" value="save">저장</button>
-             	<input type="hidden" name="team_no" value="${team_no}">
-             	</li>
-                <li class="radio_txt">
-                <button class="option-button" name="final_select" value="complete" >완료</button>
-                </li> 
-            </ul>
-        </div>
-    </div>
     </form>
+     <div class="result_box">
+	        <div class="lastEval_box">
+	            <ul class="btn_box flex-space-row">
+	                <li class="radio_txt">
+	             		<button class="option-button" name="com1" value="confirmed" onclick="goBack()">확인</button>
+	             	</li>
+	            </ul>
+	        </div>
+	    </div>
 </div>
 </body>
 </html>

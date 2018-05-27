@@ -88,7 +88,7 @@ public class EvalProfDao {
 		        	 return true;
 		         }
 		         return false;
-		      }catch(SQLException e)  {
+		      }catch(SQLException e)  {		    
 		    	  return false;
 		      }
 		      finally {
@@ -123,21 +123,21 @@ public class EvalProfDao {
 	      return date == null ? null : new Date(date.getTime());
 	   }
 	   
-	   
-	   /* 평가 참여 교수 목록 DB insert */
-	   public void insertToEprof(Connection conn, Evalplan e) throws SQLException {
-		      try (PreparedStatement pstmt =		         
-		    		  conn.prepareStatement("insert into eprof(planNo,proId) values(?,?)")) {
-		         final String evalno = e.getEvalNo();
-		         ArrayList<String> pl = e.getPflist();
-		    	  for(int i = 0; i<e.getProNum();i++) {
-		        	 pstmt.setString(1, evalno);
-			         pstmt.setString(2, pl.get(i));
-			         pstmt.executeUpdate();	 
-		         }
-		      }
-		   }
-	   
+//	   
+//	   /* 평가 참여 교수 목록 DB insert */
+//	   public void insertToEprof(Connection conn, Evalplan e) throws SQLException {
+//		      try (PreparedStatement pstmt =		         
+//		    		  conn.prepareStatement("insert into eprof(planNo,proId) values(?,?)")) {
+//		         final String evalno = e.getEvalNo();
+//		         ArrayList<String> pl = e.getPflist();
+//		    	  for(int i = 0; i<e.getProNum();i++) {
+//		        	 pstmt.setString(1, evalno);
+//			         pstmt.setString(2, pl.get(i));
+//			         pstmt.executeUpdate();	 
+//		         }
+//		      }
+//		   }
+//	   
 	   /* 평가 교수 전부 삭제 메소드 */
 	   public ArrayList<String> deleteEvalProf(Connection conn, Evalplan e) throws SQLException {
 		   PreparedStatement pstmt = null;

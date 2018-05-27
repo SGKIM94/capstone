@@ -8,6 +8,11 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="./css/teamList/teamList.css">
+    <script>
+	function goBack() {
+	    history.go(-1);
+	}
+	</script>
     <title>최종 평가</title>
 </head>
 <body class="flex-center-row">
@@ -66,9 +71,10 @@
             <ul class="lists">
                <c:forEach var="team" items="${teamList.list}"> 
                  <li>
-                    <form action="EvalTeamList.do" method="Post" name="EvalTeamList">
+                    <form action="showResultList.do" method="post" name="showResultList">
                       <input class="submitLink_pro" type="submit" name="teamtitle" value='${team.teamName}'>
                       <input type="hidden" name="teamNo" value="${team.teamNo}">
+                      <input type="hidden" name="who" value="dean">
                     </form>                  
                   </li> 
                </c:forEach> 
@@ -76,7 +82,24 @@
         </div>
     </div>
     <div class="main_box">
-            <span class="title_sub">평가 결과</span>
+            <span class="title_sub">팀별 심사서 리스트</span>
+            <form action="EvaluateFinal.do" method="post" name="evalteam">
+        	 		<div class="option-box">
+             			<button class="option-button" name="finalbtn" value="show">최종평가</button>
+             				<c:if test="${finalteam eq 'yes' }"><script>alert('평가 팀을 선택해주세요.');history.go(-1);</script></c:if>
+             				<c:if test="${completed1 eq 'yes' }"><script>alert('최종 평가가 완료되었습니다.');history.go(-1);</script></c:if>
+             			<input type="hidden" name="team_no" value="${tteamNo}">
+             		</div>  
+             	</form>
+             	<form action="showFinalResult.do" method="post" name="showFinalResult">
+             	<div class="option-box">
+                    	<button class="option-button" name="finalbtn" value="result">결과보기</button>
+                    	<c:if test="${final_noselected eq 'yes' }"><script>alert('평가 팀을 선택해주세요.');history.go(-1);</script></c:if>
+                    	<c:if test="${final_finished eq 'no' }"><script>alert('평가가 종료되지 않았습니다.');history.go(-1);</script></c:if>
+						<input type="hidden" name="team_no" value="${tteamNo}">
+					<input type="hidden" name="resultv" value="resultview">
+				</div>                    	
+               	</form> 
             <div class="board">
                 <div class="board-list-box">
                     <ul class="board-info">
@@ -84,17 +107,18 @@
                         <li class="file_title">평가교수</li>
                         <li class="file_time">결과</li>           
                     </ul>
-                    <c:forEach var="List" items="${EvalList}" varStatus="status">
+                    <c:forEach var="List" items="${SelectEvalList}" varStatus="status">
                     <div class="board-list flex-center-row">
                         <div class="file_num_box file_base">
                      <span class="text-data">${List.evalstatus}</span>
                         </div>
                         <div class="file_title_box file_base">
-                            <form action="showResult.do" method="post" name="downTeamFile">
+                            <form action="showResult.do" method="post" name="showresult">
                                <span class="text-data">
                                	<input class="submitLink" type="submit" name="proname" value='${List.proName}'>
                                	<input class = "mod_file_class" type="hidden" name="epaperno" value="${List.epaperNo}">
-                               	<input class = "mod_file_class" type="hidden" name="student" value="yaa">
+                               	<input type="hidden" name="team_no" value="${team_No}">
+                               	<input type="hidden" name="amonglists" value="yes">
                          	   </span>
                       		</form>
                         </div>
@@ -104,14 +128,17 @@
                     </div>
                     </c:forEach>
                 </div>
+                <div class="btn_box flex-space-row">
+                    <a href="#"><button class="writing" id="firstview" onclick="goBack()" >이전화면</button></a>
+                </div>
+                <div class="btn_box flex-space-row">
+                	<form action="terminateEval.do" method="post" name="terminate">
+                    	<button class="writing" id="firstview">평가종료</button>
+                    	<c:if test="${ remain eq 'yes' }"> <script> alert("최종 평가를 받아야할 팀이 남아있습니다.");history.go(-1);</script></c:if>
+                    </form>
+                </div>
             </div>   
-                <div class="btn_box flex-space-row">
-                    <a href="#"><button class="writing" id="firstview">이전화면</button></a>
-                </div>
-                <div class="btn_box flex-space-row">
-                    <a href="#"><button class="writing" id="firstview">평가종료</button></a>
-                </div>
-        	</div>            	
+        </div>            	
     </div>
 </body>
 </html>

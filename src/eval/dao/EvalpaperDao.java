@@ -20,8 +20,8 @@ import eval.service.AllEvalStatusValue;
 public class EvalpaperDao {
 	
 	/* 개별 교수님 평가서 번호 */
-	public String makePaperNo(String eNo, String tNo, String pId) {
-		return eNo+"-"+tNo+"-"+pId;
+	public String makeEpaperNo(String tNo, String pId) {
+		return tNo+"_"+pId;
 	}
 	
 	public Evalpaper selectEvalPaper(Connection conn, String paperNo) throws SQLException {
@@ -283,5 +283,28 @@ public class EvalpaperDao {
 				JdbcUtil.close(pstmt);
 			}
 		}
+	   public double CntEteamAverage(Connection conn, String eteamNo) throws SQLException {
+		   	PreparedStatement pstmt = null;
+			Statement stmt = null;
+			ResultSet rs = null;
+			String likeword="'"+eteamNo+"%'";
+			double average = 0.0;
+			try {
+			    pstmt = conn.prepareStatement("select avg(total) from epaper " +
+			               "where paperNo like "+ likeword +
+			        		 "and total != 0");
+			    rs = pstmt.executeQuery();
+				/* 이 부분 어떻게 될지 잘 모르겠음 */
+				if(rs.next()) {
+					average=rs.getDouble("avg(total)");
+					return average;
+				}
+				return 0.0;
+			} finally {
+				JdbcUtil.close(rs);
+				JdbcUtil.close(stmt);
+				JdbcUtil.close(pstmt);
+			}
+	   }
 
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 import member.model.Professor;
+import eval.dao.EvalFinalDao;
 import eval.dao.EvalProfDao;
 import eval.dao.EvalTeamDao;
 import eval.dao.EvalpaperDao;
@@ -24,6 +25,7 @@ public class MakeEvalplanService {
 	EvalTeamDao evalteamDao = new EvalTeamDao();
 	EvalProfDao evalprofDao = new EvalProfDao();
 	EvalpaperDao evalpaperDao = new EvalpaperDao();
+	EvalFinalDao evalfinalDao = new EvalFinalDao();
 	
 	public void Make(MakeRequest req){
 		Connection conn = null;
@@ -34,6 +36,8 @@ public class MakeEvalplanService {
 			List<String> teamlist = req.getTlist();
 			List<String> proflist = req.getPflist();
 			List<String> epaperlist = req.getEpaperlist();
+			List<String> efinallist = req.getEfinallist();
+			
 			
 			String evalNo = req.getEvalNo();
 			String finalNo = null;
@@ -59,6 +63,9 @@ public class MakeEvalplanService {
 				evalpaperDao.insert(conn, var3);
 			}
 			
+			for(String var4 : efinallist) {
+				evalfinalDao.insert(conn, var4);
+			}
 			conn.commit();
 		}catch (SQLException e) {
 			JdbcUtil.rollback(conn);
@@ -104,8 +111,7 @@ public class MakeEvalplanService {
 	
 	/*각 팀당 최종 평가지 번호 생성 코드 = 년도 + 팀번호 + 디폴트 최종 평가지 문서번호*/
 	private String toGetFinalNo(String teamNo) {
-		Calendar c = Calendar.getInstance();
-		String evalNo = Integer.toString(c.get(Calendar.YEAR))+teamNo+"-"+AllEvalStatusValue.getDefaultFinal();
+		String evalNo = teamNo+"_"+AllEvalStatusValue.getDefaultFinalDocu();
 		return evalNo;
 	}	
 }

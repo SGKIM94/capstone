@@ -8,7 +8,12 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="./css/evalForm/evaluationForm.css">
+    <link rel="stylesheet" href="./css/EvalResult/EvalResult.css">
+	<script>
+	function goBack() {
+	    history.go(-1);
+	}
+	</script>
     <title>평가지</title>
 </head>
 <body class="flex-center-row">
@@ -121,16 +126,15 @@
             </div>
         </div>
     </div>
-    <span class="result_txt">평가</span><span id="result"><</span>
-    </form>
     <div class="result_box">
         <div class="lastEval_box">
-           <form action="showResult.do" method="post" name="resultConfirm">
-            <span class="result_txt">평가</span><span id="result">${val_total}</span>
-            <span class="result_txt">결과</span><span id="result">${pass_result}</span>
-            <button class="option-button" name="confirm" value="confirmed">확인</button>
-            </form>
+		        <span class="eval-txt">평가점수 : </span><span class="eval-score">${val_total}</span><br>
+		        <span class="eval-txt">평가결과 : </span><span class="eval-score">${result}</span><br>
         </div>
+    </div>
+    </form>
+    <div class="option-box flex-center-row">
+          <button class="option-button" name="confirm" value="confirmed" onclick="goBack()">확인</button>
     </div>
 </div>
 </body>
