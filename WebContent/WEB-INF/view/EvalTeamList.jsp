@@ -73,17 +73,19 @@
                   </li> 
                </c:forEach> 
             </ul>
+          	<div class="search1-box flex-center-row">
 	            <c:if test="${dean eq 'yes' }">
-	        		<form action="makeEvalPlan.do" method="Post" name="EvalTeamList">
+	        		<form class="teamList-form" action="makeEvalPlan.do" method="Post" name="EvalTeamList">
 	        			<button class="option-button" name="plan" value="make">평가 계획서</button>	        	
 	        		</form>
 	        	</c:if>
 	        <c:if test="${already eq 'yyyyyyyy' }"><script>alert('평가가 이미 시작되었습니다.');history.go(-1);</script></c:if>
 	        <c:if test="${dean eq 'yes' }">
-	        		<form action="finalList.do" method="Post" name="FinalList">
+	        		<form class="teamList-form" action="finalList.do" method="Post" name="FinalList">
 	        			<button class="option-button" name="final" value="finallist">최종 평가</button>	        	
 	        		</form>
 	        </c:if>
+	       </div>
         </div>
     </div>
     <div class="main_box">

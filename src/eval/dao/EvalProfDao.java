@@ -82,10 +82,9 @@ public class EvalProfDao {
 		         pstmt = conn.prepareStatement(
 		               "select * from epflist where evalNo = ? and proId = ?");
 		         pstmt.setString(1, planNo);
-		         pstmt.setString(1, proId);
+		         pstmt.setString(2, proId);
 		         rs = pstmt.executeQuery();
-		         
-		         if ((rs.next())) {	      
+		         if (rs.next()) {	      
 		        	 return true;
 		         }
 		         return false;

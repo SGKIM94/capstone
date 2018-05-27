@@ -84,6 +84,12 @@
         <div class="main_box">
             <span class="title_sub">평가 결과</span>
             <div class="board">
+            	<div class="btn_box flex-space-row">
+                    <a href="#"><button class="writing" id="firstview">초기화면</button></a>
+                    <a href="#"><button class="writing" id="firstview">초기화면</button></a>
+                </div>
+                    
+                
                 <div class="board-list-box">
                     <ul class="board-info">
                         <li class="file_num">진행상태</li>

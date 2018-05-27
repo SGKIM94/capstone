@@ -398,6 +398,13 @@ button:hover{
     width: 100px;
     height: 30px;
 }
+.teamList-form{
+	width: 190px;
+}
+.search1-box {
+    width: 100%;
+    height: 90px;
+}
 
 a.button {
   	-webkit-appearance: button;

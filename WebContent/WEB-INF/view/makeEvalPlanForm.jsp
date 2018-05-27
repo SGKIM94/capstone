@@ -108,7 +108,7 @@
                 </div>
                 <div class="right-bottom-box">
                     <div class="eval-box">
-                        <button>평가 시작</button>
+                        <button  >평가 시작</button>
                     </div>
                 </div>
                 </form>

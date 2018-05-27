@@ -24,6 +24,7 @@ public class ShowEvalResultHandler implements CommandHandler {
 		private static final String EVAL_VIEW = "/WEB-INF/view/EvalTeamList.jsp";
 		private static final String RESULT_VIEW = "/WEB-INF/view/EvalResult.jsp";
 		private EvaluateTeamService evaluateTeamService = new EvaluateTeamService();
+		
 		public String process(HttpServletRequest req, HttpServletResponse res) throws Exception{
 			HttpSession session = req.getSession();		
 			
@@ -71,11 +72,29 @@ public class ShowEvalResultHandler implements CommandHandler {
 			session.setAttribute("memberList", sl);
 			String result = req.getParameter("result");
 			if((result!=null) && (result.equals("resultview"))) {
+				req.setAttribute("val_total", evalpaper.getTotal());
+				req.setAttribute("pass_result", setResult(evalpaper));
 				return RESULT_VIEW;
 			}
 
 			return EVAL_VIEW;
 			
+		}
+		
+		private String setResult(Evalpaper paper)
+		{
+			String result = null;
+			int total = paper.getTotal();
+			if (total >= 45)
+				result = "합격";
+			else if(total >= 35 && total <= 44)
+				result = "재심사";
+			else if(total <= 34)
+				result = "불합격";
+			else
+				result = "잘못된 값을 입력하셨습니다.";
+			
+			return result;
 		}
 		
 		//필요있네

@@ -33,7 +33,7 @@ public class MakeEvalplanHandler implements CommandHandler {
 		
 		String plan = (String)req.getParameter("plan");
 		
-		if (plan.equals("make")) {
+		if ((plan!=null)&&(plan.equals("make"))) {
 			return processForm(req, res);
 		} else {
 			return processSubmit(req, res);

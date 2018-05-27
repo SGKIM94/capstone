@@ -36,6 +36,7 @@
         </div>
         <div class="check_box">
             <div class="question_box">
+           		<span class="question_txt">평균 점수 : 50.34</span>
                 <span class="question_txt">최종 평가</span>
                 <span class="opinion">의견작성</span>
                 <textarea cols="30" rows="3" name="comment1">${c1}</textarea>
