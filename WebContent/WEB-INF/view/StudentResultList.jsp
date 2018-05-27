@@ -84,6 +84,10 @@
         <div class="main_box">
             <span class="title_sub">평가 결과</span>
             <div class="board">
+              <div class="btn_box flex-space-row">
+                    <a href="#"><button class="writing" id="firstview">최종 결과</button></a>
+                    
+                </div>
                 <div class="board-list-box">
                     <ul class="board-info">
                         <li class="file_num">진행상태</li>
@@ -100,7 +104,8 @@
                                <span class="text-data">
                                	<input class="submitLink" type="submit" name="proname" value='${List.proName}'>
                                	<input class = "mod_file_class" type="hidden" name="epaperno" value="${List.epaperNo}">
-                               	<input class = "mod_file_class" type="hidden" name="student" value="yaa">
+                               	<input type="hidden" name="team_no" value="${team_No}">
+                               	<input class = "mod_file_class" type="hidden" name="amongstulist" value="yes">
                          	   </span>
                       		</form>
                         </div>
@@ -112,7 +117,7 @@
                 </div>
             </div>   
                 <div class="btn_box flex-space-row">
-                    <a href="#"><button class="writing" id="firstview">초기화면</button></a>
+                    <button class="writing" id="firstview" onclick="location.href='/Capstone/index.jsp';">초기화면</button>
                 </div>
         	</div>            	
 	</div>

@@ -39,6 +39,13 @@ public class AllEvalStatusValue {
 	private final static int DEFAULT_TOTAL = 0;
 	private final static double DEFAULT_AVG = 0.0;
 	
+	/* 평가 최종 합격, 재심사, 불합격에 대한 상태 값*/
+	private final static int DEFAULT_RESULT = 0;
+	private final static int RESULT_PASS = 1;
+	private final static int RESULT_RETEST = 2;
+	private final static int RESULT_FAIL = 3;
+	
+	
 	//private final int FAIL = 0;			굳이 있을 필요가 없음.
 	public static int getDefaultEvalPlanState() {
 		return DEFAULT_EVAL_PLAN_STATE;
@@ -114,6 +121,18 @@ public class AllEvalStatusValue {
 	}
 	public static int getEfinalEvalEnded() {
 		return EFINAL_EVAL_ENDED;
+	}
+	public static int getDefaultResult() {
+		return DEFAULT_RESULT;
+	}
+	public static int getResultPass() {
+		return RESULT_PASS;
+	}
+	public static int getResultRetest() {
+		return RESULT_RETEST;
+	}
+	public static int getResultFail() {
+		return RESULT_FAIL;
 	}
 	
 }

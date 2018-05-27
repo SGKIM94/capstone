@@ -8,7 +8,12 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="./css/teamList/teamList.css">
-    <title>Professor</title>
+    <script>
+	function goBack() {
+	    history.go(-1);
+	}
+	</script>
+    <title>최종 결과</title>
 </head>
 <body class="flex-center-row">
 <div class="center_box flex-center-row">
@@ -53,7 +58,7 @@
                     </svg>
                 </div>
                 <div class="profile_desc">
-                    <span class="desc">김점구교수님 반갑습니다.</span>
+                    <span class="desc">${authProUser.name}교수님 반갑습니다.</span>
                 </div>
             </div>
             <div class="button_box flex-space-row">
@@ -66,9 +71,10 @@
             <ul class="lists">
                <c:forEach var="team" items="${teamList.list}"> 
                  <li>
-                    <form action="EvalTeamList.do" method="Post" name="EvalTeamList">
+                    <form action="showResultList.do" method="post" name="showResultList">
                       <input class="submitLink_pro" type="submit" name="teamtitle" value='${team.teamName}'>
                       <input type="hidden" name="teamNo" value="${team.teamNo}">
+                      <input type="hidden" name="who" value="pro">
                     </form>                  
                   </li> 
                </c:forEach> 
@@ -76,74 +82,49 @@
         </div>
     </div>
     <div class="main_box">
-        <div class="search-box flex-center-row">
-            <form action="teamlist.do" method="post" name="findFile">
-                <input type="hidden" name="team_no" value=""${team_no}"">
-                <select class="board-select" name="filetype">
-                    <option value=00>전체보기</option>
-                    <option value=a>회의록</option>
-                    <option value=b>제안서</option>
-                    <option value=c>요구분석서</option>
-                    <option value=d>설계서</option>
-                    <option value=e>구현서</option>
-                    <option value=f>형상관리서</option>
-                    <option value=g>메뉴얼</option>
-                    <option value=h>최종보고서</option>
-                </select>
-                <button class="search_btn" type="submit" value="${team_no}">조회</button>
-                <input type="hidden" name="eval" value="true">
-              </form>
-              <c:if test="${errors.listTeamNotExist}">팀이 존재하지 않습니다.</c:if>
-                <form action="teamlist.do" method="post" name="findFile">
-    				<input type="hidden" name="team_no" value="${team_no}">    
-    			</form> 
-                <form action="EvaluateTeam.do" method="post" name="evalteam">
-        	 		<div class="option-box">
-             			<button class="option-button">평가하기</button>
-             			<input type="hidden" name="team_no" value="${team_no}">
-             			<input type="hidden" name="eval" value="true">
-             		</div>            	
-             	</form>
-                <div class="option-box">
-                    <button class="option-button">결과보기</button>
+            <span class="title_sub">팀별 심사 리스트</span>
+             	<form action="showFinalResult.do" method="post" name="showFinalResult">
+             	<div class="option-box">
+                    	<button class="option-button" name="finalbtn" value="result">최종결과</button>
+                    	<c:if test="${final_noselected eq 'yes' }"><script>alert('평가 팀을 선택해주세요.');history.go(-1);</script></c:if>
+                    	<c:if test="${final_finished eq 'no' }"><script>alert('평가가 종료되지 않았습니다.');history.go(-1);</script></c:if>
+						<input type="hidden" name="team_no" value="${tteamNo}">
+					<input type="hidden" name="resultv" value="resultview">
+				</div>                    	
+               	</form> 
+            <div class="board">
+                <div class="board-list-box">
+                    <ul class="board-info">
+                        <li class="file_num">진행상태</li>
+                        <li class="file_title">평가교수</li>
+                        <li class="file_time">결과</li>           
+                    </ul>
+                    <c:forEach var="List" items="${SelectEvalList}" varStatus="status">
+                    <div class="board-list flex-center-row">
+                        <div class="file_num_box file_base">
+                     <span class="text-data">${List.evalstatus}</span>
+                        </div>
+                        <div class="file_title_box file_base">
+                            <form action="showResult.do" method="post" name="showresult">
+                               <span class="text-data">
+                               	<input class="submitLink" type="submit" name="proname" value='${List.proName}'>
+                               	<input class = "mod_file_class" type="hidden" name="epaperno" value="${List.epaperNo}">
+                               	<input type="hidden" name="team_no" value="${team_No}">
+                               	<input type="hidden" name="amonglists" value="yes">
+                         	   </span>
+                      		</form>
+                        </div>
+                        <div class="file_time_box  flex-center-column">
+                            <span class="text-data_date">${List.result}</span>
+                        </div>
+                    </div>
+                    </c:forEach>
                 </div>
-           </div>
-        <div class="select-team-con flex-center-row">
-            <span class="selected-team">
-                <c:if test="${team_name ne null}">${team_name}</c:if>
-            </span>
-        </div>
-        <div class="board-list-box">
-            <ul class="board-info">
-                <li class="file_num">작성자</li>
-                <li class="file_title">제목</li>
-                <li class="file_time">게시날짜</li>
-            </ul>
-            <c:forEach var="teamarticle_pro" items="${articleTeamPage.content}" varStatus="status">
-            <div class="board-list flex-center-row">
-            	<div class="file_num_box file_base">
-            		<span class="text-data">${articleTeamPage.stuName[status.index]}</span>
-            	</div>
-            	<div class="file_title_box file_base">
-                            <form action="downloadTeamFile.do" method="post" name="downTeamFile">
-                            	<span class="text-data">
-                            	<input class="submitLink" type="submit" name="filtitle" value='${teamarticle_pro.title}'>
-                            	<input type="hidden" name="fileNo" value="${teamarticle_pro.fileNo}">
-                            	<input type="hidden" name="teamNo" value="${listTno}">
-                            	<input type="hidden" name="eval" value="true">
-    							</span>
-    						</form>
+                <div class="btn_box flex-space-row">
+                    <a href="#"><button class="writing" id="firstview" onclick="goBack()" >이전화면</button></a>
                 </div>
-                <div class="file_time_box  flex-center-column">
-                            <span class="text-data">${teamarticle_pro.regDate}</span>
-                </div>
-                </div>
-				</c:forEach>
-        </div>
-        <div class="btn_box flex-center-row">
-            <button class="eval_btn" onclick="location.href='/Capstone/index.jsp';">초기화면</button>
-        </div>
+            </div>   
+        </div>            	
     </div>
-</div>
 </body>
 </html>

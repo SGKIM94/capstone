@@ -7,8 +7,9 @@ public class EpaperResult {
 	private String proName;
 	private String proId;
 	private String result;
+	private int total;
 	
-	public EpaperResult(String epno, int status, String proname, String proid, int total){
+	public EpaperResult(String epno, int status, String proname, String proid, int total) {	
 		epaperNo = epno;
 		if(status==AllEvalStatusValue.getDefaultEvalPlanState()) {
 			evalstatus="미시작";
@@ -22,6 +23,7 @@ public class EpaperResult {
 		}
 		proName=proname;
 		proId = proid;
+		this.total = total;
 		if(total>AllEvalStatusValue.getPass()) {
 			result = "합격";
 		}else if(total>AllEvalStatusValue.getReTest()) {
@@ -69,6 +71,14 @@ public class EpaperResult {
 
 	public void setResult(String result) {
 		this.result = result;
+	}
+
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
 	}
 	
 }

@@ -72,6 +72,10 @@ public class MakeEvalplanHandler implements CommandHandler {
 		/* 세션에서 전체 교수 목록만 가져오기 */
 		EvalProfList plist = (EvalProfList)req.getSession(false).getAttribute("proList");
 		
+		
+		for(String val : value) {
+			System.out.println("val : "+val);
+		}
 		/* 전체 교수 중에서 선택된 교수만 리스트에 넣기 */
 		List<ShowProf> pl = selectedProfessor(plist,value);
 		

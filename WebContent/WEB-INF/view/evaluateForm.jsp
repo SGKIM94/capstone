@@ -123,7 +123,8 @@
     </div>
     <div class="result_box">
         <div class="lastEval_box">
-            <span class="result_txt">평가</span><span id="result">0점</span>
+            <span class="eval-txt">평가점수 : </span><span class="eval-score" id="result">0점</span>
+         </div>
             <ul class="btn_box flex-space-row">
                 <li class="radio_txt">
              	<button class="option-button" name="select" value="save">저장</button>
@@ -132,10 +133,8 @@
                 <li class="radio_txt"><button class="option-button" name="select" value="complete" >완료</button></li>
             </ul>
         </div>
-    </div>
     </form>
 </div>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-<script type="text/javascript" src="src/select_sum.js"></script>
+<script src="src/evaluating-countScore.js"></script>
 </body>
 </html>

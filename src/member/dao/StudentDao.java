@@ -50,7 +50,6 @@ public class StudentDao {
 	               "select * from student where teamNo = ?");
 	         pstmt.setString(1, teamNo);
 	         rs = pstmt.executeQuery();
-	         
 	         List<ShowTeamMember> sl = new ArrayList<ShowTeamMember>();
 	         
 	         ShowTeamMember student = null;

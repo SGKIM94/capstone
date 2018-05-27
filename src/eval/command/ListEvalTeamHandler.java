@@ -1,7 +1,9 @@
 package eval.command;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +29,6 @@ public class ListEvalTeamHandler implements CommandHandler {
 	
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		HttpSession session = req.getSession();
 		
 		User user = (User)req.getSession(false).getAttribute("authProUser");
 		/* 학과장님일 때, 뷰에 평가계획서, 최종평가 버튼을 나타나게하는 부분 */
@@ -36,6 +37,9 @@ public class ListEvalTeamHandler implements CommandHandler {
 		}else {
 			req.setAttribute("dean", "no");
 		}
+		
+		Map<String, Boolean> errors = new HashMap<>();
+		req.setAttribute("errors", errors);
 		
 		/*이거 여기서 필요한건지 잘 모르겠음.*/
 //		/* 아무 팀도 안선택한 세션값 설정 */
@@ -82,8 +86,7 @@ public class ListEvalTeamHandler implements CommandHandler {
 		List<ShowTeam> sl = tl.getList();
 		
 		session.setAttribute("epaperNo", epaperNo);	//개별 평가지 번호 프론트로 넘기기
-		session.setAttribute("team_no", teamNo);
-		System.out.println("이것은? "+teamNo);
+		session.setAttribute("team_No", teamNo);
 		session.setAttribute("team_name", teamName);
 	
 		return FORM_VIEW;
