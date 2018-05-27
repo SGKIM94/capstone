@@ -2,34 +2,37 @@ package eval.model;
 
 import java.util.Date;
 
+import eval.service.AllEvalStatusValue;
+
 public class EvalFinal {
-	private final int DEFAULT_TOTAL = 0;
-	private final int DEFAULT_STATE = 0;
 	
 	private String finalNo;
 	private String comment;
 	private Date regDate;
 	private Date endDate;
-	private int total;
+	private double avg;
 	private int state;
+	private int result;
 	
 	public EvalFinal() {
 		finalNo = null;
 		comment = null;
 		regDate = null;
 		endDate = null;
-		total = DEFAULT_TOTAL;
-		state = DEFAULT_STATE;
+		avg = AllEvalStatusValue.getDefaultAvg();
+		state = AllEvalStatusValue.getDefaultEfinalState();
+		result = AllEvalStatusValue.getDefaultResult();
 	}
 	
 	/* 모든 멤버변수 받는 생성자 */
-	public EvalFinal(String fno, String c, Date r, Date e, int t, int s) {
+	public EvalFinal(String fno, String c, Date r, Date e, double t, int s, int rs) {
 		finalNo = fno;
 		comment = c;
 		regDate = r;
 		endDate = e;
-		total = t;
+		avg = t;
 		state = s;
+		result = rs;
 	}
 	
 	/* 평가 계획시 생성되는 최종 평가서 */
@@ -38,8 +41,9 @@ public class EvalFinal {
 		comment = null;
 		regDate = null;
 		endDate = null;
-		total = DEFAULT_TOTAL;
-		state = DEFAULT_STATE;
+		avg = AllEvalStatusValue.getDefaultAvg();
+		state = AllEvalStatusValue.getDefaultEfinalState();
+		result = AllEvalStatusValue.getDefaultResult();
 	}
 
 	public String getFinalNo() {
@@ -74,20 +78,28 @@ public class EvalFinal {
 		this.endDate = endDate;
 	}
 
-	public int getTotal() {
-		return total;
-	}
-
-	public void setTotal(int total) {
-		this.total = total;
-	}
-
 	public int getState() {
 		return state;
 	}
 
 	public void setState(int state) {
 		this.state = state;
+	}
+
+	public double getAvg() {
+		return avg;
+	}
+
+	public void setAvg(double avg) {
+		this.avg = avg;
+	}
+
+	public int getResult() {
+		return result;
+	}
+
+	public void setResult(int result) {
+		this.result = result;
 	}
 	
 }

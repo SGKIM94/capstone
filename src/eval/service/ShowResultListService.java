@@ -28,10 +28,13 @@ public class ShowResultListService {
 		
 		List<EpaperResult> erlist = new ArrayList<EpaperResult>();
 		EpaperResult er = null;
-		
+		System.out.println("이거는 사이즈 ??"+pflist.size());
 		for(ShowProf var1 : pflist) {
 			proid=var1.getProId();
+			System.out.println("이거는 ??"+proid);
+			int i = 0;
 			for(Evalpaper var2 : eplist) {
+				System.out.println(i++);
 				epaperNo = var2.getPaperNo();
 				if(epaperNo.contains(proid)) { //해당 평가지 교수를 찾음
 					er = new EpaperResult(epaperNo, var2.getState(),var1.getProName(),proid,var2.getTotal());

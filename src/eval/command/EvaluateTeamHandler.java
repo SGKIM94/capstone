@@ -33,6 +33,7 @@ public class EvaluateTeamHandler implements CommandHandler {
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		User user = (User)req.getSession(false).getAttribute("authProUser");
 		/* 평가할 수 있는 교수인지 아닌지 체크해야함 */
+	
 		if(!evaluateTeamService.IsPossibleToEval(user.getId())){
 			req.setAttribute("noeval", "yes");
 			return EVAL_VIEW;
@@ -71,9 +72,8 @@ public class EvaluateTeamHandler implements CommandHandler {
 	private String processForm(HttpServletRequest req, HttpServletResponse res) {
 		HttpSession session = req.getSession();		
 		
-		String team_No = req.getParameter("team_No");
+		String team_No = req.getParameter("team_no");
 		String ep = (String)req.getSession(false).getAttribute("epaperNo");
-		String team_Name = (String)req.getSession(false).getAttribute("epaperNo");
 		
 		Evalpaper evalpaper = evaluateTeamService.SelectEvalpaper(ep);
 		List<ShowTeamMember> sl = evaluateTeamService.SelectTeamMembers(team_No);
@@ -97,7 +97,6 @@ public class EvaluateTeamHandler implements CommandHandler {
 		String select = req.getParameter("select");
 		
 		String epaperNo = (String)req.getSession(false).getAttribute("epaperNo");
-		String team_Name = (String)req.getSession(false).getAttribute("team_name");
 
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);

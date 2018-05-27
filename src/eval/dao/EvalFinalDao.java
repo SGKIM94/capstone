@@ -35,8 +35,8 @@ public class EvalFinalDao {
 	        	 evalfinal = new EvalFinal(finalNo, rs.getString("comment"),
 		        		 toDate(rs.getTimestamp("regDate")),
 	        			 toDate(rs.getTimestamp("endDate")),
-	        			 rs.getInt("total"),
-	        			 rs.getInt("state")); 
+	        			 rs.getDouble("average"),
+	        			 rs.getInt("state"),rs.getInt("result")); 
 	         }
 	         return evalfinal;
 	      } finally {
@@ -65,6 +65,28 @@ public class EvalFinalDao {
 	         JdbcUtil.close(pstmt);
 	      }
 	}
+	
+	public int selectResult(Connection conn, String finalNo) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt = conn.prepareStatement(
+	               "select result from efinal where finalNo = ?");
+	         pstmt.setString(1, finalNo);
+	         rs = pstmt.executeQuery();
+	         
+	         int state = 50;			//아무값
+	         
+	         if(rs.next()) {
+	        	 state = rs.getInt("result");
+	         }
+	         return state;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	}
+	
 	/* 전체 팀 최종 평가서 가져오기 -> 보류 */
 	public List<EvalFinal> selectAllFinal(Connection conn, String year) throws SQLException {
 	      PreparedStatement pstmt = null;
@@ -84,8 +106,8 @@ public class EvalFinalDao {
 	        	 EvalFinal = new EvalFinal(finalNo, rs.getString("comment"),
 		        		 toDate(rs.getTimestamp("regDate")),
 	        			 toDate(rs.getTimestamp("endDate")),
-	        			 rs.getInt("total"),
-	        			 rs.getInt("state"));
+	        			 rs.getDouble("average"),
+	        			 rs.getInt("state"), rs.getInt("result"));
 	        	 list.add(EvalFinal);
 	         }
 	         return list;
@@ -94,6 +116,30 @@ public class EvalFinalDao {
 	         JdbcUtil.close(pstmt);
 	      }
 	   }
+	public List<String> selectNotCompleteFinal(Connection conn, String year) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      List<String> list = new ArrayList<String>();
+	      String str = "'" + year + "%'";
+	      
+	      try {
+	         pstmt = conn.prepareStatement(
+	               "select finalNo from efinal where finalNo like "+str +" and state = ?");
+	         pstmt.setInt(1, AllEvalStatusValue.getEfinalEvalEnded());
+	         rs = pstmt.executeQuery();
+	         String finalNo = null;
+	         
+	         while(rs.next()) {
+	        	 finalNo = rs.getString("finalNo");
+	        	 list.add(finalNo);
+	         }
+	         return list;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+	
 	   private Date toDate(Timestamp date) {
 	      return date == null ? null : new Date(date.getTime());
 	   }
@@ -107,13 +153,14 @@ public class EvalFinalDao {
 		   Date date = new Date();
 		   try (
 	    	 PreparedStatement pstmt = 
-	         	conn.prepareStatement("insert into efinal(finalNo, comment, regDate, endDate, total, state) values(?,?,?,null,?,?)")){ 
+	         	conn.prepareStatement("insert into efinal(finalNo, comment, regDate, endDate, average, state, result) values(?,?,?,null,?,?,?)")){ 
 	         pstmt.setString(1,  finalNo);
 	         pstmt.setString(2,  AllEvalStatusValue.getDefaultComment());
 	         pstmt.setTimestamp(3, toTimestamp(date));	//이거 맞는지 모르겠네
 	         //pstmt.setTimestamp(4,  toTimestamp(date));
-	         pstmt.setInt(4,  AllEvalStatusValue.getDefaultTotal());
+	         pstmt.setDouble(4,  AllEvalStatusValue.getDefaultAvg());
 	         pstmt.setInt(5,  AllEvalStatusValue.getDefaultEfinalState());
+	         pstmt.setInt(6,  AllEvalStatusValue.getDefaultResult());
 	         pstmt.executeUpdate();
 	      }	
 	   }
@@ -121,13 +168,14 @@ public class EvalFinalDao {
 	   public void insert(Connection conn, EvalFinal EvalFinal) throws SQLException {
 		   try (
 	    	 PreparedStatement pstmt = 
-	         	conn.prepareStatement("insert into efinal(finalNo, comment, regDate, endDate, total, state) values(?,?,?,null,?,?)")){ 
+	         	conn.prepareStatement("insert into efinal(finalNo, comment, regDate, endDate, average, state, result) values(?,?,?,null,?,?,?)")){ 
 	         pstmt.setString(1,  EvalFinal.getFinalNo());
 	         pstmt.setString(2,  EvalFinal.getComment());
 	         pstmt.setTimestamp(3,  new Timestamp(EvalFinal.getRegDate().getTime()));
 	         //pstmt.setTimestamp(4,  new Timestamp(EvalFinal.getEndDate().getTime()));
-	         pstmt.setInt(4,  EvalFinal.getTotal());
+	         pstmt.setDouble(4,  EvalFinal.getAvg());
 	         pstmt.setInt(5,  EvalFinal.getState());
+	         pstmt.setInt(6,  EvalFinal.getResult());
 	         pstmt.executeUpdate();
 	      }	
 	   }
@@ -135,28 +183,17 @@ public class EvalFinalDao {
 	   /* 평가 변경 메소드 */
 	   public void update(Connection conn, EvalFinal evalfinal) throws SQLException {
 		   try (PreparedStatement pstmt = conn.prepareStatement(
-	    		  "update efinal set state = ?, endDate = ?, total = ? where finalNo = ?")) {
+	    		  "update efinal set state = ?, endDate = ?, average = ?, result = ?, comment = ? where finalNo = ?")) {
 	         pstmt.setInt(1, evalfinal.getState());
 	         pstmt.setTimestamp(2, new Timestamp(evalfinal.getEndDate().getTime()));
-	         pstmt.setInt(3, evalfinal.getTotal());
-	         pstmt.setString(4, evalfinal.getFinalNo());
+	         pstmt.setDouble(3, evalfinal.getAvg());
+	         pstmt.setInt(4, evalfinal.getResult());
+	         pstmt.setString(5, evalfinal.getComment());
+	         pstmt.setString(6, evalfinal.getFinalNo());
 	         pstmt.executeUpdate();
 	      }
 	   }
-	   
-	   /* 평가 완료 메소드 -- 위와 거의 똑같지만 혹시 몰라서 만듬*/
-	   public void update_complete(Connection conn, EvalFinal evalfinal) throws SQLException {
-		   try (PreparedStatement pstmt = conn.prepareStatement(
-		    		  "update efinal set state = ?, endDate = ?, total = ? where finalNo = ?")) {
-		         pstmt.setInt(1, AllEvalStatusValue.getEfinalEvalEnded());
-		         pstmt.setTimestamp(2, new Timestamp(evalfinal.getEndDate().getTime()));
-		         pstmt.setInt(3, evalfinal.getTotal());
-		         pstmt.setString(4, evalfinal.getFinalNo());
-		         pstmt.executeUpdate();
-		      }
-	   }
-	   
-	 
+	  
 	   /* 평가 삭제 메소드 */
 	   public EvalFinal deleteByfinalNo(Connection conn, String finalNo) throws SQLException {
 			PreparedStatement pstmt = null;
@@ -183,5 +220,4 @@ public class EvalFinalDao {
 				JdbcUtil.close(pstmt);
 			}
 		}
-
 }

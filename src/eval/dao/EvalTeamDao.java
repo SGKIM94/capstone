@@ -145,7 +145,7 @@ public class EvalTeamDao {
 	         JdbcUtil.close(pstmt);
 	      }
 	}
-	
+	/* 이거 제대로 동작하는지 궁금. */
 	public List<EvalTeam> select(Connection conn, int startRow, int size) throws SQLException {
 	      PreparedStatement pstmt = null;
 	      ResultSet rs = null;

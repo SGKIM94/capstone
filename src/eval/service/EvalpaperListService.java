@@ -21,7 +21,7 @@ public class EvalpaperListService {
 		try {
 			conn = ConnectionProvider.getConnection();
 			newlist = evalpaperDao.selectEvalTeamAllPaper(conn, teamNo);
-			EvalPaperList el = new EvalPaperList(newlist);
+			EvalPaperList el = new EvalPaperList(teamNo, newlist);
 			return el;
 		} catch (SQLException e) {
 			JdbcUtil.rollback(conn);

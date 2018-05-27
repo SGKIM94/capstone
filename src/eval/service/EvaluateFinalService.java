@@ -6,6 +6,7 @@ import java.util.List;
 
 import eval.dao.EvalFinalDao;
 import eval.dao.EvalTeamDao;
+import eval.dao.EvalpaperDao;
 import eval.model.EvalFinal;
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
@@ -15,12 +16,13 @@ public class EvaluateFinalService {
 		
 		private EvalFinalDao evalfinaldao = new EvalFinalDao();
 		private TeamDao TeamDao = new TeamDao();
+		private EvalpaperDao evalpaperDao = new EvalpaperDao();
 		/* 개별 교수님 평가서 번호 */
 		/* 평가 세션 값 가져와서 만들자 */
 		public String makeFinalNo(String tNo, String pId) {
 			return tNo+"_"+pId;
 		}
-		
+		/* 그냥 골라오기 - 결과를 보여줘야할 때도 쓸 수 있을듯. */
 		public EvalFinal SelectEvalFinal(String finalNo) {
 			Connection conn = null;
 			try {
@@ -33,9 +35,6 @@ public class EvaluateFinalService {
 //					throw new DuplicateIdException();
 //				}
 				/* 해당 팀에 대한 평가가 끝남 */
-				if(evalfinal.getState() == AllEvalStatusValue.getEfinalEvalEnded()) {
-					return null;
-				}
 				return evalfinal;
 			} catch (SQLException e) {
 				JdbcUtil.rollback(conn);
@@ -53,7 +52,6 @@ public class EvaluateFinalService {
 				conn.setAutoCommit(false);
 				
 				evalfinaldao.update(conn, evalFinal);
-				
 				conn.commit();
 			} catch (SQLException e) {
 				JdbcUtil.rollback(conn);
@@ -116,6 +114,21 @@ public class EvaluateFinalService {
 //				}
 				/* 해당 팀에 대한 평가가 끝남 */
 				return eteam;
+			} catch (SQLException e) {
+				JdbcUtil.rollback(conn);
+				throw new RuntimeException(e);
+			} finally {
+				JdbcUtil.close(conn);
+			}
+		}
+		public double CntAverage(String teamNo) {
+			double average = 0.0;
+			Connection conn = null;
+			try {
+				conn = ConnectionProvider.getConnection();
+				average = evalpaperDao.CntEteamAverage(conn, teamNo);
+				
+				return average;
 			} catch (SQLException e) {
 				JdbcUtil.rollback(conn);
 				throw new RuntimeException(e);

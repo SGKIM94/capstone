@@ -8,21 +8,23 @@ import eval.model.Evalpaper;
 /* 개별 평가지 7개 */
 public class EvalPaperList {
 	
+	private String teamNo;
 	private List<Evalpaper> list;
 	private int totalscore;
 	private double avg;
 	
 	public EvalPaperList() {
+		teamNo= null;
 		list = new ArrayList<Evalpaper>();
 		totalscore = 0;
 		avg = 0.0;
 	}
 	
-	public EvalPaperList(List<Evalpaper> el) {
+	public EvalPaperList(String tn, List<Evalpaper> el) {
+		teamNo = tn;
 		list = el;
 		countTotalAndAverage();
 	}
-	
 	
 	private void countTotalAndAverage() {
 		int cnt = 0;
@@ -58,5 +60,12 @@ public class EvalPaperList {
 	public void setAvg(double avg) {
 		this.avg = avg;
 	}
-	
+
+	public String getTeamNo() {
+		return teamNo;
+	}
+
+	public void setTeamNo(String teamNo) {
+		this.teamNo = teamNo;
+	}	
 }
