@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import article.team.model.TeamContent;
 import article.team.service.ArticlePage;
 import article.team.service.ListArticleService;
+import auth.service.Authority;
 import auth.service.StudentUser;
 import auth.service.User;
 import eval.dao.EvalplanDao;
@@ -19,9 +20,12 @@ public class ListArticleHandler implements CommandHandler {
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) 
 			throws Exception {		
+		HttpSession session = req.getSession();	
 		/* 평가에 참여하는 선택된 교수 읽어오기 */	
 		User user = (User)req.getSession(false).getAttribute("authProUser");
-		
+		if(user.getAccess()==Authority.getProDean()) {
+			session.setAttribute("dean", "yes");
+		}
 		String filetype = req.getParameter("filetype");
 		String pageNoVal = req.getParameter("pageNo");	
 		
@@ -52,9 +56,9 @@ public class ListArticleHandler implements CommandHandler {
 		}
 		if(state == null)
 			return "/index.jsp";
-		if(state != null & state.equals("true"))
+		if(state != null & state.equals("true")) {
 			return "/WEB-INF/view/EvalTeamList.jsp";
-		
+		}
 		return "/WEB-INF/view/EvalTeamList.jsp";
 	}
 	

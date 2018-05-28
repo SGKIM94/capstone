@@ -46,9 +46,15 @@ public class DownloadTeamHandler implements CommandHandler {
 	  
 	  Member member = (Member)req.getSession(false).getAttribute("authTeam"); 
 	  String filename = req.getParameter("fileNo");
-	  String teamNo = member.getTeamNo();
 	  String path;
-	  
+	  String teamNo = null;
+	  if(member != null) {
+		  teamNo = member.getTeamNo();
+	  }
+     else {
+    	 teamNo = req.getParameter("teamNo"); 
+     }
+	        
 	  String state = req.getParameter("eval");
 	  
 	  TeamContent teamContent = content.selectTeam(filename);

@@ -124,14 +124,20 @@ public class EvalFinalDao {
 	      
 	      try {
 	         pstmt = conn.prepareStatement(
-	               "select finalNo from efinal where finalNo like "+str +" and state = ?");
+	               "select finalNo from efinal where finalNo like "+str +" and state != ?");
 	         pstmt.setInt(1, AllEvalStatusValue.getEfinalEvalEnded());
 	         rs = pstmt.executeQuery();
 	         String finalNo = null;
 	         
 	         while(rs.next()) {
-	        	 finalNo = rs.getString("finalNo");
+	        	 finalNo=rs.getString("finalNo");
+	        	 if(finalNo==null) {
+	        		 break;
+	        	 }
 	        	 list.add(finalNo);
+	         }
+	         if(list.size()==0) {
+	        	 return null;
 	         }
 	         return list;
 	      } finally {

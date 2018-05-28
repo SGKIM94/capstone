@@ -121,8 +121,9 @@
                     </c:forEach>
                 </div>
                 <div class="btn_box flex-space-row">
-                    <a href="#"><button class="writing" id="firstview" onclick="goBack()" >이전화면</button></a>
-                </div>
+                <form action="showResultList.do" method="post" name="before">
+                	<button class="writing" id="firstview" name="beforeview1" value="yes" >이전화면</button>
+                </form>
             </div>   
         </div>            	
     </div>

@@ -13,6 +13,7 @@ import eval.service.AllEvalStatusValue;
 import eval.service.EvalPlanList;
 import eval.service.EvalProfList;
 import eval.service.EvalTeamList;
+import eval.service.EvalplanStatuService;
 import eval.service.MakeEvalplanService;
 import eval.service.MakeRequest;
 import eval.service.ShowProf;
@@ -27,10 +28,14 @@ public class MakeEvalplanHandler implements CommandHandler {
 	private static final String PRESENET_VIEW = "/WEB-INF/view/EvalTeamList.jsp";
 	private MakeEvalplanService makeService = new MakeEvalplanService();
 	private EvalPlanList evalplanlist = new EvalPlanList();
+	EvalplanStatuService evalplanStatuService = new EvalplanStatuService();
 	
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		
+		if(evalplanStatuService.CheckEvalState()==AllEvalStatusValue.getEvalPlanStarted()) {
+	  		  req.setAttribute("already", "yes");
+	  		  return PRESENET_VIEW;
+	  	  }
 		String plan = (String)req.getParameter("plan");
 		
 		if ((plan!=null)&&(plan.equals("make"))) {
@@ -68,14 +73,13 @@ public class MakeEvalplanHandler implements CommandHandler {
 		/* 평가에 참여하는 선택된 교수 읽어오기 */
 		String value[] = req.getParameterValues("selectprof");
 		User user = (User)req.getSession(false).getAttribute("authProUser");
+		if(user.getAccess()==Authority.getProDean()) {
+			req.setAttribute("dean", "yes");
+		}
 		EvalTeamList tl = (EvalTeamList)req.getSession(false).getAttribute("teamList");
 		/* 세션에서 전체 교수 목록만 가져오기 */
 		EvalProfList plist = (EvalProfList)req.getSession(false).getAttribute("proList");
 		
-		
-		for(String val : value) {
-			System.out.println("val : "+val);
-		}
 		/* 전체 교수 중에서 선택된 교수만 리스트에 넣기 */
 		List<ShowProf> pl = selectedProfessor(plist,value);
 		
@@ -89,7 +93,7 @@ public class MakeEvalplanHandler implements CommandHandler {
 		/* 평가 참여 교수 권한 변경 */
 		changeProfAuthority(value);
 		//이 부분 평가 화면으로 넘겨야함.
-		return FORM_VIEW;
+		return PRESENET_VIEW;
 	}
 	
 	/* 평가 참여 교수 권한 변경 */

@@ -35,9 +35,9 @@
                 <input type="password" placeholder="비밀번호 입력" name="password" >
             </div>
             <div class="guide_box">
-            <c:if test="${errors.id}">ID를 입력하세요.</c:if>
-            <c:if test="${errors.password}">암호를 입력하세요.</c:if>
-            <c:if test="${errors.idOrPwNotMatch}">아이디와 암호가 일치하지 않습니다.</c:if>
+	            <c:if test="${errors.id}">ID를 입력하세요.</c:if>
+	            <c:if test="${errors.password}">암호를 입력하세요.</c:if>
+	            <c:if test="${errors.idOrPwNotMatch}">아이디와 암호가 일치하지 않습니다.</c:if>
             </div>
         </div>
         <div class="button_box flex-center-column">
@@ -177,7 +177,6 @@
             </select>
        <c:if test="${main_tName ne null}"><button class="btn_tname" type="submit">${main_tName}</button></c:if>
        </form>
-
         <div class="board-list-box">               
             <ul class="board-info">
             	<li class="file_num">작성자</li>
@@ -364,8 +363,7 @@
                     <a href="#"><button class="writing" id="write">글쓰기</button></a>
                     <form action="showResultList.do" method="post" name="showResultList">
                     <button class="writing" id="resultlist">결과보기</button>
-                    <c:if test = "${evalstate eq 'aaaa' }"><script>alert('평가가 종료되지 않았습니다.');</script></c:if>
-                    <c:if test = "${notstarted eq 'ddd' }"><script>alert('평가가 시작되지 않았습니다.');</script></c:if>
+                    <c:if test = "${notstarted eq 'yes' }"><script>alert('평가가 시작되지 않았습니다.');</script></c:if>
                     </form>
                 </div>
         	</div>

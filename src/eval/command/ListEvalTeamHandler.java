@@ -62,6 +62,7 @@ public class ListEvalTeamHandler implements CommandHandler {
 	}
 	
 	private String processForm(HttpServletRequest req, HttpServletResponse res) {
+		
 		HttpSession session = req.getSession();
 		
 		EvalTeamList evalteamlist = evalplanlist.getEvalTeamList();

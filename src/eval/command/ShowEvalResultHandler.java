@@ -15,8 +15,10 @@ import auth.service.StudentUser;
 import auth.service.User;
 import eval.model.Evalpaper;
 import eval.model.Questions;
+import eval.service.AllEvalStatusValue;
 import eval.service.EvalPaperList;
 import eval.service.EvalpaperListService;
+import eval.service.EvalplanStatuService;
 import eval.service.EvaluateTeamService;
 import eval.service.ShowTeam;
 import eval.service.ShowTeamMember;
@@ -28,9 +30,15 @@ public class ShowEvalResultHandler implements CommandHandler {
       private static final String RESULT_VIEW = "/WEB-INF/view/EvalResult.jsp";
       EvaluateTeamService evaluateTeamService = new EvaluateTeamService();
       EvalpaperListService evalpaperListService = new EvalpaperListService();
+      EvalplanStatuService evalplanStatuService = new EvalplanStatuService();
       
       public String process(HttpServletRequest req, HttpServletResponse res) throws Exception{
          
+    	  if(evalplanStatuService.CheckEvalState()==AllEvalStatusValue.getDefaultEvalPlanState()) {
+    		  req.setAttribute("notyet", "yes");
+    		  return EVAL_VIEW;
+    	  }
+    	  
     	  Member team = (Member)req.getSession(false).getAttribute("authTeam");
     	  if(team!=null) {
     		  return process_stu(req,res);

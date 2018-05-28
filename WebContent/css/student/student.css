@@ -107,3 +107,10 @@ input.submitLink {
 
     cursor: pointer;
 }
+
+.option-button {
+    margin-left: 30px;
+    font-weight: 200;
+    width: 100px;
+    height: 30px;
+}

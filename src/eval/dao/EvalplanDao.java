@@ -123,17 +123,30 @@ public class EvalplanDao {
 	   /* 평가 완료 변경 메소드 */
 	   public void update_eval_complete(Connection conn, Evalplan eval) throws SQLException {
 	      try (PreparedStatement pstmt = conn.prepareStatement(
-	    		  "update evalplan set state = ?, endDate = ? where evalNo = ?")) {
+	    		  "update evalplan set state = ?, endDate = ? where planNo = ?")) {
 	         pstmt.setInt(1, AllEvalStatusValue.getEvalPlanEnded());
 	         pstmt.setTimestamp(2, new Timestamp(eval.getEndDate().getTime()));
 	         pstmt.setString(3, eval.getEvalNo());
 	         pstmt.executeUpdate();
 	      }
 	   }
+	   
+	   /* 평가 완료 변경 메소드 */
+	   public void update_eval_complete(Connection conn, String evalNo) throws SQLException {
+	      Date now= new Date();
+		   try (PreparedStatement pstmt = conn.prepareStatement(
+	    		  "update eplan set state = ?, endDate = ? where planNo = ?")) {
+	         pstmt.setInt(1, AllEvalStatusValue.getEvalPlanEnded());
+	         pstmt.setTimestamp(2, new Timestamp(now.getTime()));
+	         pstmt.setString(3, evalNo);
+	         pstmt.executeUpdate();
+	      }
+	   }
+	   
 	   /* 평가 진행중 변경 메소드 */
 	   public void update_eval_ongoing(Connection conn, Evalplan eval) throws SQLException {
 		      try (PreparedStatement pstmt = conn.prepareStatement(
-		    		  "update evalplan set state = ? where evalNo = ?")) {
+		    		  "update eplan set state = ? where planNo = ?")) {
 		         pstmt.setInt(1, AllEvalStatusValue.getEvalPlanStarted());
 		         pstmt.setString(2, eval.getEvalNo());
 		         pstmt.executeUpdate();
@@ -152,7 +165,7 @@ public class EvalplanDao {
 					throw new ArticleNotFoundException();
 				}
 				
-				pstmt = conn.prepareStatement("delete from evalplan where planNo = ? ");
+				pstmt = conn.prepareStatement("delete from eplan where planNo = ? ");
 				pstmt.setString(1, eval.getEvalNo());
 				int insertedCount = pstmt.executeUpdate();		//리턴값은 성골했을 때 : 성공한 행의 개수, 실패시 : 0
 				

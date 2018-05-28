@@ -4,7 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import auth.service.User;
+import eval.service.AllEvalStatusValue;
 import eval.service.EvalpaperListService;
+import eval.service.EvalplanStatuService;
 import eval.service.ShowResultListService;
 import mvc.command.CommandHandler;
 
@@ -12,6 +14,7 @@ public class ShowProResultHandler implements CommandHandler {
 	
 	ShowResultListService showResultListService = new ShowResultListService();
 	EvalpaperListService evalpaperListService = new EvalpaperListService();
+	EvalplanStatuService evalplanStatuService = new EvalplanStatuService();
 	
 	private static final String EVAL_TEAM_VIEW = "/WEB-INF/view/EvalTeamList.jsp";
 	private static final String STU_MAIN_VIEW = "/index.jsp";
@@ -20,6 +23,8 @@ public class ShowProResultHandler implements CommandHandler {
 	
 	
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception{
+		
+		
 		//학과장님 판별할 필요 있음.
 		User user = (User)req.getSession(false).getAttribute("authProUser");
 		
@@ -36,6 +41,10 @@ public class ShowProResultHandler implements CommandHandler {
 		/* 평가가 이미 종료되지 않았는지 점검할 필요가 있음 */
 		String entirebtn = req.getParameter("entire");
 		if((entirebtn!=null)&&entirebtn.equals("result")) {
+			if(evalplanStatuService.CheckEvalState()==AllEvalStatusValue.getDefaultEvalPlanState()) {
+		  		  req.setAttribute("notyet1", "yes");
+		  		  return EVAL_TEAM_VIEW;
+		  	  }
 			return PRO_RESULT_VIEW;
 		}
 		return null;

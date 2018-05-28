@@ -95,22 +95,12 @@ public class AllEvalStatusValue {
 	
 	public static String togetStrYear() {
 		Calendar currentCalendar = Calendar.getInstance();
-		return Integer.toString(currentCalendar.get(Calendar.YEAR));
+		return String.valueOf(currentCalendar.get(Calendar.YEAR));
 	}
 	
 	public static String togetTwoDigitYear() {
-		String year = null;
-		String return_var = null;
-		
-		/* 상구 말이, substring은 에러가 날 수도 있다고 해서 이렇게 함. */
-		while(true) {
-			year = togetStrYear();
-			return_var = year.substring(2, 2);
-			if(return_var!=null) {
-				break;
-			}
-		}
-		return return_var;
+		String year = togetStrYear();
+		return year.substring(2, 2);
 	}
 	
 	public static int getDefaultEfinalState() {

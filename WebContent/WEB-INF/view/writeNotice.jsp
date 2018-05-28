@@ -15,7 +15,7 @@
 <body class="flex-center-row">
    <form action="noticewrite.do" method="post" enctype="multipart/form-data">
     <div class="center_box">
-        <h2>Management System</h2>
+        <h2>졸업작품 평가관리 시스템</h2>
         <div class="tit-area flex-center-row">
             <input type="text" name="noticetitle" class="notice-input-tit" placeholder="제목 입력" value="${param.title}">
         </div>
@@ -27,7 +27,6 @@
         </div>
         <div class="button-area flex-center-row">
             <button class="regist-button" type="submit">작성하기</button>
-            <button class="regist-button" type="reset">재작성하기</button>
             <a href="/Capstone/index.jsp"><button class="regist-button">메인으로</button></a>
         </div>
     </div>
