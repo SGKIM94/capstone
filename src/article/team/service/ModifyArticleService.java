@@ -51,4 +51,5 @@ public class ModifyArticleService {
 		String temp = article.getWriter().getWriterId();
 		return temp.equals(modfyingUserId);
 	}
+
 }

@@ -18,7 +18,8 @@
 			validationQuery=select 1
 			minIdle=20
 			maxTotal=30
-			poolName=capstonedb</param-value>
+			poolName=capstonedb
+			</param-value>
 	</context-param>
 
 	<filter>
@@ -52,15 +53,4 @@
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 
-	<filter>
-		<filter-name>LoginCheckFilter</filter-name>
-		<filter-class>filter.LoginCheckFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>LoginCheckFilter</filter-name>
-		<url-pattern>/changePwd.do</url-pattern>
-		<url-pattern>/teamwrite.do</url-pattern>
-		<url-pattern>/teamarticlemodify.do</url-pattern>
-		<url-pattern>/teamarticledelete.do</url-pattern>
-	</filter-mapping>
 </web-app>

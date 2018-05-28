@@ -25,6 +25,18 @@ public class WriteRequest {
       this.fileSize = fileSize;
       this.fileExt = fileExt;
    }
+   
+   public WriteRequest(int postNo, Writer writer, String title, String content) {
+		  this.postNo = postNo;
+		  this.writer = writer;
+		  this.title = title;
+	      this.content = content;
+	      this.origin = null;
+	      this.stored = null;
+	      this.fileSize = 0;
+	      this.fileExt = null;
+   }
+   
 
    public String getContent() {
       return content;

@@ -7,6 +7,7 @@ public class Questions {
 	public Questions() {
 		qs = new Question[DEFAULT_LIST_NO];
 		for(int i = 0; i<DEFAULT_LIST_NO; i++) {
+			qs[i] = new Question();
 			qs[i].setqNo(i+1);
 		}
 	}

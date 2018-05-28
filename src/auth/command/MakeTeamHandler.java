@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.sql.Connection;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import jdbc.connection.ConnectionProvider;
@@ -57,10 +59,11 @@ public class MakeTeamHandler implements CommandHandler {
 		if (!errors.isEmpty()) {
 			return FORM_VIEW;
 		}
-
+		
 		try {
 			req.getSession().setAttribute("authTeam", member);
-			res.sendRedirect(req.getContextPath() + "/index.jsp");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/index.jsp");
+    	  	dispatcher.forward(req,res);
 			return null;
 		} catch (LoginFailException e) {
 			errors.put("idOrPwNotMatch", Boolean.TRUE);
@@ -69,7 +72,6 @@ public class MakeTeamHandler implements CommandHandler {
 	}
 	
 	private Member createMember(StudentUser stduser, HttpServletRequest req)
-	
 	{
 		TeamDao teamdao = new TeamDao();
 		Team team;

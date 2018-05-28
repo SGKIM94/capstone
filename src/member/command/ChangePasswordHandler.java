@@ -11,12 +11,11 @@ import member.service.ChangePasswordService;
 import member.service.InvalidPasswordException;
 import member.service.MemberNotFoundException;
 import mvc.command.CommandHandler;
-import team.teamnum;
-
+import auth.service.Authority;
+import auth.service.StudentUser;
 
 public class ChangePasswordHandler implements CommandHandler {
-	private teamnum groupnum = new teamnum();
-	
+
 	private static final String FORM_VIEW = "/WEB-INF/view/changePwdForm.jsp";
 	private ChangePasswordService changePwdSvc = new ChangePasswordService();
 	
@@ -41,6 +40,7 @@ public class ChangePasswordHandler implements CommandHandler {
 	private String processSubmit(HttpServletRequest req, HttpServletResponse res)
 	throws Exception {
 		User user = (User)req.getSession().getAttribute("authUser");
+		StudentUser stduser = (StudentUser)req.getSession().getAttribute("authStdUser");
 			
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);
@@ -57,15 +57,25 @@ public class ChangePasswordHandler implements CommandHandler {
 		if (!errors.isEmpty()) {
 			return FORM_VIEW;
 		}
-		
+		int group;
 		try {
-			int group = user.getAccess();
-			if(group == groupnum.pronumber){
+			if(user == null)
+				group = stduser.getAccess();
+			else
+				group = user.getAccess();
+			/* 권한 체크 */
+			boolean value1 = ((group==Authority.getProDean())||(group==Authority.getProEval())
+					||(group==Authority.getProNotEval()));
+			boolean value2 = ((group == Authority.getStuTeam())
+					||(group == Authority.getStuTeamMaker())
+					||(group == Authority.getStuNotTeam()));
+			
+			if(value1){
 				changePwdSvc.changePassword_Pro(user.getId(), curPwd, newPwd);
 				return "/WEB-INF/view/changePwdSuccess.jsp";
 			}
-			else if(group == groupnum.stunumber){
-				changePwdSvc.changePassword_Stu(user.getId(), curPwd, newPwd);
+			else if(value2){
+				changePwdSvc.changePassword_Stu(stduser.getId(), curPwd, newPwd);
 				return "/WEB-INF/view/changePwdSuccess.jsp";
 			}
 			else{

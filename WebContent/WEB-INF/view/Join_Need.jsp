@@ -28,8 +28,9 @@
     <div class="list_box flex-center-row">
             <input type="text" name="id" value="${param.id}" maxlength="8" placeholder="학번 입력">
             <c:if test="${errors.id}">학번를 입력하세요.</c:if>
-			<c:if test="${errors.duplicateId}">이미 사용중인 학번입니다.</c:if>
-        </div>
+    </div>
+    <p class="jointeam"><c:if test="${errors.duplicateId}">이미 사용중인 학번입니다.</c:if></p>
+			
         <div class="list_box flex-center-row">
             <input type="text" name="name" maxlength="8"  value="${param.name}" placeholder="이름 입력">
             <c:if test="${errors.name}">이름을 입력하세요.</c:if>
@@ -54,6 +55,7 @@
     </div>
     <div class="button_box flex-center-column">
         <button type="submit">Join</button>
+        <c:if test="${errors.putValues}">값을 입력하세요.</c:if>
     </div>
 </div>
 </form>

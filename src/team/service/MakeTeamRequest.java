@@ -9,9 +9,10 @@ public class MakeTeamRequest {
    private String groupNo;
    private String teamNo;
    private String teamName;
-   private String teamSubject;
+   private String teamSubject = null;
    private String advisor;
-   private boolean state = true;
+   private boolean state;
+   private int s_groupNo;
    
    private String id;
    //이거 느낌이 뷰랑 ""안에 이름이 같아야 할듯
@@ -22,11 +23,12 @@ public class MakeTeamRequest {
       for(int i = 0; i<stuIds.size();i++) {
          checkEmpty(errors, stuIds.get(i), "id");
       }*/
-      checkEmpty(errors, teamNo, "teamno");
+	  checkEmpty(errors, groupNo, "groupNo");
+      checkEmpty(errors, teamNo, "teamNo");
       checkEmpty(errors, teamName, "teamName");
-      checkEmpty(errors, teamSubject, "teamSubject");
       checkEmpty(errors, advisor, "advisor");
    }
+   
    
    private void checkEmpty(Map<String, Boolean> errors, 
          String value, String fieldName) {
@@ -81,12 +83,24 @@ public class MakeTeamRequest {
       return state;
    }   
    
+   public void setState(boolean state) {
+	   this.state = state;
+   }
+   
    public String getId() {
 	   return id;
    }
    
    public void SetId(String id) {
 	   this.id = id;
+   }
+   
+   public int getS_groupNo() {
+	   return s_groupNo;
+   }
+   
+   public void setS_groupNo(int s_groupNo) {
+	   this.s_groupNo = s_groupNo;
    }
    
    /* 정수형이 없어서 아래 오버로딩된 함수는 주석 처리*/

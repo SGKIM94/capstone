@@ -1,30 +1,33 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-<title>암호 변경</title>
-<link href="css/background_sub.css?ver=2" rel="stylesheet" type="text/css" >
-<link href="css/ChangePwdForm.css?ver=2" rel="stylesheet" type="text/css" >
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/join/join.css">
+    <title>Delete Team</title>
 </head>
-<body>
-<header class="title">
-        <h1>Capstone Design Management System</h1>
-</header>
-
-<div id="wrapper">
-
+<body class="flex-center-row">
 <form action="deleteTeam.do" method="post">
-<p id="Change_Team">Change Team</p>
-<p id="PWD">
-	<label for="curPwd">Current Password</label><br>
-	<br/><input type="password" name="curPwd">
-	<c:if test="${errors.curPwd}">현재 암호를 입력하세요.</c:if>
-	<c:if test="${errors.badCurPwd}">현재 암호가 일치하지 않습니다.</c:if>
-</p>
-<input type="submit" value="Delete Team">
-</form>
+<div class="center_box">
+    <div class="title_box">
+        <span class="_title">Management System</span>
+    </div>
+    <div class="join_box">
+        <div class="list_box flex-center-row">
+            <input type="password" name="curPwd" placeholder="비밀번호를 입력하세요." >
+            <c:if test="${errors.curPwd}">확인을 입력하세요.</c:if>
+			<c:if test="${errors.badCurPwd}">암호와 확인이 일치하지 않습니다.</c:if>
+        </div>
+    </div>
+    <div class="button_box flex-center-column">
+        <button type="submit">Delete Team</button>
+        <c:if test="${errors.NotAccessDelete}">팀장만 삭제할 수 있습니다.</c:if>
+    </div>
 </div>
-
+</form>
 </body>
 </html>

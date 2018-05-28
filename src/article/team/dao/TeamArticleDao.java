@@ -13,9 +13,15 @@ import java.util.List;
 import article.common.ArticleNotFoundException;
 import article.team.model.*;
 import jdbc.JdbcUtil;
+import member.dao.StudentDao;
+import member.model.Student;
+import team.dao.TeamDao;
+import team.model.Team;
 
 public class TeamArticleDao {
-
+	
+	StudentDao studentDao = new StudentDao();
+	
 	public TeamArticle insert(Connection conn, TeamArticle article) throws SQLException {
 		PreparedStatement pstmt = null;
 		Statement stmt = null;
@@ -57,30 +63,55 @@ public class TeamArticleDao {
 		return new Timestamp(date.getTime());
 	}
 
-	public int selectCount(Connection conn) throws SQLException {
-		Statement stmt = null;
+	public int selectCount(Connection conn, String teamNo) throws SQLException {
+		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select count(*) from teamboard");
+			pstmt = conn.prepareStatement("select count(*) from teamboard where ?");
+			pstmt.setString(1, teamNo);
+			rs = pstmt.executeQuery();
+			
 			if (rs.next()) {
 				return rs.getInt(1);
 			}
 			return 0;
 		} finally {
 			JdbcUtil.close(rs);
-			JdbcUtil.close(stmt);
+			JdbcUtil.close(pstmt);
 		}
 	}
 
-	public List<TeamArticle> select(Connection conn, int startRow, int size) throws SQLException {
+	public List<TeamArticle> select(Connection conn, int startRow, int size, String teamNo) throws SQLException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("select * from teamboard " +
+			pstmt = conn.prepareStatement("select * from teamboard where teamNo = ? " +
 					"order by regDate desc limit ?, ?");
-			pstmt.setInt(1, startRow);
-			pstmt.setInt(2, size);
+			pstmt.setString(1, teamNo);
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, size);
+			rs = pstmt.executeQuery();
+			List<TeamArticle> result = new ArrayList<>();
+			String stuName = studentDao.selectNamebyTeamNo(conn, teamNo);
+			while (rs.next()) {
+				result.add(convertArticle(rs, stuName));
+			}
+			return result;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+	}
+	
+	public List<TeamArticle> selectbyTitle(Connection conn, int startRow, int size, String title) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("select * from teamboard where title = ? " +
+					"order by regDate desc limit ?, ?");
+			pstmt.setString(1, title);
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, size);
 			rs = pstmt.executeQuery();
 			List<TeamArticle> result = new ArrayList<>();
 			while (rs.next()) {
@@ -92,7 +123,41 @@ public class TeamArticleDao {
 			JdbcUtil.close(pstmt);
 		}
 	}
+	
+	public List<TeamArticle> selectByFiletype(Connection conn, int startRow, int size, String teamNo, String type) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			String searchtype = "'"+"%"+type+"'";
+			pstmt = conn.prepareStatement("select * from teamboard where teamNo = ? and fileNo like "+ searchtype +
+					"order by regDate desc limit ?, ?");
+			pstmt.setString(1, teamNo);
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, size);
+			rs = pstmt.executeQuery();
+			List<TeamArticle> result = new ArrayList<>();
+			while (rs.next()) {
+				result.add(convertArticle(rs));
+			}
+			return result;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+	}
+	
 	/*이부분 문제 있을 수 있음*/
+	private TeamArticle convertArticle(ResultSet rs, String stuName) throws SQLException {
+		return new TeamArticle(rs.getString("fileNo"),
+				rs.getString("title"),
+				new TeamArticleWriter(
+						rs.getString("teamNo"),
+						rs.getString("writeId")),
+				toDate(rs.getTimestamp("regDate")),
+				toDate(rs.getTimestamp("modDate")),
+				rs.getInt("downCnt"));
+	}
+	
 	private TeamArticle convertArticle(ResultSet rs) throws SQLException {
 		return new TeamArticle(rs.getString("fileNo"),
 				rs.getString("title"),
@@ -172,4 +237,23 @@ public class TeamArticleDao {
 			JdbcUtil.close(pstmt);
 		}
 	}
+	
+	public String selectNamebyWriterId(Connection conn, String writeId) throws SQLException {
+		   PreparedStatement pstmt = null;
+		   ResultSet rs = null;	   
+		   try {
+			   pstmt = conn.prepareStatement(
+				   "select a.stuName from student a, teamboard b where a.stuId=b.writeId and b.writeId = ?");
+			   pstmt.setString(1, writeId);
+			   rs = pstmt.executeQuery();
+			   String stName = null;
+			   if(rs.next()) {
+				   stName = rs.getString("stuName");			   
+			   }
+			   return stName;
+		   } finally {
+		         JdbcUtil.close(rs);
+		         JdbcUtil.close(pstmt);
+		   }
+	}			   
 }

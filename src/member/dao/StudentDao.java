@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import eval.service.ShowTeamMember;
 import jdbc.JdbcUtil;
 import member.model.Student;
 
@@ -38,6 +41,32 @@ public class StudentDao {
       }
    }
 
+   
+   public List<ShowTeamMember> selectByTeamNo(Connection conn, String teamNo) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt = conn.prepareStatement(
+	               "select * from student where teamNo = ?");
+	         pstmt.setString(1, teamNo);
+	         rs = pstmt.executeQuery();
+	         List<ShowTeamMember> sl = new ArrayList<ShowTeamMember>();
+	         
+	         ShowTeamMember student = null;
+	         
+	         while (rs.next()) {
+	            student = new ShowTeamMember(
+	                  rs.getString("stuId"), 
+	                  rs.getString("stuName"));
+	            sl.add(student);
+	         }
+	         return sl;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+   
    private Date toDate(Timestamp date) {
       return date == null ? null : new Date(date.getTime());
    }
@@ -67,11 +96,12 @@ public class StudentDao {
       }
    }
    
-   public void update_tNo(Connection conn, String teamNo, String id) throws SQLException {
+   public void update_tNo(Connection conn, String teamNo, String id, int groupNo) throws SQLException {
 	   try (PreparedStatement pstmt = conn.prepareStatement(
-			   "update student set teamNo = ? where stuId = ?")){
+			   "update student set teamNo = ?, groupNo = ? where stuId = ?")){
 		   pstmt.setString(1, teamNo);
-		   pstmt.setString(2,  id);
+		   pstmt.setInt(2, groupNo);
+		   pstmt.setString(3,  id);
 		   pstmt.executeUpdate();
 	   }
    }
@@ -84,6 +114,26 @@ public class StudentDao {
 		   pstmt.executeUpdate();
 	   }	   	
    }
-}
+   
+   public String selectNamebyTeamNo(Connection conn, String teamNo) throws SQLException {
+	   PreparedStatement pstmt = null;
+	   ResultSet rs = null;	   
+	   try {
+		   pstmt = conn.prepareStatement(
+			   "select stuName from student where teamNo = ?");
+		   pstmt.setString(1, teamNo);
+		   rs = pstmt.executeQuery();
+		   String stName = null;
+		   if(rs.next()) {
+			   stName = rs.getString("stuName");			   
+		   }
+		   return stName;
+	   } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	     }
+	  }			   
+   }   
+  
    
    

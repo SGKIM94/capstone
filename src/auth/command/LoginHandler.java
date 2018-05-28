@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,13 +12,13 @@ import auth.service.LoginFailException;
 import auth.service.LoginService;
 import auth.service.*;
 import mvc.command.CommandHandler;
-import team.teamnum;
+import member.service.ClassifyMember;
 
 public class LoginHandler implements CommandHandler {
 
 	private static final String FORM_VIEW = "/index.jsp";
 	private LoginService loginService = new LoginService();
-	private teamnum Group = new teamnum();
+	
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) 
 	throws Exception {
@@ -51,23 +52,19 @@ public class LoginHandler implements CommandHandler {
 		if (!errors.isEmpty()) {
 			return FORM_VIEW;
 		}
-
+		
 		try {
-			if(Integer.parseInt(group) == Group.pronumber) {
-				User user = loginService.ProfessorLogin(id, password, parseint(group));
-				req.getSession().setAttribute("authProUser", user);
-				res.sendRedirect(req.getContextPath() + "/index.jsp");
+			if(Integer.parseInt(group) == ClassifyMember.getPro()) {
+				User prouser = loginService.ProfessorLogin(id, password, parseint(group));
+				req.getSession().setAttribute("authProUser", prouser);
+				RequestDispatcher dispatcher = req.getRequestDispatcher("noticelist.do");
+		    	dispatcher.forward(req,res);
 				return null;
 			}
-			else if(Integer.parseInt(group) == Group.stunumber){
+			else if(Integer.parseInt(group) == ClassifyMember.getStu()){
 				StudentUser studentuser = loginService.StudentLogin(id, password, parseint(group));
 				req.getSession().setAttribute("authStdUser", studentuser);
-				if(studentuser.getTeamNo() != null) {
-					res.sendRedirect("authTeam.do");
-				}
-				else {
-					res.sendRedirect(req.getContextPath() + "/index.jsp");
-				}
+				res.sendRedirect("noticelist.do");
 				return null;
 			}
 			else {

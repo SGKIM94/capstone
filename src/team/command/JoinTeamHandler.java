@@ -1,12 +1,10 @@
 package team.command;
 
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import auth.service.*;
 import member.service.DuplicateIdException;
@@ -38,7 +36,7 @@ public class JoinTeamHandler implements CommandHandler {
    private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws Exception {
 	  MakeTeamRequest mtReq = new MakeTeamRequest();
       StudentUser user = (StudentUser)req.getSession(false).getAttribute("authStdUser");
-      String teamNo = req.getParameter("teamNo");
+      String teamNo = req.getParameter("team_no");
       String stuId = user.getId();
       
       
@@ -52,12 +50,12 @@ public class JoinTeamHandler implements CommandHandler {
       }
       */
      try {
-         if(mtReq.isState()==true){
-            jointeamService.JoinTeam(teamNo, stuId);         
+         if(jointeamService.searchTeam(teamNo) == true){
+            jointeamService.JoinTeam(teamNo, stuId, Authority.getStuTeam());         
             return "/WEB-INF/view/createTeamSuccess.jsp";
          }
          else{
-            errors.put("Commit first!!", Boolean.TRUE);
+            errors.put("NotExistTeams", Boolean.TRUE);
             return FORM_VIEW;
          }
       } catch (DuplicateIdException e) {

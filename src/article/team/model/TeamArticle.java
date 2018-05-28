@@ -24,14 +24,22 @@ public class TeamArticle {
 	public String getFileNo() {
 		return fileNo;
 	}
-
+	
+	public void setFileNo(String fileNo) {
+		this.fileNo = fileNo;
+	}
 	public String getTitle() {
 		return title;
+	}
+	
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public TeamArticleWriter getWriter() {
 		return writer;
 	}
+	
 
 	public Date getRegDate() {
 		return regDate;

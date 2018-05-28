@@ -2,95 +2,125 @@ package eval.command;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import eval.dao.EvalplanDao;
-import eval.model.Evalplan;
+import eval.service.AllEvalStatusValue;
+import eval.service.EvalPlanList;
+import eval.service.EvalProfList;
+import eval.service.EvalTeamList;
+import eval.service.EvalplanStatuService;
 import eval.service.MakeEvalplanService;
 import eval.service.MakeRequest;
+import eval.service.ShowProf;
 import jdbc.connection.ConnectionProvider;
 import member.dao.ProfessorDao;
-import member.model.Professor;
-import member.service.DuplicateIdException;
-import auth.service.LoginFailException;
+import auth.service.Authority;
 import auth.service.User;
 import mvc.command.CommandHandler;
 
 public class MakeEvalplanHandler implements CommandHandler {
 	private static final String FORM_VIEW = "/WEB-INF/view/makeEvalPlanForm.jsp";	//수정과 같은 뷰면 될듯
+	private static final String PRESENET_VIEW = "/WEB-INF/view/EvalTeamList.jsp";
 	private MakeEvalplanService makeService = new MakeEvalplanService();
+	private EvalPlanList evalplanlist = new EvalPlanList();
+	EvalplanStatuService evalplanStatuService = new EvalplanStatuService();
 	
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		if (req.getMethod().equalsIgnoreCase("GET")) {
+		if(evalplanStatuService.CheckEvalState()==AllEvalStatusValue.getEvalPlanStarted()) {
+	  		  req.setAttribute("already", "yes");
+	  		  return PRESENET_VIEW;
+	  	  }
+		String plan = (String)req.getParameter("plan");
+		
+		if ((plan!=null)&&(plan.equals("make"))) {
 			return processForm(req, res);
-		} else if (req.getMethod().equalsIgnoreCase("POST")) {
-			return processSubmit(req, res);
 		} else {
-			res.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-			return null;
+			return processSubmit(req, res);
 		}
 	}
 
 	private String processForm(HttpServletRequest req, HttpServletResponse res) {
+		
+		String planNo = AllEvalStatusValue.togetStrYear()+AllEvalStatusValue.getEvalPlanDocuNo();
+		
+		/*평가가 이미 시작된 경우*/
+		if(makeService.DoesEvalPlanExist(planNo)) {
+			req.setAttribute("already", "yyyyyyyy");
+			//평가가 이미 시작되었습니다를 알려주는 경고창이 있어야하는데...
+			return PRESENET_VIEW;
+		}
+		
+		HttpSession session = req.getSession();
+		
+		EvalTeamList evalteamlist = evalplanlist.getEvalTeamList();
+		EvalProfList evalproflist = evalplanlist.getEvalProfList();
+		
+		session.setAttribute("teamList", evalteamlist);
+		session.setAttribute("proList", evalproflist);
+		
+		
+		req.setAttribute("already", "nooo");
 		return FORM_VIEW;
 	}
 	
 	private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		Map<String, Boolean> errors = new HashMap<>();
-		req.setAttribute("errors", errors);
-
-		User user = (User)req.getSession(false).getAttribute("authUser");
-		MakeRequest makeReq = createMakeRequest(user, req);
-		makeReq.validate(errors);
+		/* 평가에 참여하는 선택된 교수 읽어오기 */
+		String value[] = req.getParameterValues("selectprof");
+		User user = (User)req.getSession(false).getAttribute("authProUser");
+		if(user.getAccess()==Authority.getProDean()) {
+			req.setAttribute("dean", "yes");
+		}
+		EvalTeamList tl = (EvalTeamList)req.getSession(false).getAttribute("teamList");
+		/* 세션에서 전체 교수 목록만 가져오기 */
+		EvalProfList plist = (EvalProfList)req.getSession(false).getAttribute("proList");
 		
-		if (!errors.isEmpty()) {
+		/* 전체 교수 중에서 선택된 교수만 리스트에 넣기 */
+		List<ShowProf> pl = selectedProfessor(plist,value);
+		
+		/* 아무 교수도 선택안하고 넘기면 오류 처리해야함. */
+		if(value == null) {
 			return FORM_VIEW;
 		}
-		
-		try {
-			makeService.Make(makeReq);
-			return "/index.jsp";
-		} catch (DuplicateIdException e) {
-			errors.put("duplicateId", Boolean.TRUE);
-			return FORM_VIEW;
-		}
-		//return "/WEB-INF/view/listTeam.jsp";
+		//이 생성자 부터 완성하자.
+		MakeRequest meq = new MakeRequest(user.getId(),pl, tl.getList());
+		makeService.Make(meq);
+		/* 평가 참여 교수 권한 변경 */
+		changeProfAuthority(value);
+		//이 부분 평가 화면으로 넘겨야함.
+		return PRESENET_VIEW;
 	}
-	private MakeRequest createMakeRequest(User user, HttpServletRequest req) {
+	
+	/* 평가 참여 교수 권한 변경 */
+	private void changeProfAuthority(String value[]) {
 		ProfessorDao professorDao = new ProfessorDao();
-		Professor professor = new Professor();
 		try (Connection conn = ConnectionProvider.getConnection()) {
-			professor = professorDao.selectById(conn, user.getId());
-			if (professor == null) {
-				throw new LoginFailException();
+			for(String var : value) {
+				System.out.print(var);
+				/* 학과장 제외하고 평가 교수들만 권한 변경하기 */
+				professorDao.updateAuthority(conn, var, Authority.getProEval(), Authority.getProDean());
 			}
-			
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-		
-		MakeRequest makeReq = new MakeRequest();
-		
-		int proNo = (int)(req.getAttribute("proNo"));
-		String pro = "proNo";
-		String temp = null;
-		
-		makeReq.setDean(professor.getProId());
-		makeReq.setProNum((int)(req.getAttribute("proNo")));
-		for(int i = 0; i < proNo ; i++) {
-			temp = pro + ((Integer)i).toString();
-			makeReq.setPf(i, temp);
+	}
+	
+	private List<ShowProf> selectedProfessor(EvalProfList pl, String[] val) {
+		List<ShowProf> profl=pl.getList();
+		List<ShowProf> newlist = new ArrayList<ShowProf>();
+		for(String value : val) {
+			for(ShowProf pro : profl) {
+				if(value.equals(pro.getProId())) {
+					newlist.add(pro);
+					break;
+				}
+			}
 		}
-		/*
-		makeReq.setRegDate(regDate);
-		makeReq.setEndDate(endDate);
-		*
-		*/
-		return makeReq;
+		return newlist;
 	}
 }

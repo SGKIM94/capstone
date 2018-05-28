@@ -14,14 +14,11 @@ public class MakeTeamService {
 	public Member MakeTeam(String teamNo, boolean state, String teamName, String groupNo) {
 		try (Connection conn = ConnectionProvider.getConnection()) {
 			if(teamNo != null) {	
-			Team team = teamDao.selectByteam(conn, teamNo);
+				Team team = teamDao.selectByteam(conn, teamNo);
 			if (team == null) {
 				throw new LoginFailException();
 			}
-			if (state == false) {
-				throw new LoginFailException(); //TeamFail로 수정해야함
-			}
-			return new Member(team.getTeamNo(), team.isState(), team.getTeamName(), team.getGroupNo());
+				return new Member(team.getTeamNo(), team.isState(), team.getTeamName(), team.getGroupNo());
 			}else {
 				return null;
 			}						

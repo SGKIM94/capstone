@@ -1,16 +1,30 @@
 <%@ page contentType="text/html; charset=utf-8"%>
-<!DOCTYPE html>
-<html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!doctype html>
+<html lang="en">
 <head>
-<title>암호 변경</title>
-<link href="css/background.css?ver=2" rel="stylesheet" type="text/css" >
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/success/success.css">
+    <title>Delete Team</title>
 </head>
-<body>
-<header class="title">
-        <h1>Capstone Design Management System</h1>
-</header>
-
-<p>팀을 생성했습니다.</p>
-<a href="${ctxPath}/Capstone/index.jsp">[처음 화면]</a>
+<body class="flex-center-row">
+<div class="center_box">
+    <div class="title_box">
+        <span class="_title">Management System</span>
+    </div>
+    <div class="join_box">
+        <span class="delete_h2">팀을 생성했습니다. 재로그인해주세요.</span><br>
+    </div>
+    <%
+    	session.invalidate();
+	%>
+    <div class="button_box flex-center-column">
+        <a href="${ctxPath}/Capstone/index.jsp">
+        <button>처음화면</button></a>
+    </div>
+</div>
 </body>
 </html>

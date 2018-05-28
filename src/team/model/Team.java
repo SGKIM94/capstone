@@ -20,7 +20,7 @@ public class Team {
       this.teamName = null;
       this.teamSubject = null;
       this.advisor = null;
-      this.state = false;      
+      this.state = true;      
       this.teamJoinDate = null;
    }
    
@@ -32,7 +32,7 @@ public class Team {
       this.teamName = teamName;
       this.teamSubject = TeamSubject;
       this.advisor = proId;
-      this.state = true;      
+      this.state = state;      
       this.teamJoinDate = teamJoinDate;
    }
    
@@ -59,6 +59,7 @@ public class Team {
    public boolean isState() {
       return state;
    }
+ 
 
    public Date getTeamJoinDate() {
       return teamJoinDate;

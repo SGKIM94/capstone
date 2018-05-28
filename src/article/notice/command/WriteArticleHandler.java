@@ -23,7 +23,7 @@ import auth.service.Authority;
 import auth.service.LoginFailException;
 
 public class WriteArticleHandler implements CommandHandler {
-   private static final String FORM_VIEW = "/WEB-INF/view/newNoticeForm.jsp";
+   private static final String FORM_VIEW = "/WEB-INF/view/writeNotice.jsp";
    private WriteArticleService writeService = new WriteArticleService();
    private static final Integer defaut_PostId = 0;
    
@@ -38,11 +38,11 @@ public class WriteArticleHandler implements CommandHandler {
          return null;
       }
    }
-
    private String processForm(HttpServletRequest req, HttpServletResponse res) {
 	   User user = (User)req.getSession(false).getAttribute("authProUser");
-	   Authority grade = new Authority();
-	   if(user.getAccess()!=grade.PRO) {
+	   if(user.getAccess()!=Authority.getProDean() && 
+			   user.getAccess()!=Authority.getProEval() &&
+			   		user.getAccess()!=Authority.getProNotEval()) {
 		   throw new PermissionDeniedException();
 	   }
 	   return FORM_VIEW;
@@ -55,25 +55,23 @@ public class WriteArticleHandler implements CommandHandler {
       User user = (User)req.getSession(false).getAttribute("authProUser");
       WriteRequest writeReq = createWriteRequest(user, req);
       writeReq.validate(errors);
-      /*
+      
       if (!errors.isEmpty()) {
          return FORM_VIEW;
-      }*/
+      }
       
       int newArticleNo = writeService.write(writeReq);
       req.setAttribute("newArticleNo", newArticleNo);
       
       ListArticleHandler listarticlehandler = new ListArticleHandler();
 		
-      String listjsp = listarticlehandler.process(req, res);
-		
-      return listjsp;
+      return listarticlehandler.process(req, res);
      //return "/WEB-INF/view/listNotice.jsp";
    }
    
-   private WriteRequest createWriteRequest(User user, HttpServletRequest req) {
+   private WriteRequest createWriteRequest(User user, HttpServletRequest req) throws Exception {
 	   ProfessorDao ProfessorDao = new ProfessorDao();
-       Professor professor;
+       Professor professor = null;
        try (Connection conn = ConnectionProvider.getConnection()) {
     	   professor = ProfessorDao.selectById(conn, user.getId());
            if (professor == null) {
@@ -85,19 +83,29 @@ public class WriteArticleHandler implements CommandHandler {
        MultipartRequest multi = null;
        int sizeLimit = 10 * 1024 * 1024 ; // 10메가입니다.
 
-       String savePath = req.getSession().getServletContext().getRealPath("/upload");    // 파일이 업로드될 실제 tomcat 폴더의 WebContent 기준
+       String savePath = req.getSession().getServletContext().getRealPath("/upload/notice");    // 파일이 업로드될 실제 tomcat 폴더의 WebContent 기준
 
        try{
-    	   multi=new MultipartRequest(req, savePath, sizeLimit, "euc-kr", new DefaultFileRenamePolicy()); 
+    	   multi=new MultipartRequest(req, savePath, sizeLimit, "utf-8", new DefaultFileRenamePolicy()); 
        }catch (Exception e) {
     	   e.printStackTrace();
        } 
+       String file = multi.getOriginalFileName("file");
        
+       if(file == null) {
+    	   return new WriteRequest(defaut_PostId,
+    		          new Writer(professor.getProId(), professor.getProname()),
+    		          multi.getParameter("noticetitle"),
+    		          multi.getParameter("content"));
+       }
+       
+       file = new String(file.getBytes("euc-kr"),"KSC5601");
+              
        /*여기서의 이름과 뷰.jsp 파일에서의 이름이 같아야함.*/
        /* 파일 시스템상의 이름을 구하는 방법을 알아보고 코드 다시 수정해야함. */
        return new WriteRequest(defaut_PostId,
           new Writer(professor.getProId(), professor.getProname()),
-          multi.getParameter("title"),
+          multi.getParameter("noticetitle"),
           multi.getParameter("content"),
           multi.getOriginalFileName("file"),
           multi.getFilesystemName("file"),

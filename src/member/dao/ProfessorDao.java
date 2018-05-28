@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import eval.service.ShowProf;
 import jdbc.JdbcUtil;
 import member.model.Professor;
 
@@ -36,6 +39,61 @@ public class ProfessorDao {
          JdbcUtil.close(pstmt);
       }
    }
+   
+   public List<ShowProf> selectAllProfessor(Connection conn) throws SQLException {
+	  PreparedStatement pstmt = null;
+	  ResultSet rs = null;
+	  
+	  try {
+	     pstmt = conn.prepareStatement(
+	    		 "select * from professor");	
+	     rs = pstmt.executeQuery();
+	     List<ShowProf> result = new ArrayList<>();
+	     ShowProf prof = null;
+	     while (rs.next()) {
+	    	 prof = new ShowProf(rs.getString("proId"),rs.getString("proName"));
+				result.add(prof);
+			}
+			return result;
+	  } finally {
+	     JdbcUtil.close(rs);
+	     JdbcUtil.close(pstmt);
+	  }	      
+	}   
+   
+   public ShowProf selectAsShowProf(Connection conn, String id) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      
+	      try {
+	         pstmt = conn.prepareStatement(
+	               "select proId, proName from professor where proId = ?");
+	         pstmt.setString(1, id);
+	         rs = pstmt.executeQuery();
+	         ShowProf professor = null;
+	         if (rs.next()) {
+	            professor = new ShowProf(
+	                  rs.getString("proId"), 
+	                  rs.getString("proName"));
+	         }
+	         return professor;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+   
+   private Professor convertArticle(ResultSet rs) throws SQLException {
+		return new Professor(
+                rs.getString("proId"), 
+                rs.getString("proName"), 
+                rs.getString("password"),
+                rs.getInt("groupNo"),
+                rs.getString("phoneNo"),
+                rs.getString("proEmail"),
+                toDate(rs.getTimestamp("proJoinDate")));
+	}
+   
 
    private Date toDate(Timestamp date) {
       return date == null ? null : new Date(date.getTime());
@@ -65,4 +123,24 @@ public class ProfessorDao {
          pstmt.executeUpdate();
       }
    }
+   /* 교수 권한 변경 */
+   public void updateAuthority(Connection conn, String proId, int authority) throws SQLException {
+      try (PreparedStatement pstmt = conn.prepareStatement(
+            "update professor set groupNo = ? where proId = ?")) {
+         pstmt.setInt(1, authority);
+         pstmt.setString(2, proId);
+         pstmt.executeUpdate();
+      }
+   }
+   /* 학과장 제외하고 권한 변경(메소드 오버라이딩) */
+   public void updateAuthority(Connection conn, String proId, int authority, int dean) throws SQLException {
+	   try (PreparedStatement pstmt = conn.prepareStatement(
+	            "update professor set groupNo = ? where proId = ? and groupNo != ?")) {
+	         pstmt.setInt(1, authority);
+	         pstmt.setString(2, proId);
+	         pstmt.setInt(3, dean);
+	         pstmt.executeUpdate();
+	   }
+   }
+   
 }

@@ -10,7 +10,10 @@ html, body{
     background-repeat: no-repeat;
     background-size: cover;
 }
-
+#app{
+    width: 100%;
+    height: 100%;
+}
 .flex-center-row{
     display: flex;
     justify-content: center;
@@ -41,7 +44,6 @@ html, body{
     align-items: center;
     flex-direction: row;
 }
-
 .center_box{
     padding: 10px;
     width: 900px;
@@ -60,26 +62,55 @@ html, body{
     letter-spacing: 1px;
 }
 .lists{
+    padding: 0;
     margin: 0;
+    width: 100%;
+    height: 300px;
     list-style: circle;
+    overflow-x: hidden;
 }
-
 .lists li{
+    margin-left: 40px;
     height: 20px;
-    line-height: 20px;
 }
-
 .txt{
-    width: 40px;
+    width: 100%;
+    text-overflow: ellipsis;
     font-weight: normal;
     font-size: 0.8rem;
-    white-space: normal;
+    white-space: nowrap;
+    display: inline-block;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-decoration: none;
+    color: #000000;
+}
+.txt:hover {
+	text-decoration: underline;
 }
 
 .side_box{
     width: 300px;
     height: 100%;
     /*background-color: #f0f0f0;*/
+}
+/* ------------버튼을 a태그로 만들기-------------- */
+a.button {
+  	-webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+  	}
+
+input.submitLink {
+    background-color: transparent;
+    text-decoration: underline;
+    border: none;
+
+    cursor: pointer;
+}
+
+.option-button {
+    margin-left: 30px;
+    font-weight: 200;
+    width: 100px;
+    height: 30px;
 }
