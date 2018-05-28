@@ -1,3 +1,13 @@
+(function() {
+  var score = document.getElementById('result');
+  console.log(score);
+  var sum = 0;
+  for(var i = 0; i < 7; i++) {
+    sum += parseInt(document.querySelector('input[name="val_'+ (i + 1) + '"]:checked').value);
+  }
+  score.innerHTML = sum;
+})();
+
 (function () {
   var sumList = [];
   sumList.length = 7;

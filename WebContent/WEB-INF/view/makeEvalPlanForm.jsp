@@ -87,7 +87,7 @@
 	                </c:forEach>
                 </ul>
                 <div class="count-box">
-                    <span class="count">총 : <span class="num_count">${teamList.total}</span> 명</span>
+                    <span class="count">총 : <span class="num_count">${teamList.total}</span> 팀</span>
                 </div>
             </div>
             <div class="team_right_box flex-center-column">

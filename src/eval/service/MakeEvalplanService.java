@@ -100,7 +100,7 @@ public class MakeEvalplanService {
 	
 	private Evalplan toEvalplan(MakeRequest req, String evalno) {
 		Date now = new Date();
-		return new Evalplan(toGetEvalNo(), req.getDean(), now, now, AllEvalStatusValue.getDefaultEvalPlanState());
+		return new Evalplan(toGetEvalNo(), req.getDean(), now, now, AllEvalStatusValue.getEvalPlanStarted());
 	}
 	
 	private String toGetEvalNo() {

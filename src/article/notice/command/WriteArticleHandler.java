@@ -89,13 +89,18 @@ public class WriteArticleHandler implements CommandHandler {
     	   multi=new MultipartRequest(req, savePath, sizeLimit, "utf-8", new DefaultFileRenamePolicy()); 
        }catch (Exception e) {
     	   e.printStackTrace();
-       } 
-       String file = multi.getOriginalFileName("file");
+       }
+       String file = null;
+       if(multi==null) {
+    	   file =null;
+       }else{
+    	   file = multi.getOriginalFileName("file");   
+       }
        
        if(file == null) {
     	   return new WriteRequest(defaut_PostId,
     		          new Writer(professor.getProId(), professor.getProname()),
-    		          multi.getParameter("noticetitle"),
+    		          null,
     		          multi.getParameter("content"));
        }
        

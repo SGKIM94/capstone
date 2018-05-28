@@ -12,7 +12,6 @@ input{outline: 0;}
 input[type=text]:focus {
     border: 1px solid #555;
 }
-
 .flex-center-row{
     display: flex;
     justify-content: center;
@@ -52,8 +51,6 @@ input[type=text]:focus {
 }
 .title_box{
     margin: 20px auto 30px auto;
-    /*margin-top: 30px;*/
-    /*margin-bottom: 60px;*/
     width: 100%;
     height: 30px;
     text-align: center;
@@ -74,30 +71,24 @@ input[type=text]:focus {
 }
 
 
-/****** 二쇱젣 ���옣 ���썝 ******/
+
+/****** 주제 팀장 팀원 ******/
 .classInfo_box{
     width: 350px;
-    height: 110px;
-    /*background-color: yellow;*/
+    height: 50px;
 }
 .left_box{
     margin: 0;
     padding: 0;
     list-style: none;
-    height: 100px;
-    /*background-color: white;*/
+    height: 50px;
     width: 60px;
 }
 .right_box{
     margin: 0;
     padding: 0;
     list-style: none;
-    height: 100px;
-    overflow-y: scroll;
-    direction: rtl;
-    overflow-x: hidden;
-    /*background-color: blue;*/
-    /*width: 300px;*/
+    height: 50px;
 }
 .left_txt{
     font-size: 10px;
@@ -117,11 +108,11 @@ input[type=text]:focus {
     text-align: center;
     line-height: 25px;
 }
-/****** 二쇱젣 ���옣 ���썝 �걹 ******/
+/****** 주제 팀장 팀원 끝 ******/
 
 
 
-/****** �룊媛�吏� �뼇�떇�떆�옉 ******/
+/****** 평가지 양식시작 ******/
 .check_box{
     margin: 30px auto 0 auto;
     width: 350px;
@@ -129,14 +120,17 @@ input[type=text]:focus {
 }
 .question_box{
     width: 350px;
-    height: 150px;
+    height: 300px;
     margin-bottom: 10px;
-    border-bottom: 1px solid #d7d7d7;
 }
 .question_txt{
     margin-left: 10px;
     font-size: 14px;
     font-weight: normal;
+}
+.btn-wrapper {
+    width: 100%;
+    height: 50px;
 }
 .btn_box{
     margin: 0;
@@ -155,8 +149,6 @@ input[type=text]:focus {
     width: 100%;
     height: 30px;
     line-height: 30px;
-    /*width: 100%;*/
-    /*height: 12px;*/
     font-size: 12px;
     font-weight: normal;
 }
@@ -164,7 +156,7 @@ textarea{
     display: block;
     margin-left: 10px;
     width: 300px;
-    height: 40px;
+    height: 100px;
     padding: 4px 2px;
     box-sizing: border-box;
     border: 1px solid #ccc;
@@ -172,30 +164,30 @@ textarea{
     background-color: #f8f8f8;
     resize: none;
 }
-.result_box{
-    padding: 10px 0;
-    margin: 0 auto;
-    width: 350px;
-    height: auto;
+
+
+.eval_txt{
+    font-size: 15px;
+    font-weight: bold;
 }
+.score-box {
+    width: 100%;
+    line-height: 30px;
+    height: 30px;
+    text-align: center;
+}
+
+
 .lastEval_box{
     margin: 0 auto;
     width: 350px;
     height: 50px;
 }
-.eval-txt{
-    font-size: 15px;
-    font-weight: bold;
-}
-.eval-score {
-    font-size: 15px;
-    font-weight: normal;
-    color: #278eff;
-}
-
-.option-box {
-    width: 100%;
-    height: 50px;
+.result_box{
+    padding: 10px 0;
+    margin: 0 auto;
+    width: 350px;
+    height: auto;
 }
 .option-button {
     border: none;
@@ -206,8 +198,70 @@ textarea{
     cursor: pointer;
     border-radius: 15px;
 }
-.option-button:hover {
-    box-shadow: 0 3px 8px rgba(104, 104, 104, 0.25), 0 5px 5px rgba(153, 153, 153, 0.22);
+
+/****** 평가지 양식끝 ******/
+
+
+.sub-tit {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: #000000;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.lists {
+    width: 100%;
+    height: 80px;
+}
+.list-wrap {
+    width: 100%;
+    height: 20px;
+}
+.mini-tit-wrap {
+    width: 100px;
+    height: 20px;
+    line-height: 20px;
+    text-align: right;
+    display: inline-block;
+}
+.mini-val-wrap {
+    width: 140px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    display: inline-block;
+}
+
+.mini-tit {
+    color: #000000;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.mini-val {
+    color: #2a2a2a;
+    font-size: 12px;
+    font-weight: 300;
+}
+
+.comment-box {
+    width: 100%;
+    height: 30px;
+    border: 1px solid #f1f1f1;
+    overflow: scroll;
+}
+.comment {
+    color: #000000;
+    font-size: 12px;
+    font-weight: 300;
+}
+.radio-check-box {
+    width: 100%;
+    height: 60px;
 }
 
 .id-box {

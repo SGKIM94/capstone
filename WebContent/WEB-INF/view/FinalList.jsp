@@ -91,7 +91,7 @@
                 <div class="option-box">
                        <button class="option-button1" name="finalbtn" value="result">결과보기</button>
                        <c:if test="${final_noselected eq 'yes' }"><script>alert('평가 팀을 선택해주세요.');history.go(-1);</script></c:if>
-                       <c:if test="${final_finished eq 'no' }"><script>alert('평가가 종료되지 않았습니다.');history.go(-1);</script></c:if>
+                       <c:if test="${final_finished1 eq 'no' }"><script>alert('평가가 종료되지 않았습니다.');history.go(-1);</script></c:if>
                   <input type="hidden" name="team_no" value="${tteamNo}">
                <input type="hidden" name="resultv" value="resultview">
             </div>                       

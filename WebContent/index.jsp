@@ -281,7 +281,7 @@
                         </svg>
                     </div>
                     <div class="profile_desc">
-                        <span class="desc">>${authTeam.teamName}팀  ${authStdUser.name}님</span>
+                        <span class="desc">${authStdUser.name}님 반갑습니다.</span>
                     </div>
                 </div>
                 <div class="button_box flex-space-row">

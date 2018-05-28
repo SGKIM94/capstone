@@ -33,20 +33,25 @@
                     <span>${teamName}</span>
                 </li>
                 <c:forEach var="stu" items="${memberList}">
-                	<li class="right_li">
-                		<span>${stu.id}&nbsp;&nbsp;&nbsp;&nbsp;${stu.name}</span>
-                	</li>
+                	<li class="right_li flex-center-row">
+                            <div class="id-box">
+                                <span class="id">${stu.id}</span>
+                            </div>
+                            <div class="name-box">
+                                <span class="name">${stu.name}</span>
+                            </div>
+                        </li>
 	            </c:forEach>
             </ul>
         </div>
         <div class="check_box">
             <div class="question_box">
-                <span class="question_txt">▶교수 평가 결과◀</span><br><br>
+                <span class="question_txt">교수 평가 결과</span><br><br>
                 <c:forEach var="List" items="${EvalResultList}" varStatus="status">
                 	<span>${List.proName}&nbsp;&nbsp;${List.total}&nbsp;&nbsp;${List.result}</span><br>
                 </c:forEach><br>
                 <span class="question_txt">교수 평가 평균 점수 : <span>${evalfinal.avg}</span></span><br><br>
-                <span class="opinion">▶최종 평가◀</span>
+               <span class="question_txt">최종 평가</span><br>
                 <span>${evalfinal.comment}</span>
                 <ul class="btn_box flex-space-row">
                     <li class="radio_txt"><input type="radio" name="val_1" value="1"<c:if test = "${ '1' eq evalfinal.result}">checked</c:if>>합격(>44)</li>

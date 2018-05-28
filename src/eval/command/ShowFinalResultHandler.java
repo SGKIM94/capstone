@@ -63,10 +63,10 @@ public class ShowFinalResultHandler implements CommandHandler {
          }
          
          if(!showFinalResultService.IsCompleted(teamNo)) {
-            req.setAttribute("final_finished", "no");
+            req.setAttribute("final_finished1", "no");
             return FINAL_EVAL_LIST_VIEW;
          }else {
-            req.setAttribute("final_finished", "yes");
+            req.setAttribute("final_finished1", "yes");
          }
          
          session.setAttribute("EvalResultList", eprl);

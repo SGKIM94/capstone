@@ -33,9 +33,14 @@
                     <span>${team_name}</span>
                 </li>
                 <c:forEach var="stu" items="${memberList}">
-                	<li class="right_li">
-                		<span>${stu.id}&nbsp;&nbsp;&nbsp;&nbsp;${stu.name}</span>
-                	</li>
+                	<li class="right_li flex-center-row">
+                            <div class="id-box">
+                                <span class="id">${stu.id}</span>
+                            </div>
+                            <div class="name-box">
+                                <span class="name">${stu.name}</span>
+                            </div>
+                        </li>
 	            </c:forEach>
             </ul>
         </div>
